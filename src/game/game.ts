@@ -15,6 +15,7 @@ import {
 } from './config';
 import { Sprites, type Sprite } from './sprites';
 import { Hero } from './hero';
+import { Clip } from './clips';
 import { Fx } from './fx';
 import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar } from './ui';
 import { INK, fontFor, rrect } from './draw';
@@ -84,6 +85,8 @@ export class Game {
   private ground: CanvasPattern[] = [];
   /** Test hero art (caveman Grok, tier 1); the old dino draws until it has loaded. */
   private hero = new Hero('hero/grok-1/');
+  /** Video-cut loops for painted enemies (test: grub crawl, raptor run). Missing ones draw the still sprite. */
+  private clips: Partial<Record<EnemyKind, Clip>> = { grub: new Clip('anim/grub/'), wolf: new Clip('anim/wolf/') };
 
   constructor(
     stage: Stage, private input: Input, private audio: Audio, private sprites: Sprites, private poki: Poki,
@@ -393,6 +396,7 @@ export class Game {
     const m = this.m!;
     const v = this.v;
     this.drawWorld(ctx, m);
+    this.drawLight(ctx, m);
 
     // red vignette at low HP / on hits
     const low = m.hp / m.maxHp < 0.3 ? 0.35 + Math.sin(this.time * 6) * 0.12 : 0;
@@ -425,6 +429,29 @@ export class Game {
       this.joy.by = this.joy.ky = p.y;
     }
     if (this.joy.on) this.drawJoystick(ctx);
+  }
+
+  /**
+   * Scene light (matches the key art): darker canopy at the edges, a warm pool
+   * of light around the hero, so painted sprites sit IN the forest, not on it.
+   */
+  private drawLight(ctx: Ctx, m: Model): void {
+    const v = this.v;
+    const [px, py] = this.w2s(m.px, m.py - 30);
+    const R = Math.max(v.w, v.h);
+    const warm = ctx.createRadialGradient(px, py, 0, px, py, R * 0.32);
+    warm.addColorStop(0, 'rgba(255,200,120,0.16)');
+    warm.addColorStop(1, 'rgba(255,200,120,0)');
+    ctx.save();
+    ctx.globalCompositeOperation = 'soft-light';
+    ctx.fillStyle = warm;
+    ctx.fillRect(0, 0, v.w, v.h);
+    ctx.restore();
+    const vig = ctx.createRadialGradient(v.w / 2, v.h / 2, R * 0.28, v.w / 2, v.h / 2, R * 0.72);
+    vig.addColorStop(0, 'rgba(10,18,8,0)');
+    vig.addColorStop(1, 'rgba(10,18,8,0.55)');
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, v.w, v.h);
   }
 
   // ---------------------------------------------------------------- world
@@ -587,7 +614,15 @@ export class Game {
     let sx = 1 + Math.sin(walk * 2) * 0.04, sy = 1 - Math.sin(walk * 2) * 0.04;
     if (e.mode === 1) { x += Math.sin(this.time * 70) * 3; sx = 1.12; sy = 0.88; }
     if (e.stun > 0) y += 0;
-    this.blit(ctx, s, x, y, sc, sx, sy, e.mode === 2 ? 0 : Math.sin(walk) * 0.05, e.flash > 0 ? e.flash * 8 : e.mode === 1 ? 0.35 : 0, e.facing);
+    const clip = this.clips[e.def.kind];
+    const flash = e.flash > 0 ? e.flash * 8 : e.mode === 1 ? 0.35 : 0;
+    if (clip?.ready) {
+      // The loop already carries the motion: no code bob, only the wind-up shake/squash.
+      const t = e.stun > 0 ? 0 : e.age * (e.mode === 2 ? 2 : 1);
+      clip.draw(ctx, x, e.y, s.w * sc, t, e.facing, flash, e.mode === 1 ? sx : 1, e.mode === 1 ? sy : 1);
+    } else {
+      this.blit(ctx, s, x, y, sc, sx, sy, e.mode === 2 ? 0 : Math.sin(walk) * 0.05, flash, e.facing);
+    }
     if (e.stun > 0) {
       ctx.fillStyle = '#ffe28a'; ctx.strokeStyle = INK; ctx.lineWidth = 2;
       for (let i = 0; i < 3; i++) {
