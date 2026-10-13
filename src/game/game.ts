@@ -16,6 +16,7 @@ import {
 import { Sprites, type Sprite } from './sprites';
 import { Hero } from './hero';
 import { Clip } from './clips';
+import { PropScatter } from './perf/props';
 import { Fx } from './fx';
 import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar, nine, kitImage } from './ui';
 import { INK, fontFor, rrect } from './draw';
@@ -40,6 +41,9 @@ const CAMP_ICON: Record<CampId, SkillId | 'gold'> = {
 };
 
 const fmtTime = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+const ENEMY_HEIGHT: Record<EnemyKind, number> = { grub: 70, bat: 62, shroom: 92, beetle: 120, wolf: 160, brute: 215, boss: 320 };
+const ENEMY_KINDS = Object.keys(ENEMY_HEIGHT) as EnemyKind[];
+const byY = (a: Enemy, b: Enemy) => a.y - b.y;
 
 export class Game {
   private ctx: Ctx;
@@ -91,6 +95,11 @@ export class Game {
   private banked = 0;
   private doubled = false;
   private ground: CanvasPattern[] = [];
+  private props = new PropScatter();
+  private propImage = (key: string) => this.sprites.image(key);
+  private visibleEnemies: Enemy[] = [];
+  private enemySprites = {} as Record<EnemyKind, Sprite>;
+  private vignette: { w: number; h: number; scale: number; gradient: CanvasGradient } | null = null;
   /** Test hero art (caveman Grok, tier 1); the old dino draws until it has loaded. */
   private hero = new Hero('hero/grok-1/');
   /** Video-cut loops for painted enemies (test: grub crawl, raptor run). Missing ones draw the still sprite. */
@@ -473,10 +482,14 @@ export class Game {
     ctx.fillStyle = warm;
     ctx.fillRect(0, 0, v.w, v.h);
     ctx.restore();
-    const vig = ctx.createRadialGradient(v.w / 2, v.h / 2, R * 0.28, v.w / 2, v.h / 2, R * 0.72);
-    vig.addColorStop(0, 'rgba(10,18,8,0)');
-    vig.addColorStop(1, 'rgba(10,18,8,0.55)');
-    ctx.fillStyle = vig;
+    const scale = ctx.getTransform().a;
+    if (!this.vignette || this.vignette.w !== v.w || this.vignette.h !== v.h || this.vignette.scale !== scale) {
+      const gradient = ctx.createRadialGradient(v.w / 2, v.h / 2, R * .28, v.w / 2, v.h / 2, R * .72);
+      gradient.addColorStop(0, 'rgba(10,18,8,0)');
+      gradient.addColorStop(1, 'rgba(10,18,8,0.55)');
+      this.vignette = { w: v.w, h: v.h, scale, gradient };
+    }
+    ctx.fillStyle = this.vignette.gradient;
     ctx.fillRect(0, 0, v.w, v.h);
   }
 
@@ -490,8 +503,7 @@ export class Game {
     // Size ladder by on-screen HEIGHT (world units) against the hero (~130): small fry clearly
     // smaller than the hero, tanks about his size, troll and ogre loom over him. Painted art is
     // tall or wide depending on the creature, so height (not width) keeps the ladder honest.
-    const H = { grub: 70, bat: 62, shroom: 92, beetle: 120, wolf: 160, brute: 215, boss: 320 }[kind];
-    return H / s.h;
+    return ENEMY_HEIGHT[kind] / s.h;
   }
 
   private drawWorld(ctx: Ctx, m: Model): void {
@@ -591,13 +603,15 @@ export class Game {
     ctx.fill();
 
     // y-sorted bodies
-    const list: Enemy[] = [];
+    const list = this.visibleEnemies;
+    list.length = 0;
+    for (const kind of ENEMY_KINDS) this.enemySprites[kind] = this.sprites.enemy(kind, m.zone);
     for (const e of m.enemies) if (vis(e.x, e.y, e.r * 3)) list.push(e);
-    list.sort((a, b) => a.y - b.y);
+    list.sort(byY);
     let drewPlayer = false;
     for (const e of list) {
       if (!drewPlayer && e.y > m.py) { this.drawPlayer(ctx, m); drewPlayer = true; }
-      this.drawEnemy(ctx, m, e);
+      this.drawEnemy(ctx, e);
     }
     if (!drewPlayer) this.drawPlayer(ctx, m);
 
@@ -653,30 +667,7 @@ export class Game {
    * Purely visual, drawn under every creature.
    */
   private drawProps(ctx: Ctx, L: number, R: number, T: number, B: number): void {
-    const layers: { cell: number; chance: number; salt: number; items: [string, number][] }[] = [
-      { cell: 620, chance: 0.4, salt: 11, items: [['deco-dirt-patch', 300], ['deco-dirt-path', 360], ['deco-stones', 150], ['deco-flowers', 110], ['deco-leaves', 140]] },
-      { cell: 460, chance: 0.4, salt: 97, items: [['deco-fern', 120], ['deco-grass', 90], ['deco-rock-small', 90],
-        ['deco-log', 150], ['deco-roots', 130], ['deco-bones', 110], ['prop-stump-large', 150], ['prop-mossy-rock', 100]] },
-    ];
-    for (const ly of layers) {
-      const C = ly.cell;
-      for (let cx = Math.floor(L / C) - 1; cx <= Math.floor(R / C) + 1; cx++) {
-        for (let cy = Math.floor(T / C) - 1; cy <= Math.floor(B / C) + 1; cy++) {
-          let h = (cx * 73856093) ^ (cy * 19349663) ^ (ly.salt * 83492791);
-          h = Math.imul(h ^ (h >>> 13), 0x5bd1e995); h ^= h >>> 15;
-          const r = (h >>> 0) / 4294967296;
-          if (r > ly.chance) continue;
-          const [key, w] = ly.items[Math.floor(r * 10007) % ly.items.length];
-          const img = this.sprites.image(key);
-          if (!img) continue;
-          const x = cx * C + (((h >>> 8) & 255) / 255) * C * 0.8, y = cy * C + (((h >>> 16) & 255) / 255) * C * 0.8;
-          const hh = (w * img.naturalHeight) / img.naturalWidth;
-          ctx.save(); ctx.translate(x, y); if (h & 1) ctx.scale(-1, 1);
-          ctx.drawImage(img, -w / 2, -hh * 0.8, w, hh);
-          ctx.restore();
-        }
-      }
-    }
+    this.props.draw(ctx, L, R, T, B, this.propImage);
   }
 
   /** Draw a sprite with its ground anchor at (x, y). */
@@ -694,8 +685,8 @@ export class Game {
     ctx.restore();
   }
 
-  private drawEnemy(ctx: Ctx, m: Model, e: Enemy): void {
-    const s = this.sprites.enemy(e.def.kind, m.zone);
+  private drawEnemy(ctx: Ctx, e: Enemy): void {
+    const s = this.enemySprites[e.def.kind];
     const sc = this.enemyScale(e.def.kind, s) * (e.elite ? 1.3 : 1);
     if (e.elite) {
       ctx.save(); ctx.strokeStyle = '#ffd75a'; ctx.lineWidth = 2; ctx.shadowColor = '#ffd75a'; ctx.shadowBlur = 7;

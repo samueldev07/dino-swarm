@@ -43,7 +43,7 @@ export class Assets {
 
     const img = new Image();
     img.decoding = 'async';
-    img.onload = () => this.ready.add(key);
+    img.onload = () => { void img.decode().catch(() => {}).then(() => this.ready.add(key)); };
     img.onerror = () => { delete this.files[key]; };
     img.src = this.base + file;
     this.images.set(key, img);

@@ -10,6 +10,7 @@ import { startLoop } from './engine/loop';
 import { Sprites } from './game/sprites';
 import { setUiKit } from './game/ui';
 import { Game } from './game/game';
+import { FrameMeter } from './game/perf/meter';
 
 async function boot(): Promise<void> {
   const poki = new Poki();
@@ -33,9 +34,14 @@ async function boot(): Promise<void> {
   const game = new Game(stage, input, audio, new Sprites(assets), poki);
   void input.firstGesture.then(() => { audio.unlock(); audio.setMusic(audio.music); });
 
-  startLoop((dt) => {
+  const meter = new URLSearchParams(location.search).has('debug') ? new FrameMeter() : null;
+  if (meter) (window as unknown as Record<string, unknown>).__perf = meter;
+  startLoop((dt, now) => {
+    const begin = meter ? performance.now() : 0;
     game.update(dt);
+    const updated = meter ? performance.now() : 0;
     game.draw();
+    if (meter) meter.record(now, updated - begin, performance.now() - updated);
     input.endFrame();
   });
   poki.loadingFinished();
