@@ -55,9 +55,7 @@ export class Stage {
     const cssH = window.innerHeight;
     // Cap DPR: a 3x retina phone would otherwise shade 3x the pixels for
     // no visible gain on art this chunky.
-    // Phones: 1.5x is visually identical for this painted art and shades ~45% fewer pixels than 2x.
-    const touch = window.matchMedia?.('(pointer: coarse)').matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, touch ? 1.5 : 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);  // painted art: 1.5x looks the same as 2x, ~45% fewer pixels
 
     const scale = Math.min(cssW / MIN_W, cssH / MIN_H);
     const v = this.view;

@@ -113,7 +113,6 @@ export class Game {
   private propImage = (key: string) => this.sprites.image(key);
   private visibleEnemies: Enemy[] = [];
   private enemySprites = {} as Record<EnemyKind, Sprite>;
-  private vignette: { w: number; h: number; scale: number; gradient: CanvasGradient } | null = null;
   /** Test hero art (caveman Grok, tier 1); the old dino draws until it has loaded. */
   private hero = new Hero('hero/grok-1/');
   /** Video-cut loops for painted enemies (test: grub crawl, raptor run). Missing ones draw the still sprite. */
@@ -465,11 +464,18 @@ export class Game {
     const low = m.hp / m.maxHp < 0.3 ? 0.35 + Math.sin(this.time * 6) * 0.12 : 0;
     const vig = Math.max(low, this.hurtT * 1.6);
     if (vig > 0) {
-      const g = ctx.createRadialGradient(v.w / 2, v.h / 2, Math.min(v.w, v.h) * 0.35, v.w / 2, v.h / 2, Math.max(v.w, v.h) * 0.7);
-      g.addColorStop(0, 'rgba(200,30,20,0)');
-      g.addColorStop(1, `rgba(200,30,20,${Math.min(0.55, vig)})`);
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, v.w, v.h);
+      if (!this.hurtLayer || this.hurtLayer.w !== v.w || this.hurtLayer.h !== v.h) {
+        const c = document.createElement('canvas');
+        c.width = Math.max(2, Math.round(v.w / 4)); c.height = Math.max(2, Math.round(v.h / 4));
+        const x = c.getContext('2d')!;
+        const gr = x.createRadialGradient(c.width / 2, c.height / 2, Math.min(c.width, c.height) * 0.35, c.width / 2, c.height / 2, Math.max(c.width, c.height) * 0.7);
+        gr.addColorStop(0, 'rgba(200,30,20,0)'); gr.addColorStop(1, 'rgba(200,30,20,1)');
+        x.fillStyle = gr; x.fillRect(0, 0, c.width, c.height);
+        this.hurtLayer = { w: v.w, h: v.h, c };
+      }
+      ctx.globalAlpha = Math.min(0.55, vig);
+      ctx.drawImage(this.hurtLayer.c, 0, 0, v.w, v.h);
+      ctx.globalAlpha = 1;
     }
 
     this.drawHud(ctx, m);
@@ -498,27 +504,32 @@ export class Game {
    * Scene light (matches the key art): darker canopy at the edges, a warm pool
    * of light around the hero, so painted sprites sit IN the forest, not on it.
    */
-  private drawLight(ctx: Ctx, m: Model): void {
+  /**
+   * Scene light baked ONCE per screen size into a small canvas (warm centre + dark canopy edge),
+   * then stretched over the view with one plain drawImage. The old per-frame 'soft-light'
+   * composite + full-screen gradients made the GPU re-shade every pixel twice a frame.
+   */
+  private hurtLayer: { w: number; h: number; c: HTMLCanvasElement } | null = null;
+  private lightLayer: { w: number; h: number; c: HTMLCanvasElement } | null = null;
+  private drawLight(ctx: Ctx, _m: Model): void {
     const v = this.v;
-    const [px, py] = this.w2s(m.px, m.py - 30);
-    const R = Math.max(v.w, v.h);
-    const warm = ctx.createRadialGradient(px, py, 0, px, py, R * 0.32);
-    warm.addColorStop(0, 'rgba(255,200,120,0.16)');
-    warm.addColorStop(1, 'rgba(255,200,120,0)');
-    ctx.save();
-    ctx.globalCompositeOperation = 'soft-light';
-    ctx.fillStyle = warm;
-    ctx.fillRect(0, 0, v.w, v.h);
-    ctx.restore();
-    const scale = ctx.getTransform().a;
-    if (!this.vignette || this.vignette.w !== v.w || this.vignette.h !== v.h || this.vignette.scale !== scale) {
-      const gradient = ctx.createRadialGradient(v.w / 2, v.h / 2, R * .28, v.w / 2, v.h / 2, R * .72);
-      gradient.addColorStop(0, 'rgba(10,18,8,0)');
-      gradient.addColorStop(1, 'rgba(10,18,8,0.55)');
-      this.vignette = { w: v.w, h: v.h, scale, gradient };
+    if (!this.lightLayer || this.lightLayer.w !== v.w || this.lightLayer.h !== v.h) {
+      const c = document.createElement('canvas');
+      const k = 0.25;                                  // a soft gradient survives heavy upscaling
+      c.width = Math.max(2, Math.round(v.w * k)); c.height = Math.max(2, Math.round(v.h * k));
+      const x = c.getContext('2d')!;
+      const W = c.width, H = c.height, R = Math.max(W, H);
+      const warm = x.createRadialGradient(W / 2, H * 0.47, 0, W / 2, H * 0.47, R * 0.32);
+      warm.addColorStop(0, 'rgba(255,215,150,0.10)');
+      warm.addColorStop(1, 'rgba(255,215,150,0)');
+      x.fillStyle = warm; x.fillRect(0, 0, W, H);
+      const vig = x.createRadialGradient(W / 2, H / 2, R * 0.28, W / 2, H / 2, R * 0.72);
+      vig.addColorStop(0, 'rgba(10,18,8,0)');
+      vig.addColorStop(1, 'rgba(10,18,8,0.55)');
+      x.fillStyle = vig; x.fillRect(0, 0, W, H);
+      this.lightLayer = { w: v.w, h: v.h, c };
     }
-    ctx.fillStyle = this.vignette.gradient;
-    ctx.fillRect(0, 0, v.w, v.h);
+    ctx.drawImage(this.lightLayer.c, 0, 0, v.w, v.h);
   }
 
   // ---------------------------------------------------------------- world

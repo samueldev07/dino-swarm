@@ -28,9 +28,9 @@ export const TUNING = {
   magnetDrop: 0.0025,
   meatHeal: 30,
   /** Global multipliers the director applies over time (see `director`). */
-  hpGrowth: 0.009,           // enemy HP x (1 + t * hpGrowth)
+  hpGrowth: 0.012,           // enemy HP x (1 + t * hpGrowth)
   rateBase: 2.4,             // spawns per second at t = 0
-  rateGrowth: 0.016,         // + per second of run time
+  rateGrowth: 0.019,         // + per second of run time
   rateMax: 8,
   earlySpawnDist: 820,       // the first minute spawns closer: action within ~5 s
   earlyUntil: 60,
