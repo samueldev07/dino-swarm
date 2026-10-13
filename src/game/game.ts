@@ -10,6 +10,7 @@ import type { Poki } from '../engine/poki';
 import { Model, type GameEvent, type Offer, type Enemy } from './model';
 import {
   SKILLS, SPECIES, SPECIES_IDS, ZONES, CAMP, CAMP_IDS, CAMP_MAX, campCost, MAX_LEVEL, METEOR_DELAY,
+  EVOLUTIONS, isWeapon,
   type SkillId, type CampId, type EnemyKind,
 } from './config';
 import { Sprites, type Sprite } from './sprites';
@@ -17,6 +18,8 @@ import { Fx } from './fx';
 import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar } from './ui';
 import { INK, fontFor, rrect } from './draw';
 import { type Meta, loadMeta, saveMeta, speciesUnlocked, zoneUnlocked, buyCamp } from './meta';
+
+import { progressMissions, claimMissions, missionLabel, type Mission } from './missions';
 
 type Ctx = CanvasRenderingContext2D;
 type Screen = 'menu' | 'run' | 'camp';
@@ -61,7 +64,20 @@ export class Game {
   private lagHp = 1;               // boss bar lag fill
   private bossLag = 1;
   private movedFor = 0;
-  private result: 'revive' | 'summary' | null = null;
+  private result: 'summary' | null = null;
+  private firstRun = false;
+  private hintFade = 0;
+  private amberT = 0;
+  private taughtAmber = false;
+  private banishing = false;
+  private runCounted = false;
+  private newBest = false;
+  private missionResults: Mission[] = [];
+  private completedIds = new Set<number>();
+  private knownBosses = new Map<number, Enemy>();
+  private toastUntil = 0;
+  private missionsDirty = false;
+  private missionSavedAt = 0;
   private banked = 0;
   private doubled = false;
   private ground: CanvasPattern[] = [];
@@ -84,8 +100,8 @@ export class Game {
       this.keys.add(k);
     });
     window.addEventListener('keyup', (e) => this.keys.delete(e.key.toLowerCase()));
-    window.addEventListener('blur', () => { this.keys.clear(); this.pause(); });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) this.pause(); });
+    window.addEventListener('blur', () => { this.keys.clear(); this.pause(); saveMeta(this.meta); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { this.pause(); saveMeta(this.meta); } });
 
     // First visit: straight into a run (best click-to-play on Poki).
     if (this.meta.runs === 0) this.newRun(false);
@@ -100,6 +116,13 @@ export class Game {
       this.paused = false;
       this.result = null;
       this.banked = 0;
+      this.runCounted = false;
+      this.newBest = false;
+      this.firstRun = meta.runs === 0;
+      this.hintFade = 0; this.amberT = 0; this.taughtAmber = false;
+      this.banishing = false; this.missionResults = []; this.completedIds.clear();
+      this.knownBosses.clear();
+      this.missionsDirty = false; this.toastUntil = 0;
       this.doubled = false;
       this.dying = [];
       this.banner = null;
@@ -116,7 +139,7 @@ export class Game {
   }
 
   private pause(): void {
-    if (this.screen !== 'run' || !this.m || this.m.status !== 'play' || this.paused) return;
+    if (this.screen !== 'run' || !this.m || this.m.status !== 'play' || this.m.offers || this.paused) return;
     this.paused = true;
     this.poki.gameplayStop();
   }
@@ -128,12 +151,14 @@ export class Game {
   }
 
   private onKey(k: string): void {
+    if (this.busy || this.poki.adRunning) return;
     const m = this.m;
     if (this.screen === 'run' && m) {
-      if ((k === 'escape' || k === 'p') && m.status === 'play' && !m.offers) {
+      if ((k === 'escape' || k === 'p' || k === ' ') && m.status === 'play' && !m.offers) {
         if (this.paused) this.resume(); else this.pause();
       }
-      if (m.offers && this.time - this.offersAt > 0.35 && ['1', '2', '3'].includes(k)) this.pickOffer(+k - 1);
+      if (!this.busy && !this.paused && m.offers && k === 'r' && this.time - this.offersAt > 0.35) this.rerollOffers();
+      if (!this.busy && !this.paused && m.offers && this.time - this.offersAt > 0.35 && ['1', '2', '3'].includes(k)) this.pickOffer(+k - 1);
     }
     if (this.screen === 'menu' && (k === 'enter' || k === ' ')) this.newRun(true);
   }
@@ -141,6 +166,10 @@ export class Game {
   private pickOffer(i: number): void {
     const m = this.m;
     if (!m || !m.offers) return;
+    if (this.banishing) {
+      if (m.banish(i)) { this.banishing = false; this.offersAt = this.time; this.audio.play('tap'); }
+      return;
+    }
     const o = m.offers[i];
     if (m.choose(i)) {
       this.audio.play('claim');
@@ -149,16 +178,31 @@ export class Game {
     }
   }
 
+  private rerollOffers(): void {
+    if (this.m?.reroll()) { this.banishing = false; this.offersAt = this.time; this.audio.play('tap'); }
+  }
+
   private bankCoins(): void {
     const m = this.m;
-    if (!m || this.banked) return;
-    this.banked = Math.max(1, m.coinsEarned);
-    const meta = this.meta;
-    meta.coins += this.banked;
-    meta.runs++;
-    meta.best[m.zone] = Math.max(meta.best[m.zone], Math.floor(m.time));
-    if (m.status === 'won') meta.cleared = Math.max(meta.cleared, m.zone);
-    saveMeta(meta);
+    if (!m) return;
+    const total = Math.max(1, m.coinsEarned);
+    const extra = Math.max(0, total - this.banked);
+    this.meta.coins += extra * (this.doubled ? 2 : 1);
+    this.banked += extra;
+    if (!this.runCounted) { this.meta.runs++; this.runCounted = true; }
+    this.newBest ||= Math.floor(m.time) > this.meta.best[m.zone];
+    this.meta.best[m.zone] = Math.max(this.meta.best[m.zone], Math.floor(m.time));
+    if (m.status === 'won') this.meta.cleared = Math.max(this.meta.cleared, m.zone);
+    // Replacements must wait until the next run, even if this run is revived.
+    for (const mission of this.meta.missions) if (this.completedIds.has(mission.id)) mission.progress = 0;
+    const oldIds = new Set(this.meta.missions.map(mission => mission.id));
+    const completed = claimMissions(this.meta.missions);
+    for (const mission of completed) {
+      this.missionResults.push(mission);
+      this.meta.coins += mission.reward;
+    }
+    for (const mission of this.meta.missions) if (!oldIds.has(mission.id)) this.completedIds.add(mission.id);
+    saveMeta(this.meta);
   }
 
   // ================================================================ update
@@ -168,6 +212,8 @@ export class Game {
     const m = this.m;
     if (this.screen !== 'run' || !m) { this.fx.update(dt); return; }
 
+    this.cam.z = Math.max(0.7, Math.min(1.6, Math.sqrt((this.v.w * this.v.h) / (1200 * 700))));
+    m.viewHalf = { w: this.v.w / 2 / this.cam.z, h: this.v.h / 2 / this.cam.z };
     // ---- input -> move vector
     let kx = 0, ky = 0;
     const K = this.keys;
@@ -196,16 +242,24 @@ export class Game {
     if (!blocked) {
       m.setMove(kx, ky);
       if (m.status === 'ready' && kl > 0.2) { m.start(); this.poki.gameplayStart(); }
-      if (m.status === 'play' && kl > 0.2) this.movedFor += dt;
+      if (m.status === 'play' && !m.offers && kl > 0.2) this.movedFor += dt;
       const wasOffers = !!m.offers;
+      for (const enemy of m.enemies) if (enemy.def.kind === 'boss') this.knownBosses.set(enemy.id, enemy);
       m.update(dt);
+      for (const enemy of m.enemies) if (enemy.def.kind === 'boss') this.knownBosses.set(enemy.id, enemy);
       if (!wasOffers && m.offers) this.offersAt = this.time;
       for (const e of m.drain()) this.onEvent(e);
+      this.missionsDirty = progressMissions(this.meta.missions.filter(mission => !this.completedIds.has(mission.id)), m) || this.missionsDirty;
+      if (this.missionsDirty && this.time - this.missionSavedAt >= 1) {
+        saveMeta(this.meta); this.missionSavedAt = this.time; this.missionsDirty = false;
+      }
+      if (!m.offers && m.status === 'play') {
+        if (this.movedFor >= 2) this.hintFade += dt;
+        this.amberT = Math.max(0, this.amberT - dt);
+      }
     }
 
     // ---- camera
-    const v = this.v;
-    this.cam.z = Math.max(0.7, Math.min(1.6, Math.sqrt((v.w * v.h) / (1200 * 700))));
     const lead = 0.12;
     const tx = m.px + m.mx * 120 * lead * 4, ty = m.py + m.my * 120 * lead * 4;
     const k = 1 - Math.exp(-dt * 6);
@@ -232,14 +286,16 @@ export class Game {
     if ((m.status === 'dead' || m.status === 'won') && this.result === null) {
       this.poki.gameplayStop();
       this.joy.on = false;
-      this.result = m.status === 'dead' && !m.revived ? 'revive' : 'summary';
-      if (this.result === 'summary') this.bankCoins();
+      this.result = 'summary';
+      this.bankCoins();
     }
   }
 
   private onEvent(e: GameEvent): void {
     const m = this.m!;
     const a = this.audio;
+    const bossTier = e.t === 'bossDead' ? [...this.knownBosses.values()].find(boss => boss.dead && boss.x === e.x && boss.y === e.y)?.tier : undefined;
+    this.missionsDirty = progressMissions(this.meta.missions.filter(mission => !this.completedIds.has(mission.id)), m, e, bossTier) || this.missionsDirty;
     switch (e.t) {
       case 'hit':
         if (e.crit || e.boss) this.fx.floater(e.x, e.y, String(e.dmg), e.crit ? '#ffd24a' : '#fff', e.crit ? 30 : 22);
@@ -248,6 +304,10 @@ export class Game {
         if (e.boss) this.fx.burst(e.x, e.y + 20, '#fff2c0', 4, 160);
         break;
       case 'kill': {
+        if (this.firstRun && !this.taughtAmber) {
+          this.taughtAmber = true; this.amberT = 3;
+          this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
+        }
         const s = this.sprites.enemy(e.kind, m.zone);
         this.dying.push({ s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s), t: 0, flip: 1 });
         this.fx.burst(e.x, e.y - 14, e.kind === 'boss' ? '#ffd24a' : '#e8dcc0', e.kind === 'boss' ? 40 : 6, e.kind === 'boss' ? 420 : 170);
@@ -284,6 +344,9 @@ export class Game {
         this.showBanner('EVOLVED!', sp.forms[e.form], '#ffd24a');
         break;
       }
+      case 'weaponEvolve':
+        a.play('super'); this.fx.burst(m.px, m.py - 40, '#ffd24a', 40, 380);
+        this.fx.shake(0.8, 0.4); this.showBanner('EVOLVED!', e.name, '#ffd24a'); break;
       case 'fire':
         if (e.w === 'stomp') { a.play('thud'); this.fx.burst(m.px, m.py, '#c8a070', 10, 260); }
         else if (e.w === 'roar') a.play('combo');
@@ -339,8 +402,9 @@ export class Game {
     }
 
     this.drawHud(ctx, m);
-    if (m.status === 'ready') this.drawHint(ctx);
-    if (this.banner) this.drawBanner(ctx);
+    this.drawEdgeArrows(ctx, m);
+    if (m.status === 'ready' || (this.firstRun && this.hintFade < 0.4 && m.status === 'play' && !m.offers)) this.drawHint(ctx);
+    if (this.banner && !m.offers && !this.result && !this.paused) this.drawBanner(ctx);
     if (this.evolveT > 0) this.drawEvolve(ctx, m);
 
     if (m.offers && this.result === null) this.drawOffers(ctx, m);
@@ -348,9 +412,10 @@ export class Game {
     else if (this.result) this.drawResult(ctx, m);
     else if (this.busy) this.ui.scrim(ctx, v.w, v.h);
 
+    if (this.time < this.toastUntil) outlinedText(ctx, 'No ad available right now', v.w / 2, v.safe.t + 230, fitSize(ctx, 'No ad available right now', 28, v.w - 60), '#fff', INK, 'center');
     // Joystick starts on any press no button claimed.
     const p = this.input.p;
-    if (p.justDown && !this.ui.claimed && !m.offers && !this.paused && !this.result) {
+    if (p.justDown && !this.ui.claimed && !m.offers && !this.paused && !this.result && !this.busy && !this.poki.adRunning) {
       this.joy.on = true;
       this.joy.bx = this.joy.kx = p.x;
       this.joy.by = this.joy.ky = p.y;
@@ -429,6 +494,11 @@ export class Game {
       this.blit(ctx, s, pk.x, pk.y + bob, 1, 1, 1, 0, 0);
     }
 
+    if (this.amberT > 0 && m.gems.length) {
+      const gem = m.gems.reduce((a, b) => Math.hypot(a.x - m.px, a.y - m.py) < Math.hypot(b.x - m.px, b.y - m.py) ? a : b);
+      ctx.strokeStyle = '#ffe28a'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(gem.x, gem.y, 24 + Math.sin(this.time * 7) * 5, 0, Math.PI * 2); ctx.stroke();
+    }
     // shadows, one path
     ctx.fillStyle = 'rgba(30,20,10,.2)';
     ctx.beginPath();
@@ -501,7 +571,11 @@ export class Game {
 
   private drawEnemy(ctx: Ctx, m: Model, e: Enemy): void {
     const s = this.sprites.enemy(e.def.kind, m.zone);
-    const sc = this.enemyScale(e.def.kind, s);
+    const sc = this.enemyScale(e.def.kind, s) * (e.elite ? 1.3 : 1);
+    if (e.elite) {
+      ctx.save(); ctx.strokeStyle = '#ffd75a'; ctx.lineWidth = 2; ctx.shadowColor = '#ffd75a'; ctx.shadowBlur = 7;
+      ctx.beginPath(); ctx.ellipse(e.x, e.y - e.r, e.r * 1.5, e.r * 1.65, 0, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+    }
     const walk = e.stun > 0 ? 0 : e.age * (e.def.flutter ? 18 : 11);
     let y = e.y - Math.abs(Math.sin(walk)) * (e.def.flutter ? 6 : 3) - (e.def.flutter ? 14 : 0);
     let x = e.x;
@@ -690,6 +764,7 @@ export class Game {
     ctx.fillStyle = '#ffd86a'; ctx.beginPath(); ctx.arc(left + lvR - 3, xr.y + xr.h / 2 - 4, lvR - 7, 0, Math.PI * 2); ctx.fill();
     outlinedText(ctx, String(m.level), left + lvR, xr.y + xr.h / 2 + 1, fitSize(ctx, String(m.level), 30, lvR * 1.5), '#fff', INK, 'center');
 
+    if (this.firstRun) text(ctx, 'XP', xr.x + 45, xr.y + xr.h / 2, 18, '#fff', 'left', 700);
     // pause
     if (this.ui.iconButton('pause', pauseR, ctx, () => {
       ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 3;
@@ -751,11 +826,14 @@ export class Game {
     const y = v.h * 0.72;
     const pulse = 1 + Math.sin(this.time * 4) * 0.04;
     ctx.save();
+    ctx.globalAlpha = this.firstRun ? Math.max(0, 1 - this.hintFade / 0.4) : 1;
     ctx.translate(v.w / 2, y);
     ctx.scale(pulse, pulse);
     outlinedText(ctx, touch ? 'Drag anywhere to move' : 'WASD / Arrow keys to move', 0, 0, 42, '#fff', INK, 'center');
     ctx.restore();
+    ctx.save(); ctx.globalAlpha = this.firstRun ? Math.max(0, 1 - this.hintFade / 0.4) : 1;
     outlinedText(ctx, 'Your dino attacks by itself. Survive 10 minutes!', v.w / 2, y + 52, 24, '#ffe28a', INK, 'center');
+    ctx.restore();
   }
 
   private drawBanner(ctx: Ctx): void {
@@ -824,9 +902,14 @@ export class Game {
     offers.forEach((o, i) => {
       const r = rects[i];
       const dy = (1 - appear) * (60 + i * 30);
-      const rr = { ...r, y: r.y + dy };
+      const rr = { ...r, x: r.x + (this.banishing && !matchMedia('(prefers-reduced-motion: reduce)').matches ? Math.sin(this.time * 16 + i) * 4 : 0), y: r.y + dy };
       if (this.card(ctx, `offer${i}`, rr, o, land, ready, i)) this.pickOffer(i);
     });
+    if (this.input.p.justUp) this.pressedCard = '';
+    const bottom = Math.max(...rects.map(r => r.y + r.h)) + 28;
+    const bh = Math.max(82, 44 / v.scale), bw = Math.min(260, (v.w - 100) / 2);
+    if (m.rerolls > 0 && this.quietButton(ctx, 'reroll', { x: v.w / 2 - bw - 12, y: bottom, w: bw, h: bh }, 'REROLL (' + m.rerolls + ')', !ready, '#ffe28a')) this.rerollOffers();
+    if (m.banishes > 0 && this.quietButton(ctx, 'banish', { x: v.w / 2 + 12, y: bottom, w: bw, h: bh }, (this.banishing ? 'CANCEL' : 'BANISH') + ' (' + m.banishes + ')', !ready, '#ffe28a')) this.banishing = !this.banishing;
     this.ui.swallow();
   }
 
@@ -836,7 +919,6 @@ export class Game {
     if (ready && p.justDown && over && !this.ui.claimed) { this.ui.claimed = true; this.pressedCard = id; }
     const pressed = p.down && over && this.pressedCard === id;
     const clicked = ready && p.justUp && over && this.pressedCard === id;
-    if (p.justUp) this.pressedCard = '';
 
     const def = o.id === 'heal' ? { name: 'Roast Meat', color: '#e8504a', text: ['Heal 40 health.'] }
       : o.id === 'gold' ? { name: 'Gold Pile', color: '#ffd24a', text: ['+20 coins.'] }
@@ -879,6 +961,15 @@ export class Game {
     }
     y += 38;
     this.wrap(ctx, desc, tx, y, tw, 24, align, '#5a4636');
+    let evolution = '';
+    if (o.id !== 'heal' && o.id !== 'gold') {
+      if (isWeapon(o.id)) evolution = 'Evolves with ' + SKILLS[EVOLUTIONS[o.id].passive].name;
+      else {
+        const weapon = [...this.m!.weapons.keys()].find(w => EVOLUTIONS[w].passive === o.id);
+        if (weapon) evolution = 'Evolves ' + SKILLS[weapon].name;
+      }
+    }
+    if (evolution) text(ctx, evolution, tx, land ? r.h - 62 : r.h - 24, fitSize(ctx, evolution, 19, tw), '#7a5a3a', align);
     if (!pressed && this.keys.size === 0 && !matchMedia('(pointer: coarse)').matches) {
       text(ctx, `[${idx + 1}]`, land ? r.w / 2 : r.w - 34, r.h - 30, 18, '#a08a6a', 'center');
     }
@@ -930,84 +1021,108 @@ export class Game {
     this.ui.swallow();
   }
 
-  private drawResult(ctx: Ctx, m: Model): void {
+  /** Quiet controls retain a full touch target even when only text is visible. */
+  private quietButton(ctx: Ctx, id: string, r: Rect, label: string, disabled = false, color = '#7a5a3a'): boolean {
+    this.ui.claimIfOver(id, r, disabled);
+    const p = this.input.p;
+    const pressed = !disabled && p.down && inside(r, p.x, p.y) && inside(r, p.downX, p.downY);
+    ctx.save();
+    if (pressed) { ctx.translate(r.x + r.w / 2, r.y + r.h / 2); ctx.scale(0.94, 0.94); ctx.translate(-r.x - r.w / 2, -r.y - r.h / 2); ctx.globalAlpha = 0.75; }
+    text(ctx, label, r.x + r.w / 2, r.y + r.h / 2, fitSize(ctx, label, 25, r.w - 20), disabled ? '#a09888' : color, 'center', 700);
+    ctx.restore();
+    return !disabled && !this.busy && !this.poki.adRunning && p.justUp && inside(r, p.x, p.y) && inside(r, p.downX, p.downY);
+  }
+
+  private drawEdgeArrows(ctx: Ctx, m: Model): void {
     const v = this.v;
-    this.ui.scrim(ctx, v.w, v.h);
-    const won = m.status === 'won';
-    const w = Math.min(600, v.w - 50);
-
-    if (this.result === 'revive') {
-      const h = 400;
-      const r: Rect = { x: v.w / 2 - w / 2, y: v.h / 2 - h / 2, w, h };
-      fancyPanel(ctx, r);
-      ribbon(ctx, v.w / 2, r.y - 34, Math.min(440, w - 80), 'KNOCKED OUT', 'red');
-      text(ctx, 'Get back up and keep going?', v.w / 2, r.y + 100, 28, INK, 'center', 700);
-      text(ctx, 'Revive with 60% health and a blast that clears nearby monsters.', v.w / 2, r.y + 140, 19, '#7a5a3a', 'center', 600);
-      // Poki: rewarded button is not green, carries the video icon, and the plain
-      // option next to it is at least as big.
-      const bw = (w - 100 - 20) / 2;
-      const rev: Rect = { x: r.x + 50, y: r.y + 200, w: bw, h: 92 };
-      const no: Rect = { x: r.x + 70 + bw, y: r.y + 200, w: bw, h: 92 };
-      if (this.ui.button('revive', rev, { label: 'REVIVE', sub: 'watch ad', tone: 'blue', subIcon: (c, x, y, s) => this.clapper(c, x, y, s) }, ctx)) {
-        this.busy = true;
-        void this.poki.rewardedBreak((on) => this.audio.setSuspended(on)).then((ok) => {
-          this.busy = false;
-          if (ok && m.revive()) { this.result = null; this.poki.gameplayStart(); this.audio.play('super'); this.fx.shake(0.8, 0.4); }
-        });
-      }
-      if (this.ui.button('norev', no, { label: 'NO THANKS', tone: 'stone' }, ctx)) {
-        this.result = 'summary';
-        this.bankCoins();
-      }
-      this.ui.swallow();
-      return;
-    }
-
-    const h = 520;
-    const r: Rect = { x: v.w / 2 - w / 2, y: v.h / 2 - h / 2 + 20, w, h };
-    fancyPanel(ctx, r);
-    ribbon(ctx, v.w / 2, r.y - 34, Math.min(440, w - 80), won ? 'ZONE CLEAR!' : 'KNOCKED OUT', won ? 'green' : 'red');
-    // stats as type, not boxes
-    const cols = [
-      { label: 'SURVIVED', value: fmtTime(m.time) },
-      { label: 'LEVEL', value: String(m.level) },
-      { label: 'DEFEATED', value: String(m.kills) },
+    const inset = 30, top = v.safe.t + 280, bottom = v.h - v.safe.b - 80;
+    const left = v.safe.l + inset, right = v.w - v.safe.r - inset;
+    const targets = [
+      ...m.enemies.filter(e => !e.dead && (e.def.kind === 'boss' || e.def.kind === 'brute')).map(e => ({ x: e.x, y: e.y, color: e.def.kind === 'boss' ? '#ff625a' : '#ff9a3c' })),
+      ...m.pickups.filter(p => p.kind === 'chest').map(p => ({ x: p.x, y: p.y, color: '#ffd24a' })),
     ];
-    cols.forEach((c, i) => {
-      const cx = r.x + w * (i + 0.5) / 3;
-      text(ctx, c.label, cx, r.y + 92, 18, '#a8702a', 'center', 700);
-      outlinedText(ctx, c.value, cx, r.y + 136, 44, '#fff', INK, 'center');
+    const used: [number, number][] = [];
+    for (const target of targets) {
+      const [sx, sy] = this.w2s(target.x, target.y);
+      if (sx >= 0 && sx <= v.w && sy >= 0 && sy <= v.h) continue;
+      const cx = v.w / 2, cy = (top + bottom) / 2, dx = sx - cx, dy = sy - cy;
+      const k = Math.min(dx > 0 ? (right - cx) / dx : dx < 0 ? (left - cx) / dx : Infinity, dy > 0 ? (bottom - cy) / dy : dy < 0 ? (top - cy) / dy : Infinity);
+      const x = cx + dx * k, y = cy + dy * k;
+      if (used.some(([ux, uy]) => Math.hypot(ux - x, uy - y) < 38)) continue;
+      used.push([x, y]);
+      ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(sy - y, sx - x));
+      ctx.fillStyle = target.color; ctx.strokeStyle = INK; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(16, 0); ctx.lineTo(-12, -11); ctx.lineTo(-6, 0); ctx.lineTo(-12, 11); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+    }
+  }
+
+  private cheapestUpgrade(): number {
+    return Math.min(...CAMP_IDS.filter(id => this.meta.camp[id] < CAMP_MAX).map(id => campCost(id, this.meta.camp[id])));
+  }
+
+  private rewarded(action: () => void): void {
+    if (this.busy || this.poki.adRunning) return;
+    this.busy = true;
+    void this.poki.rewardedBreak(on => this.audio.setSuspended(on)).then(ok => {
+      this.busy = false;
+      if (ok) action(); else this.toastUntil = this.time + 2.5;
     });
-    const best = this.meta.best[m.zone];
-    if (!won && Math.floor(m.time) >= best && best > 0) outlinedText(ctx, 'NEW BEST TIME!', v.w / 2, r.y + 186, 24, '#ffd24a', INK, 'center');
-    else if (won && m.zone + 1 < ZONES.length) text(ctx, `${ZONES[m.zone + 1].name} unlocked!`, v.w / 2, r.y + 186, 22, '#3f8e2e', 'center', 700);
+  }
 
-    const pw = 260;
-    const pr: Rect = { x: v.w / 2 - pw / 2, y: r.y + 216, w: pw, h: 64 };
+  private drawResult(ctx: Ctx, m: Model): void {
+    const v = this.v, won = m.status === 'won', cx = v.w / 2;
+    const w = Math.min(690, v.w - 50), h = 830;
+    const r: Rect = { x: cx - w / 2, y: Math.max(v.safe.t + 55, (v.h - h) / 2 + 20), w, h };
+    this.ui.scrim(ctx, v.w, v.h); fancyPanel(ctx, r);
+    ribbon(ctx, cx, r.y - 34, Math.min(490, w - 60), won ? 'ZONE CLEAR!' : 'KNOCKED OUT', won ? 'green' : 'red');
+    const names: Record<EnemyKind | 'spore', string> = { grub: 'Grub', bat: 'Bat', beetle: 'Beetle', wolf: 'Wolf', shroom: 'Shroom', brute: 'Brute', boss: 'Boss', spore: 'a spore' };
+    const cause = m.lastHitBy;
+    const heading = won ? 'You survived the swarm!' : cause ? 'Knocked out by ' + names[cause] : 'Run ended';
+    text(ctx, heading, cx, r.y + 55, fitSize(ctx, heading, 28, w - 50), INK, 'center', 700);
+    const tip = cause === 'spore' ? 'Spores fly straight — sidestep them' : cause === 'boss' ? 'Bosses charge in a line — move sideways' : this.movedFor < 2 ? 'Keep moving!' : cause === 'wolf' ? 'Wolves dash — keep some space' : cause === 'brute' || cause === 'beetle' ? 'Circle tough enemies and collect amber' : 'Collect amber and choose stronger skills';
+    if (!won) text(ctx, tip, cx, r.y + 92, fitSize(ctx, tip, 23, w - 50), '#7a5a3a', 'center');
+    [{ label: 'SURVIVED', value: fmtTime(m.time) }, { label: 'LEVEL', value: String(m.level) }, { label: 'DEFEATED', value: String(m.kills) }].forEach((col, i) => {
+      const x = r.x + w * (i + 0.5) / 3;
+      text(ctx, col.label, x, r.y + 143, 20, '#a8702a', 'center', 700);
+      outlinedText(ctx, col.value, x, r.y + 183, 43, '#fff', INK, 'center');
+    });
+    if (this.newBest && !won) outlinedText(ctx, 'NEW BEST TIME!', cx, r.y + 230, 25, '#ffd24a', INK, 'center');
+    else if (won && m.zone + 1 < ZONES.length) text(ctx, ZONES[m.zone + 1].name + ' unlocked!', cx, r.y + 230, 24, '#3f8e2e', 'center');
+    const pr: Rect = { x: r.x + 40, y: r.y + 262, w: (w - 100) * 0.55, h: 64 };
     goldPill(ctx, pr);
-    const coin = this.sprites.pickup('coin');
-    this.blit(ctx, coin, pr.x + 50, pr.y + 46, 1.4, 1, 1, 0, 0);
-    outlinedText(ctx, `+${this.banked * (this.doubled ? 2 : 1)}`, pr.x + 80, pr.y + 33, 36, '#fff', '#a8661a', 'left');
-
+    this.blit(ctx, this.sprites.pickup('coin'), pr.x + 34, pr.y + 44, 1.2, 1, 1, 0, 0);
+    const amount = '+' + this.banked * (this.doubled ? 2 : 1);
+    outlinedText(ctx, amount, pr.x + 65, pr.y + 33, fitSize(ctx, amount, 35, pr.w - 85), '#fff', '#a8661a', 'left');
+    const dr: Rect = { x: pr.x + pr.w + 20, y: pr.y - 10, w: w - 80 - pr.w - 20, h: Math.max(84, 44 / v.scale) };
     if (!this.doubled) {
-      const dr: Rect = { x: v.w / 2 - 150, y: r.y + 300, w: 300, h: 70 };
-      if (this.ui.button('double', dr, { label: 'x2 COINS', sub: 'watch ad', tone: 'blue', size: 26, subIcon: (c, x, y, s) => this.clapper(c, x, y, s) }, ctx)) {
-        this.busy = true;
-        void this.poki.rewardedBreak((on) => this.audio.setSuspended(on)).then((ok) => {
-          this.busy = false;
-          if (ok && !this.doubled) { this.doubled = true; this.meta.coins += this.banked; saveMeta(this.meta); this.audio.play('chest'); }
-        });
-      }
+      this.clapper(ctx, dr.x + 18, dr.y + dr.h / 2, 23);
+      if (this.quietButton(ctx, 'double', { ...dr, x: dr.x + 30, w: dr.w - 30 }, 'x2 COINS', this.busy, '#245aa0')) this.rewarded(() => {
+        if (!this.doubled) { this.doubled = true; this.meta.coins += this.banked; saveMeta(this.meta); this.audio.play('chest'); }
+      });
     }
-    const bw = (w - 100 - 20) / 2;
-    if (this.ui.button('camp', { x: r.x + 50, y: r.y + 400, w: bw, h: 86 }, { label: 'CAMP', tone: 'stone' }, ctx)) {
-      this.screen = 'camp';
-      this.m = null;
-    }
-    if (this.ui.button('retry', { x: r.x + 70 + bw, y: r.y + 400, w: bw, h: 86 }, { label: won ? 'NEXT' : 'RETRY', tone: 'gold' }, ctx)) {
+    const cost = this.cheapestUpgrade();
+    const upgrade = Number.isFinite(cost) ? this.meta.coins >= cost ? 'Your next upgrade is ready!' : (cost - this.meta.coins) + ' more coins for your next upgrade' : 'All camp upgrades complete!';
+    text(ctx, upgrade, cx, r.y + 365, fitSize(ctx, upgrade, 23, w - 80), '#7a5a3a', 'center');
+    ctx.fillStyle = '#d8c8a0'; ctx.fillRect(r.x + 40, r.y + 390, w - 80, 4);
+    ctx.fillStyle = '#eaa82a'; ctx.fillRect(r.x + 40, r.y + 390, (w - 80) * (Number.isFinite(cost) ? Math.min(1, this.meta.coins / cost) : 1), 4);
+    this.missionResults.slice(-3).forEach((mission, i) => text(ctx, 'MISSION COMPLETE +' + mission.reward, cx, r.y + 426 + i * 29, 22, '#3f8e2e', 'center', 700));
+    const retry: Rect = { x: r.x + 40, y: r.y + 545, w: w - 80, h: Math.max(104, 44 / v.scale) };
+    ctx.save(); const pulse = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 1 + Math.sin(this.time * 3) * 0.008;
+    ctx.translate(cx, retry.y + retry.h / 2); ctx.scale(pulse, pulse); ctx.translate(-cx, -retry.y - retry.h / 2);
+    const again = this.ui.button('retry', retry, { label: won ? 'NEXT' : 'RETRY', tone: 'gold', disabled: this.busy }, ctx); ctx.restore();
+    const bw = (w - 100) / 2, bh = Math.max(86, 44 / v.scale);
+    const camp: Rect = { x: r.x + 40, y: r.y + 685, w: bw, h: bh };
+    const rev: Rect = { x: camp.x + bw + 20, y: camp.y, w: bw, h: bh };
+    const toCamp = this.meta.coins >= cost
+      ? this.ui.button('camp', camp, { label: 'CAMP', tone: 'stone', disabled: this.busy }, ctx)
+      : this.quietButton(ctx, 'camp', camp, 'Camp', this.busy);
+    if (!won && !m.revived && this.ui.button('revive', rev, { label: 'REVIVE', tone: 'blue', sub: 'watch ad', disabled: this.busy, subIcon: (c, x, y, s) => this.clapper(c, x, y, s) }, ctx)) this.rewarded(() => {
+      if (m.revive()) { this.result = null; this.poki.gameplayStart(); this.audio.play('super'); this.fx.shake(0.8, 0.4); }
+    });
+    if (toCamp) { this.screen = 'camp'; this.m = null; }
+    if (again) {
       if (won && m.zone + 1 < ZONES.length) this.meta.zone = m.zone + 1;
-      saveMeta(this.meta);
-      this.newRun(true);
+      saveMeta(this.meta); this.newRun(m.time >= 20);
     }
     this.ui.swallow();
   }
@@ -1103,6 +1218,19 @@ export class Game {
     if (this.ui.button('tocamp', { x: cx - pw / 2, y: by + 130, w: pw, h: 76 }, {
       label: 'CAMP', sub: `${meta.coins}`, tone: 'stone', subIcon: (c, x, y, sz) => this.blit(c, this.sprites.pickup('coin'), x, y + sz * 0.4, sz / 24, 1, 1, 0, 0),
     }, ctx)) this.screen = 'camp';
+
+    const mx = land ? s.l + 40 : cx - Math.min(640, v.w - 80) / 2;
+    const my = land ? v.h * 0.4 : by + 245;
+    const mw = land ? Math.min(420, cx - 330) : Math.min(640, v.w - 80);
+    text(ctx, 'MISSIONS', mx, my, 24, '#ffe28a', 'left', 700);
+    meta.missions.forEach((mission, i) => {
+      const y = my + 45 + i * 82;
+      const label = missionLabel(mission);
+      outlinedText(ctx, label, mx, y, fitSize(ctx, label, 24, mw), '#fff', INK, 'left');
+      text(ctx, `${mission.progress}/${mission.target}   +${mission.reward} coins`, mx, y + 28, 20, '#ffe28a');
+      ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(mx, y + 49, mw, 3);
+      ctx.fillStyle = '#ffd24a'; ctx.fillRect(mx, y + 49, mw * Math.min(1, mission.progress / mission.target), 3);
+    });
 
     // sound toggle (top-right)
     const sr: Rect = { x: v.w - s.r - 16 - 64, y: s.t + 14, w: 64, h: 64 };

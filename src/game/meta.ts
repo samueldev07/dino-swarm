@@ -2,7 +2,10 @@
 import { loadJSON, saveJSON } from '../engine/storage';
 import { CAMP_IDS, type CampId, SPECIES, type SpeciesId, campCost, CAMP_MAX, ZONES } from './config';
 
+import { freshMissions, loadMissions, type Mission } from './missions';
+
 export interface Meta {
+  missions: Mission[];
   coins: number;
   camp: Record<CampId, number>;
   /** Highest zone index cleared (-1 = none). */
@@ -21,7 +24,7 @@ const VERSION = 1;
 export function freshMeta(): Meta {
   const camp = {} as Record<CampId, number>;
   for (const id of CAMP_IDS) camp[id] = 0;
-  return { coins: 0, camp, cleared: -1, species: 'raptor', zone: 0, sound: true, music: true, runs: 0, best: ZONES.map(() => 0) };
+  return { missions: freshMissions(), coins: 0, camp, cleared: -1, species: 'raptor', zone: 0, sound: true, music: true, runs: 0, best: ZONES.map(() => 0) };
 }
 
 export function loadMeta(): Meta {
@@ -33,6 +36,7 @@ export function loadMeta(): Meta {
   if (!Array.isArray(out.best) || out.best.length !== ZONES.length) out.best = base.best;
   if (!(out.species in SPECIES)) out.species = 'raptor';
   out.zone = Math.max(0, Math.min(out.zone | 0, ZONES.length - 1));
+  out.missions = loadMissions(m.missions);
   return out;
 }
 
