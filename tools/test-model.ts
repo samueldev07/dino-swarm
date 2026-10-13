@@ -3,7 +3,7 @@
  *   node --experimental-strip-types --no-warnings tools/test-model.ts
  */
 import { Model } from '../src/game/model.ts';
-import { xpToNext, WEAPON_IDS, MAX_WEAPONS, TUNING } from '../src/game/config.ts';
+import { xpToNext, WEAPON_IDS, MAX_WEAPONS, TUNING, CAMP } from '../src/game/config.ts';
 
 let fails = 0;
 const ok = (c: boolean, msg: string) => { if (!c) { fails++; console.log('FAIL', msg); } else console.log('ok  ', msg); };
@@ -28,13 +28,13 @@ const fresh = (seed = 1) => { const m = new Model({ species: 'raptor', zone: 0, 
   ok(!m.offers, 'choosing closes the offer');
   ok((m.weapons.get(pick.id as never) ?? m.passive(pick.id as never)) === pick.level, 'the picked skill gets its level');
 }
-{ // evolution at level 8: full heal, more max HP, world holds
+{ // first evolution (TUNING.evolveAt[0]): full heal, more max HP, world holds
   const m = fresh();
   m.hp = 10;
-  let need = 0; for (let l = 1; l < 8; l++) need += xpToNext(l);
+  let need = 0; for (let l = 1; l < TUNING.evolveAt[0]; l++) need += xpToNext(l);
   m.gems.push({ x: m.px, y: m.py, value: need, flying: false, v: 0 });
   m.step(1 / 60);
-  ok(m.form === 1 && m.hp === m.maxHp && m.maxHp === 100 + TUNING.evolveHp, 'level 8 evolves, heals and adds max HP');
+  ok(m.form === 1 && m.hp === m.maxHp && m.maxHp === 100 + TUNING.evolveHp, 'first evolution level evolves, heals and adds max HP');
   ok(m.hold > 0, 'evolution holds the world for the celebration');
 }
 { // contact damage + mercy frames + death
@@ -75,7 +75,7 @@ const fresh = (seed = 1) => { const m = new Model({ species: 'raptor', zone: 0, 
 { // camp upgrades apply
   const m = new Model({ species: 'raptor', zone: 0, camp: { vitality: 2, greed: 1 }, seed: 1 });
   m.coins = 100;
-  ok(m.maxHp === 120 && m.coinsEarned === 110, 'camp vitality and greed apply');
+  ok(m.maxHp === 100 + 2 * CAMP.vitality.step && m.coinsEarned === 110, 'camp vitality and greed apply');
 }
 { // weapon evolution: max weapon + partner passive -> next chest evolves it
   const m = fresh();

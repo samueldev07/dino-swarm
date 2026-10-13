@@ -10,7 +10,7 @@ Chữ trong game bằng tiếng Anh (thị trường Mỹ).
 - Người chơi chỉ **di chuyển**. Khủng long **tự đánh** con quái gần nhất.
 - Quái chết rơi **hổ phách (XP)**. Đầy thanh XP thì lên cấp: game dừng, hiện **3 thẻ kỹ năng**
   để chọn 1 (kỹ năng mới hoặc nâng cấp kỹ năng đang có, tối đa cấp 5).
-- **Tiến hóa** ở cấp 8 và cấp 16: khủng long đổi sang ảnh lớn hơn và mạnh hơn,
+- **Tiến hóa** ở cấp 11 và cấp 20 (chỉnh 13/10 theo phân tích cân bằng): khủng long đổi sang ảnh lớn hơn và mạnh hơn,
   có màn ăn mừng ngắn khoảng 1,2 giây. Đây là "phần thưởng sớm" giữ chân người chơi trong 3 phút đầu.
 - Mỗi vòng dài **10 phút**. Trùm xuất hiện ở phút 3, 6, 9. Sống hết 10 phút là thắng
   (STAGE CLEAR), mở vùng đất tiếp theo.
@@ -66,3 +66,15 @@ Lần tiến hóa đầu tiên rơi vào khoảng phút 2:15–2:40. Muốn th�
 Hiệu năng: 277 quái trên màn hình tốn khoảng 3 ms mỗi khung hình trên máy tính. Bản build nặng 221 KB.
 Các thông số chỉnh so với bản nháp: XP lên cấp rẻ hơn, quái ra dày hơn ngay từ đầu (2,4 con/giây),
 sâu và dơi đánh nhẹ hơn, thời gian miễn sát thương sau khi trúng đòn là 0,5 giây, tầm hút XP 120.
+
+## Số đo sau vòng góp ý 1 (13/10/2026, 8 lượt mỗi kiểu, vùng 1, raptor, chưa nâng cấp ở trại)
+Đã áp dụng: góp ý của agent thiết kế (tiến hóa vũ khí, quái tinh anh, trùm 2/3 có đòn mới, bị vây nhiều thì đau hơn,
+đổi/loại thẻ, thưởng xu cuối trận) và bộ số đã kiểm chứng của agent phân tích cân bằng (`.balance-lab/`).
+| Kiểu người chơi | Sống trung bình | Lượt chơi > 3 phút | Thắng |
+|---|---|---|---|
+| Đứng yên | 2:54 | 88% | 0/8 |
+| Người mới | **5:07** | **100%** | 0/8 |
+| Chơi khá | 8:07 | 100% | 4/8 |
+Tiến hóa lần 1 vào khoảng phút 1:30–3:00 (trung bình khoảng 2:15). Theo agent phân tích cân bằng:
+sau 9–12 lần nâng cấp ở trại thì người chơi khá thắng được phần lớn số lượt.
+Khoảng cách giữa vũ khí mạnh nhất và yếu nhất giảm từ 1,69 lần xuống 1,27 lần.

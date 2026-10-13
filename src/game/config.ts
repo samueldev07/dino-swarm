@@ -19,7 +19,7 @@ export const TUNING = {
   spawnDist: 980,            // just outside the camera on every layout
   despawnDist: 1500,         // stragglers this far away are moved back in front
   maxEnemies: 320,
-  evolveAt: [7, 14],
+  evolveAt: [11, 20],
   evolveHp: 25,              // + max HP per evolution (and a full heal)
   evolveMight: 0.12,
   levelUpHeal: 0,
@@ -28,9 +28,9 @@ export const TUNING = {
   magnetDrop: 0.0025,
   meatHeal: 30,
   /** Global multipliers the director applies over time (see `director`). */
-  hpGrowth: 0.005,           // enemy HP x (1 + t * hpGrowth)
+  hpGrowth: 0.009,           // enemy HP x (1 + t * hpGrowth)
   rateBase: 2.4,             // spawns per second at t = 0
-  rateGrowth: 0.014,         // + per second of run time
+  rateGrowth: 0.016,         // + per second of run time
   rateMax: 8,
   earlySpawnDist: 700,       // the first minute spawns closer: action within ~5 s
   earlyUntil: 60,
@@ -73,7 +73,7 @@ export const ENEMIES: Record<EnemyKind, EnemyDef> = {
   wolf:   { kind: 'wolf',   hp: 24,   speed: 96,  radius: 20, damage: 10, xp: 2,  mass: 1.2, dash: true },
   shroom: { kind: 'shroom', hp: 20,   speed: 60,  radius: 19, damage: 8,  xp: 2,  mass: 1.2, ranged: true },
   brute:  { kind: 'brute',  hp: 260,  speed: 70,  radius: 38, damage: 18, xp: 12, mass: 6 },
-  boss:   { kind: 'boss',   hp: 2600, speed: 82,  radius: 62, damage: 26, xp: 60, mass: 40 },
+  boss:   { kind: 'boss',   hp: 3600, speed: 82,  radius: 62, damage: 26, xp: 60, mass: 40 },
 };
 
 /**
@@ -93,8 +93,8 @@ export const SPAWN_MIX: { t: number; mix: Partial<Record<EnemyKind, number>> }[]
 /** Scripted moments that break the steady stream (seconds). */
 export const EVENTS: { t: number; kind: 'ring' | 'stream' | 'brute'; enemy: EnemyKind; count: number }[] = [
   { t: 75,  kind: 'ring',   enemy: 'grub',   count: 26 },
-  { t: 165, kind: 'brute',  enemy: 'brute',  count: 1 },
   { t: 150, kind: 'stream', enemy: 'bat',    count: 24 },
+  { t: 165, kind: 'brute',  enemy: 'brute',  count: 1 },
   { t: 240, kind: 'brute',  enemy: 'brute',  count: 1 },
   { t: 270, kind: 'ring',   enemy: 'grub',   count: 40 },
   { t: 320, kind: 'brute',  enemy: 'brute',  count: 2 },
@@ -131,47 +131,47 @@ export const MAX_LEVEL = 5;
 export const MAX_WEAPONS = 6;
 
 export const WEAPONS: Record<WeaponId, WeaponLevel[]> = {
-  //            damage  cd    count area
-  bite:      [{ damage: 13, cooldown: 1.05, count: 1, area: 115 },
-              { damage: 17, cooldown: 1.0,  count: 1, area: 125 },
-              { damage: 18, cooldown: 0.95, count: 2, area: 130 },
-              { damage: 24, cooldown: 0.9,  count: 2, area: 140 },
-              { damage: 30, cooldown: 0.8,  count: 2, area: 160 }],
-  spit:      [{ damage: 11, cooldown: 0.95, count: 1, area: 10, pierce: 1 },
-              { damage: 11, cooldown: 0.9,  count: 2, area: 10, pierce: 1 },
-              { damage: 14, cooldown: 0.85, count: 2, area: 11, pierce: 2 },
-              { damage: 14, cooldown: 0.8,  count: 3, area: 12, pierce: 2 },
-              { damage: 19, cooldown: 0.7,  count: 4, area: 13, pierce: 3 }],
-  boomerang: [{ damage: 15, cooldown: 1.7, count: 1, area: 360 },
-              { damage: 19, cooldown: 1.6, count: 1, area: 380 },
-              { damage: 19, cooldown: 1.5, count: 2, area: 400 },
-              { damage: 25, cooldown: 1.4, count: 2, area: 420 },
-              { damage: 30, cooldown: 1.3, count: 3, area: 450 }],
-  orbit:     [{ damage: 9,  cooldown: 0.5, count: 2, area: 92 },
-              { damage: 11, cooldown: 0.5, count: 3, area: 96 },
-              { damage: 13, cooldown: 0.45, count: 3, area: 104 },
-              { damage: 15, cooldown: 0.45, count: 4, area: 110 },
-              { damage: 19, cooldown: 0.4, count: 5, area: 120 }],
-  stomp:     [{ damage: 16, cooldown: 2.6, count: 1, area: 150 },
-              { damage: 20, cooldown: 2.4, count: 1, area: 165 },
-              { damage: 26, cooldown: 2.2, count: 1, area: 180 },
-              { damage: 30, cooldown: 2.0, count: 1, area: 195 },
-              { damage: 40, cooldown: 1.8, count: 1, area: 220 }],
-  meteor:    [{ damage: 32, cooldown: 1.9, count: 1, area: 70 },
-              { damage: 36, cooldown: 2.3, count: 2, area: 75 },
-              { damage: 42, cooldown: 2.2, count: 2, area: 82 },
-              { damage: 46, cooldown: 2.1, count: 3, area: 88 },
-              { damage: 58, cooldown: 1.9, count: 4, area: 96 }],
-  thorns:    [{ damage: 6,  cooldown: 0.34, count: 1, area: 34 },
-              { damage: 8,  cooldown: 0.32, count: 1, area: 37 },
-              { damage: 10, cooldown: 0.3,  count: 1, area: 40 },
-              { damage: 12, cooldown: 0.28, count: 1, area: 44 },
-              { damage: 16, cooldown: 0.25, count: 1, area: 50 }],
-  roar:      [{ damage: 6,  cooldown: 4.2, count: 1, area: 200 },
-              { damage: 8,  cooldown: 4.0, count: 1, area: 220 },
-              { damage: 10, cooldown: 3.7, count: 1, area: 240 },
-              { damage: 12, cooldown: 3.4, count: 1, area: 260 },
-              { damage: 16, cooldown: 3.0, count: 1, area: 290 }],
+  // Tuned 2026-10-13 from the balance analyst's measured diff (.balance-lab/).
+  bite:      [{ damage: 14, cooldown: 1.05, count: 1, area: 115 },
+              { damage: 18, cooldown: 1.0, count: 1, area: 125 },
+              { damage: 20, cooldown: 0.95, count: 2, area: 130 },
+              { damage: 26, cooldown: 0.9, count: 2, area: 140 },
+              { damage: 33, cooldown: 0.8, count: 2, area: 160 }],
+  spit:      [{ damage: 10, cooldown: 1.0, count: 1, area: 10, pierce: 1 },
+              { damage: 11, cooldown: 0.95, count: 1, area: 10, pierce: 1 },
+              { damage: 13, cooldown: 0.9, count: 2, area: 11, pierce: 1 },
+              { damage: 14, cooldown: 0.85, count: 2, area: 12, pierce: 2 },
+              { damage: 16, cooldown: 0.8, count: 3, area: 13, pierce: 2 }],
+  boomerang: [{ damage: 14, cooldown: 1.8, count: 1, area: 360 },
+              { damage: 17, cooldown: 1.7, count: 1, area: 380 },
+              { damage: 17, cooldown: 1.6, count: 2, area: 400 },
+              { damage: 22, cooldown: 1.5, count: 2, area: 420 },
+              { damage: 26, cooldown: 1.4, count: 3, area: 450 }],
+  orbit:     [{ damage: 11, cooldown: 0.5, count: 2, area: 92 },
+              { damage: 13, cooldown: 0.5, count: 3, area: 96 },
+              { damage: 15, cooldown: 0.45, count: 3, area: 104 },
+              { damage: 19, cooldown: 0.45, count: 4, area: 110 },
+              { damage: 24, cooldown: 0.4, count: 5, area: 120 }],
+  stomp:     [{ damage: 17, cooldown: 2.6, count: 1, area: 150 },
+              { damage: 21, cooldown: 2.4, count: 1, area: 165 },
+              { damage: 27, cooldown: 2.2, count: 1, area: 180 },
+              { damage: 32, cooldown: 2.0, count: 1, area: 195 },
+              { damage: 42, cooldown: 1.8, count: 1, area: 220 }],
+  meteor:    [{ damage: 30, cooldown: 2.0, count: 2, area: 80 },
+              { damage: 36, cooldown: 1.9, count: 2, area: 84 },
+              { damage: 42, cooldown: 1.8, count: 3, area: 88 },
+              { damage: 50, cooldown: 1.7, count: 3, area: 92 },
+              { damage: 60, cooldown: 1.6, count: 4, area: 100 }],
+  thorns:    [{ damage: 7, cooldown: 0.34, count: 1, area: 34 },
+              { damage: 9, cooldown: 0.32, count: 1, area: 37 },
+              { damage: 11, cooldown: 0.3, count: 1, area: 40 },
+              { damage: 14, cooldown: 0.28, count: 1, area: 44 },
+              { damage: 18, cooldown: 0.25, count: 1, area: 50 }],
+  roar:      [{ damage: 12, cooldown: 3.8, count: 1, area: 200 },
+              { damage: 15, cooldown: 3.6, count: 1, area: 220 },
+              { damage: 19, cooldown: 3.3, count: 1, area: 240 },
+              { damage: 24, cooldown: 3.0, count: 1, area: 260 },
+              { damage: 30, cooldown: 2.6, count: 1, area: 290 }],
 };
 
 /** How long a thorn patch lasts and how often it bites. */
@@ -182,11 +182,11 @@ export const METEOR_DELAY = 0.65;
 
 export const PASSIVE_STEP: Record<PassiveId, number> = {
   vitality: 20,   // + max HP
-  swift: 0.08,    // + move speed
+  swift: 0.1,     // + move speed
   might: 0.12,    // + damage
   haste: 0.07,    // - cooldown
-  magnet: 0.35,   // + pickup radius
-  regen: 0.6,     // HP per second
+  magnet: 0.2,    // + pickup radius
+  regen: 0.3,     // HP per second
 };
 
 export const SKILLS: Record<SkillId, SkillDef> = {
@@ -256,22 +256,22 @@ export const SPECIES: Record<SpeciesId, Species> = {
   ankylo: { id: 'ankylo', name: 'Ankylo', forms: ['Ankylo', 'Spike Ankylo', 'Fortress'], start: 'stomp',
             hp: 140, speed: 0.9, might: 1.05, blurb: 'Tough and slow. Starts with Quake Stomp.', unlockZone: 0 },
   ptero:  { id: 'ptero', name: 'Ptero', forms: ['Ptero', 'Storm Ptero', 'Sky King'], start: 'spit',
-            hp: 80, speed: 1.15, might: 1, blurb: 'Fast but fragile. Starts with Fire Spit.', unlockZone: 1 },
+            hp: 95, speed: 1.15, might: 1.15, blurb: 'Fast but fragile. Starts with Fire Spit.', unlockZone: 1 },
 };
 export const SPECIES_IDS = Object.keys(SPECIES) as SpeciesId[];
 
 export const ZONES = [
   { name: 'Fern Jungle',   enemyHp: 1,   enemyDmg: 1,   coinMult: 1 },
-  { name: 'Lava Fields',   enemyHp: 1.6, enemyDmg: 1.3, coinMult: 1.5 },
-  { name: 'Frost Peaks',   enemyHp: 2.4, enemyDmg: 1.6, coinMult: 2 },
+  { name: 'Lava Fields',   enemyHp: 1.5, enemyDmg: 1.25, coinMult: 1.5 },
+  { name: 'Frost Peaks',   enemyHp: 2.0, enemyDmg: 1.45, coinMult: 2 },
 ];
 
 export type CampId = 'might' | 'vitality' | 'speed' | 'magnet' | 'greed' | 'armor';
 export const CAMP: Record<CampId, { name: string; text: string; step: number; base: number }> = {
-  might:    { name: 'Might',    text: '+6% damage',        step: 0.06, base: 20 },
-  vitality: { name: 'Vitality', text: '+10 max health',    step: 10,   base: 20 },
-  speed:    { name: 'Speed',    text: '+4% move speed',    step: 0.04, base: 30 },
-  magnet:   { name: 'Magnet',   text: '+15% pickup range', step: 0.15, base: 15 },
+  might:    { name: 'Might',    text: '+8% damage',        step: 0.08, base: 20 },
+  vitality: { name: 'Vitality', text: '+15 max health',    step: 15,   base: 20 },
+  speed:    { name: 'Speed',    text: '+5% move speed',    step: 0.05, base: 30 },
+  magnet:   { name: 'Magnet',   text: '+10% pickup range', step: 0.1,  base: 15 },
   greed:    { name: 'Greed',    text: '+10% coins',        step: 0.1,  base: 25 },
   armor:    { name: 'Armor',    text: '-1 damage taken',   step: 1,    base: 40 },
 };
