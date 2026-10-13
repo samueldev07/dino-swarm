@@ -1,0 +1,70 @@
+{
+ "shots": [
+  {
+   "id": "grok-2-run",
+   "prompt": "Edit the reference image: keep EXACTLY the same character and outfit (same face, eyes, hair with the bone, skin, every armour piece, helmet and cape if present, proportions, line work and painterly colouring). Only change the POSE as described. His hands are EMPTY fists (no weapon, no shield). Full body, plain flat pure white background, no ground, no shadow, no motion lines, no text. Pose: running to the right in mid-stride: front leg reaching forward, back leg pushing off behind, body leaning forward, both arms pumping, face looking right.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-2.jpg"
+    }
+   ]
+  },
+  {
+   "id": "grok-2-raise",
+   "prompt": "Edit the reference image: keep EXACTLY the same character and outfit (same face, eyes, hair with the bone, skin, every armour piece, helmet and cape if present, proportions, line work and painterly colouring). Only change the POSE as described. His hands are EMPTY fists (no weapon, no shield). Full body, plain flat pure white background, no ground, no shadow, no motion lines, no text. Pose: winding up an overhead strike: his RIGHT fist raised high above and slightly behind his head, left arm stretched forward for balance, feet planted wide, fierce grin, facing right.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-2.jpg"
+    }
+   ]
+  },
+  {
+   "id": "grok-2-strike",
+   "prompt": "Edit the reference image: keep EXACTLY the same character and outfit (same face, eyes, hair with the bone, skin, every armour piece, helmet and cape if present, proportions, line work and painterly colouring). Only change the POSE as described. His hands are EMPTY fists (no weapon, no shield). Full body, plain flat pure white background, no ground, no shadow, no motion lines, no text. Pose: end of a powerful overhead strike: lunging forward to the right, his RIGHT fist swung down in front of him at knee height, left arm pulled back, front knee bent, fierce shout.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-2.jpg"
+    }
+   ]
+  },
+  {
+   "id": "grok-3-run",
+   "prompt": "Edit the reference image: keep EXACTLY the same character and outfit (same face, eyes, hair with the bone, skin, every armour piece, helmet and cape if present, proportions, line work and painterly colouring). Only change the POSE as described. His hands are EMPTY fists (no weapon, no shield). Full body, plain flat pure white background, no ground, no shadow, no motion lines, no text. Pose: running to the right in mid-stride: front leg reaching forward, back leg pushing off behind, body leaning forward, both arms pumping, face looking right.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-3.jpg"
+    }
+   ]
+  },
+  {
+   "id": "grok-3-raise",
+   "prompt": "Edit the reference image: keep EXACTLY the same character and outfit (same face, eyes, hair with the bone, skin, every armour piece, helmet and cape if present, proportions, line work and painterly colouring). Only change the POSE as described. His hands are EMPTY fists (no weapon, no shield). Full body, plain flat pure white background, no ground, no shadow, no motion lines, no text. Pose: winding up an overhead strike: his RIGHT fist raised high above and slightly behind his head, left arm stretched forward for balance, feet planted wide, fierce grin, facing right.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-3.jpg"
+    }
+   ]
+  },
+  {
+   "id": "grok-3-strike",
+   "prompt": "Edit the reference image: keep EXACTLY the same character and outfit (same face, eyes, hair with the bone, skin, every armour piece, helmet and cape if present, proportions, line work and painterly colouring). Only change the POSE as described. His hands are EMPTY fists (no weapon, no shield). Full body, plain flat pure white background, no ground, no shadow, no motion lines, no text. Pose: end of a powerful overhead strike: lunging forward to the right, his RIGHT fist swung down in front of him at knee height, left arm pulled back, front knee bent, fierce shout.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-3.jpg"
+    }
+   ]
+  }
+ ]
+}

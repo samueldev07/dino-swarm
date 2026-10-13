@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grok Anim Lab</title>
+<style>
+  body { margin: 0; background: #2a1d16; color: #ffe9a8; font: 600 15px system-ui, sans-serif; }
+  header { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  header b { font-size: 18px; margin-right: 12px; }
+  button { font: 700 14px system-ui; padding: 9px 14px; border-radius: 10px; border: 2px solid #2a1d16;
+    background: #f0c060; color: #2a1d16; cursor: pointer; }
+  button.on { background: #ffb02e; box-shadow: inset 0 -3px 0 #a8661a; }
+  button.ghost { background: #6a5a50; color: #fff; }
+  canvas { display: block; width: 100%; height: calc(100vh - 64px); }
+  .note { opacity: .75; font-weight: 500; margin-left: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <b>Grok — motion test</b>
+  <button data-tier="1" class="on">Tier 1 Wild</button>
+  <button data-tier="2">Tier 2 Hunter</button>
+  <button data-tier="3">Tier 3 Warlord</button>
+  <button id="run">Run</button>
+  <button id="atk">Attack</button>
+  <button id="auto" class="on">Auto demo</button>
+  <button id="up">UPGRADE ▲</button>
+  <button id="flip" class="ghost">Face left/right</button>
+  <span class="note">Big view left · real game size (≈90 px) right</span>
+</header>
+<canvas id="c"></canvas>
+<script>
+// ---------------------------------------------------------------- data
+// Every pose of a tier is a separate image of the SAME character (edited from one base).
+// hand / off = weapon fist / shield fist in that image's pixels; cx = belt centre x;
+// k = scale so every pose has the same body size (measured from the head width).
+const ART = '../../art/caveman-test/';
+const P = (src, hand, off, cx, k, ang) => ({ src, hand, off, cx, k, ang });
+const TIERS = {
+  1: {
+    idle:   P('grok-body-1.png',   [320, 472], [32, 398], 210, 1.0, 25),
+    run:    P('grok-1-run.png',    [485, 350], [60, 420], 230, 0.76, 40),
+    raise:  P('grok-1-raise.png',  [149, 45],  [504, 410], 214, 0.95, -35),
+    strike: P('grok-1-strike.png', [498, 520], [78, 385], 238, 0.84, 115),
+  },
+  2: {
+    idle:   P('grok-body-2.png',   [362, 662], [42, 668],  215, 0.67, 25),
+    run:    P('grok-2-run.png',    [636, 408], [106, 557], 339, 0.65, 40),
+    raise:  P('grok-2-raise.png',  [212, 42],  [667, 556], 307, 0.74, -35),
+    strike: P('grok-2-strike.png', [621, 731], [80, 350],  356, 0.61, 115),
+  },
+  3: {
+    idle:   P('grok-body-3.png',   [508, 556], [188, 588], 320, 0.74, 25),
+    run:    P('grok-3-run.png',    [642, 364], [193, 524], 364, 0.74, 40),
+    raise:  P('grok-3-raise.png',  [158, 139], [699, 391], 367, 0.74, -35),
+    strike: P('grok-3-strike.png', [623, 631], [83, 342],  361, 0.76, 115),
+  },
+};
+const WEAPON = {
+  1: { src: ART + 'weapon-club.png',       grip: [256, 440], len: 0.55 },
+  2: { src: ART + 'weapon-bone-sword.png', grip: [256, 440], len: 0.6 },
+  3: { src: ART + 'weapon-fire-sword.png', grip: [256, 440], len: 0.62 },
+};
+const SHIELD = { src: ART + 'shield-turtle.png', grip: [256, 256], fromTier: 3 };
+
+const load = (src) => { const i = new Image(); i.src = src; return i; };
+for (const t in TIERS) for (const p in TIERS[t]) TIERS[t][p].img = load(TIERS[t][p].src);
+for (const t in WEAPON) WEAPON[t].img = load(WEAPON[t].src);
+SHIELD.img = load(SHIELD.src);
+const ready = (i) => i && i.complete && i.naturalWidth > 0;
+const whiteCache = new Map();
+function whiteOf(im) {
+  if (whiteCache.has(im)) return whiteCache.get(im);
+  const c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
+  const x = c.getContext('2d'); x.drawImage(im, 0, 0);
+  x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+  whiteCache.set(im, c); return c;
+}
+
+// ---------------------------------------------------------------- state
+let tier = 1, running = false, auto = true, facing = 1;
+let atkT = -1, upT = -1, nextTier = 0, phase = 0, t = 0, autoT = 0;
+const sparks = [];
+const $ = (s) => document.querySelector(s);
+document.querySelectorAll('[data-tier]').forEach((b) => b.onclick = () => { tier = +b.dataset.tier; sync(); });
+$('#run').onclick = () => { auto = false; running = !running; sync(); };
+$('#atk').onclick = () => { auto = false; attack(); sync(); };
+$('#auto').onclick = () => { auto = !auto; sync(); };
+$('#up').onclick = () => upgrade();
+$('#flip').onclick = () => facing = -facing;
+function sync() {
+  document.querySelectorAll('[data-tier]').forEach((b) => b.classList.toggle('on', +b.dataset.tier === tier));
+  $('#run').classList.toggle('on', running); $('#auto').classList.toggle('on', auto);
+}
+function attack() { if (atkT < 0 || atkT > 0.3) atkT = 0; }
+function upgrade() { if (upT < 0) { nextTier = tier % 3 + 1; upT = 0; } }
+
+const ease = (k) => 1 - Math.pow(1 - k, 3);
+// attack timeline (s): wind-up 0–0.09 (raise pose), strike 0.09–0.2, hold –0.26, recover –0.36
+const ATK = { up: 0.09, hit: 0.2, hold: 0.26, end: 0.36 };
+
+/** Which pose to show and the weapon angle now. */
+function currentPose() {
+  const T = TIERS[tier];
+  if (atkT >= 0 && T.raise) {
+    if (atkT < ATK.up) return { p: T.raise, ang: T.raise.ang - 20 * (1 - atkT / ATK.up) };
+    if (atkT < ATK.hold) return { p: T.strike, ang: T.strike.ang + 10 * (1 - ease(Math.min(1, (atkT - ATK.up) / 0.06))) };
+    return { p: T.idle, ang: T.idle.ang };
+  }
+  if (running && T.run) {
+    // 2-frame run: contact (run pose) / passing (idle pose), ~6 steps per second
+    const contact = Math.sin(phase) > -0.35;
+    const p = contact ? T.run : T.idle;
+    return { p, ang: p.ang + Math.sin(phase) * 12 };
+  }
+  const p = T.idle;
+  return { p, ang: p.ang + Math.sin(t * 2.6) * 3 };
+}
+
+// ---------------------------------------------------------------- draw
+function drawGrok(ctx, x, y, H) {
+  const { p, ang } = currentPose();
+  if (!ready(p.img)) return;
+  const s = (H / 620) * p.k;                      // 620 = idle body height in px
+  const step = Math.sin(phase);
+  const bob = running ? Math.abs(step) * H * 0.05 : Math.sin(t * 2.6) * H * 0.006;
+  const squash = running ? Math.abs(Math.cos(phase)) * 0.05 : Math.sin(t * 2.6) * 0.012;
+  let lean = running && !(atkT >= 0) ? 0.06 : 0;
+  let lunge = 0;
+  if (atkT >= ATK.up && atkT < ATK.end) lunge = H * 0.05 * (atkT < ATK.hold ? 1 : 1 - (atkT - ATK.hold) / (ATK.end - ATK.hold));
+  let pop = 1;
+  if (upT >= 0) pop = upT < 0.25 ? 1 + 0.18 * ease(upT / 0.25) : 1 + 0.18 * (1 - ease(Math.min(1, (upT - 0.25) / 0.35)));
+  const flash = upT >= 0 && upT < 0.3 ? 1 - upT / 0.3 : (atkT >= ATK.up && atkT < ATK.up + 0.04 ? 0.25 : 0);
+
+  ctx.save();
+  ctx.translate(x + lunge * facing, y);
+  ctx.fillStyle = 'rgba(30,20,10,.22)';
+  ctx.beginPath(); ctx.ellipse(0, 0, H * 0.26, H * 0.06, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.scale(facing * pop, pop);
+  ctx.translate(0, -bob);
+  ctx.rotate(lean);
+  ctx.scale(1 - squash * 0.5, 1 + squash);
+  const im = p.img, ox = -p.cx * s, oy = -im.naturalHeight * s;
+  const at = (q) => [ox + q[0] * s, oy + q[1] * s];
+
+  // slash arc (behind the weapon, in front of the body) during the strike
+  const W = WEAPON[tier];
+  if (atkT >= ATK.up - 0.01 && atkT < ATK.end && TIERS[tier].raise) {
+    const k = Math.min(1, (atkT - ATK.up + 0.01) / (ATK.hit - ATK.up));
+    const fade = atkT < ATK.hold ? 1 : 1 - (atkT - ATK.hold) / (ATK.end - ATK.hold);
+    const cx0 = 0, cy0 = -H * 0.45, R = H * 0.62;
+    const a0 = -Math.PI * 0.85, a1 = a0 + (Math.PI * 1.1) * ease(k);
+    ctx.save();
+    ctx.globalAlpha = 0.85 * fade;
+    // tapered crescent: wide in the middle, pointed tips
+    const n = 24;
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; ctx.lineTo(cx0 + Math.cos(a) * R, cy0 + Math.sin(a) * R); }
+    for (let i = n; i >= 0; i--) {
+      const a = a0 + (a1 - a0) * i / n, w = Math.sin(Math.PI * i / n) * H * 0.09;
+      ctx.lineTo(cx0 + Math.cos(a) * (R - w), cy0 + Math.sin(a) * (R - w));
+    }
+    ctx.closePath();
+    const g = ctx.createLinearGradient(-R, 0, R, 0);
+    g.addColorStop(0, 'rgba(255,176,74,.0)'); g.addColorStop(1, '#fff6e0');
+    ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,122,44,.9)'; ctx.lineWidth = Math.max(1.5, H * 0.008); ctx.stroke();
+    ctx.restore();
+  }
+
+  // the shield sits behind the body when the off arm is pulled back (strike), in front otherwise
+  const shieldBehind = p === TIERS[tier].strike;
+  const drawShield = () => {
+    if (tier < SHIELD.fromTier || !ready(SHIELD.img)) return;
+    const [sx, sy] = at(p.off), ss = (H * 0.4) / 300;
+    ctx.drawImage(SHIELD.img, sx - SHIELD.grip[0] * ss, sy - SHIELD.grip[1] * ss, SHIELD.img.naturalWidth * ss, SHIELD.img.naturalHeight * ss);
+  };
+  if (shieldBehind) drawShield();
+  ctx.drawImage(im, ox, oy, im.naturalWidth * s, im.naturalHeight * s);
+  if (flash > 0) { ctx.globalAlpha = flash; ctx.drawImage(whiteOf(im), ox, oy, im.naturalWidth * s, im.naturalHeight * s); ctx.globalAlpha = 1; }
+
+  // weapon on the weapon fist
+  if (ready(W.img)) {
+    const [hx, hy] = at(p.hand);
+    const ws = (H * W.len) / 360;
+    ctx.save(); ctx.translate(hx, hy); ctx.rotate(ang * Math.PI / 180);
+    ctx.drawImage(W.img, -W.grip[0] * ws, -W.grip[1] * ws, W.img.naturalWidth * ws, W.img.naturalHeight * ws);
+    ctx.restore();
+  }
+  if (!shieldBehind) drawShield();
+  ctx.restore();
+}
+
+// ---------------------------------------------------------------- loop
+const cv = $('#c'), ctx = cv.getContext('2d');
+function resize() { const d = devicePixelRatio || 1; cv.width = cv.clientWidth * d; cv.height = cv.clientHeight * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
+addEventListener('resize', resize); resize();
+let last = performance.now();
+function tick(dt) {
+  t += dt;
+  if (auto) {
+    const before = autoT; autoT += dt;
+    running = autoT % 7 > 1.5;
+    if (running && Math.floor(autoT / 0.8) !== Math.floor(before / 0.8)) attack();
+    if (Math.floor(autoT / 7) !== Math.floor(before / 7)) upgrade();
+  }
+  if (running) phase += dt * Math.PI * 2 * 3;
+  if (atkT >= 0) { atkT += dt; if (atkT > ATK.end) atkT = -1; }
+  if (upT >= 0) {
+    const b = upT; upT += dt;
+    if (b < 0.25 && upT >= 0.25) {
+      tier = nextTier; sync();
+      for (let i = 0; i < 26; i++) sparks.push({ a: Math.random() * 6.28, r: 0, v: 160 + Math.random() * 220, life: 0.7 });
+    }
+    if (upT > 0.7) upT = -1;
+  }
+}
+function render() {
+  const W = cv.clientWidth, H = cv.clientHeight;
+  ctx.fillStyle = '#7da05a'; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#6e924e';
+  for (let i = 0; i < 40; i++) { const gx = ((i * 97 - (running ? t * 160 : 0)) % (W + 40) + W + 40) % (W + 40) - 20; ctx.fillRect(gx, H * 0.84 + (i % 4) * 12, 10, 3); }
+  const bigH = Math.min(H * 0.6, W * 0.4), bx = W * 0.36, by = H * 0.84;
+  drawGrok(ctx, bx, by, bigH);
+  for (let i = sparks.length - 1; i >= 0; i--) {
+    const p = sparks[i]; p.life -= 1 / 60; p.r += p.v / 60; if (p.life <= 0) { sparks.splice(i, 1); continue; }
+    ctx.fillStyle = `rgba(255,220,90,${p.life / 0.7})`;
+    ctx.beginPath(); ctx.arc(bx + Math.cos(p.a) * p.r, by - bigH * 0.5 + Math.sin(p.a) * p.r, 5, 0, 6.28); ctx.fill();
+  }
+  const gx = W * 0.8, gy = H * 0.58;
+  ctx.fillStyle = 'rgba(0,0,0,.12)'; ctx.fillRect(gx - 120, gy - 140, 240, 190);
+  drawGrok(ctx, gx, gy, 90);
+  ctx.fillStyle = '#2a1d16'; ctx.font = '700 14px system-ui'; ctx.textAlign = 'center';
+  ctx.fillText('in-game size (90 px)', gx, gy + 36);
+  ctx.textAlign = 'left';
+  ctx.fillText(`Tier ${tier} · ${running ? 'run' : 'idle'}${atkT >= 0 ? ' · attack' : ''}`, 16, 26);
+}
+function frame(now) { const dt = Math.min(0.05, (now - last) / 1000); last = now; tick(dt); render(); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

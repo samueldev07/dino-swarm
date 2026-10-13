@@ -1,0 +1,46 @@
+{
+ "shots": [
+  {
+   "id": "grok-body-1",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character: same face, same eyes and grin, same messy hair with the bone, same skin tone, same body proportions, same pose, same size and same position in the frame, same line work and painterly shading. Match the art style of the second reference image. Full body, plain flat pure white background, no ground, no shadow, no text. His hands are EMPTY: no club, no weapon, nothing in his hands; the right hand is a relaxed loosely closed fist beside the hip. Outfit: leopard-print fur loincloth, bare hairy chest, barefoot.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/grok-t1-idle.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/style-test/mock-gameplay-caveman-armored.png"
+    }
+   ]
+  },
+  {
+   "id": "grok-body-2",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character: same face, same eyes and grin, same messy hair with the bone, same skin tone, same body proportions, same pose, same size and same position in the frame, same line work and painterly shading. Match the art style of the second reference image. Full body, plain flat pure white background, no ground, no shadow, no text. His hands are EMPTY: no club, no weapon, nothing in his hands; the right hand is a relaxed loosely closed fist beside the hip. Outfit upgrade: keep the leopard loincloth and add a curved bone ribcage chest armour strapped over his chest, one bone shoulder pad on his left shoulder, brown leather wrist wraps and fur-trimmed boots.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/grok-t1-idle.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/style-test/mock-gameplay-caveman-armored.png"
+    }
+   ]
+  },
+  {
+   "id": "grok-body-3",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character: same face, same eyes and grin, same messy hair with the bone, same skin tone, same body proportions, same pose, same size and same position in the frame, same line work and painterly shading. Match the art style of the second reference image. Full body, plain flat pure white background, no ground, no shadow, no text. His hands are EMPTY: no club, no weapon, nothing in his hands; the right hand is a relaxed loosely closed fist beside the hip. Outfit upgrade: everything from a bone ribcage chest armour, bone shoulder pad, wrist wraps and fur boots, PLUS a dinosaur-skull helmet worn on his head (his face stays fully visible under the skull's upper jaw) and a short ragged red cape.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/grok-t1-idle.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/style-test/mock-gameplay-caveman-armored.png"
+    }
+   ]
+  }
+ ]
+}

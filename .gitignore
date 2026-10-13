@@ -4,3 +4,4 @@ dist/
 .old/
 .balance-lab/
 *.zip
+tools/anim-lab/raw/
