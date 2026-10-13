@@ -276,6 +276,12 @@ export const ZONES = [
   { name: 'Frostfang Hills',   enemyHp: 2.0, enemyDmg: 1.45, coinMult: 2 },
 ];
 
+/** What each enemy role is called in each zone (rules stay the same; art and names change). */
+export const ENEMY_NAMES: Record<EnemyKind | 'spore', string>[] = [
+  { grub: 'a Mushroom Gnome', bat: 'a Cave Bat', beetle: 'an Orc Shieldbearer', wolf: 'a Boar Rider', shroom: 'a Torch Goblin', brute: 'a Forest Troll', boss: 'the Ogre Chief', spore: 'a burning torch' },
+  { grub: 'a Froglet', bat: 'an Ember Moth', beetle: 'a Frogman Guard', wolf: 'a Toad Rider', shroom: 'an Ember Imp', brute: 'a Mud Troll', boss: 'the Iron Orc Warlord', spore: 'a burning coal' },
+];
+
 export type CampId = 'might' | 'vitality' | 'speed' | 'magnet' | 'greed' | 'armor';
 export const CAMP: Record<CampId, { name: string; text: string; step: number; base: number }> = {
   might:    { name: 'Might',    text: '+8% damage',        step: 0.08, base: 20 },

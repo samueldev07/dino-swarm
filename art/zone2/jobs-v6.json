@@ -1,0 +1,37 @@
+{
+ "shots": [
+  {
+   "id": "v6-brute-bogtroll",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, round white eyes with tiny pupils, serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. IMPORTANT: big simple readable shapes with FEW details - no dripping, no small leaves, no loose bits, no specks, no tiny decorations. Change ONLY the character into: a BOG TROLL: a huge hunched troll with smooth dull olive-grey skin, a big round belly, a simple patched loincloth and one plain rope belt, carrying a big plain wooden club over the shoulder. Clean simple silhouette.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v6-brute-turtle",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, round white eyes with tiny pupils, serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. IMPORTANT: big simple readable shapes with FEW details - no dripping, no small leaves, no loose bits, no specks, no tiny decorations. Change ONLY the character into: a GIANT TURTLE BRUTE: a huge upright walking snapping turtle with a big plain dark green domed shell on its back, thick limbs, a hooked beak, a simple patched leather strap across the chest, huge fists. Clean simple silhouette.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v6-brute-ogrefrog",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, round white eyes with tiny pupils, serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. IMPORTANT: big simple readable shapes with FEW details - no dripping, no small leaves, no loose bits, no specks, no tiny decorations. Change ONLY the character into: a GIANT BULLFROG BRUTE: a huge fat upright bullfrog with plain dull green skin and a pale belly, a wide flat mouth, a simple rusty iron collar, and huge webbed fists. Clean simple silhouette.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    }
+   ]
+  }
+ ]
+}

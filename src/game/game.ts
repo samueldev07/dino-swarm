@@ -9,7 +9,7 @@ import type { Audio } from '../engine/audio';
 import type { Poki } from '../engine/poki';
 import { Model, type GameEvent, type Offer, type Enemy } from './model';
 import {
-  SKILLS, SPECIES, SPECIES_IDS, ZONES, CAMP, CAMP_IDS, CAMP_MAX, campCost, MAX_LEVEL, METEOR_DELAY,
+  SKILLS, SPECIES, SPECIES_IDS, ZONES, ENEMY_NAMES, CAMP, CAMP_IDS, CAMP_MAX, campCost, MAX_LEVEL, METEOR_DELAY,
   EVOLUTIONS, isWeapon,
   type SkillId, type CampId, type EnemyKind,
 } from './config';
@@ -125,6 +125,18 @@ export class Game {
     grub: new Clip('anim/gnome/', 150), bat: new Clip('anim/bat/', 140), wolf: new Clip('anim/boarorc/', 220), beetle: new Clip('anim/orc/', 180),
     shroom: new Clip('anim/goblin/', 170), brute: new Clip('anim/troll/', 300), boss: new Clip('anim/ogre/', 400),
   };
+  /** Per-zone enemy art, loaded only when that zone is first played (zone 0 above loads at boot). */
+  private zoneClips: Partial<Record<EnemyKind, Clip>>[] = [this.clips];
+  private clipsFor(zone: number): Partial<Record<EnemyKind, Clip>> {
+    if (!this.zoneClips[zone]) {
+      this.zoneClips[zone] = zone === 1 ? {
+        grub: new Clip('anim/z2-froglet/', 150), bat: new Clip('anim/z2-moth/', 140), wolf: new Clip('anim/z2-toadrider/', 220),
+        beetle: new Clip('anim/z2-frogman/', 180), shroom: new Clip('anim/z2-imp/', 170),
+        boss: new Clip('anim/z2-orcboss/', 400),
+      } : this.clips;
+    }
+    return this.zoneClips[zone];
+  }
 
   constructor(
     stage: Stage, private input: Input, private audio: Audio, private sprites: Sprites, private poki: Poki,
@@ -793,7 +805,7 @@ export class Game {
     let sx = 1 + Math.sin(walk * 2) * 0.04, sy = 1 - Math.sin(walk * 2) * 0.04;
     if (e.mode === 1) { x += Math.sin(this.time * 70) * 3; sx = 1.12; sy = 0.88; }
     if (e.stun > 0) y += 0;
-    const clip = this.clips[e.def.kind];
+    const clip = this.clipsFor(this.m!.zone)[e.def.kind] ?? this.clips[e.def.kind];
     const flash = e.flash > 0 ? e.flash * 8 : e.mode === 1 ? 0.35 : 0;
     if (clip?.ready) {
       // The loop already carries the motion: no code bob, only the wind-up shake/squash.
@@ -1611,12 +1623,12 @@ export class Game {
     let y = r.y + 70;
 
     // cause + one tip, as type (no boxes)
-    const names: Record<EnemyKind | 'spore', string> = { grub: 'a Mushroom Gnome', bat: 'a Cave Bat', beetle: 'an Orc Shieldbearer', wolf: 'a Boar Rider', shroom: 'a Torch Goblin', brute: 'a Forest Troll', boss: 'the Ogre Chief', spore: 'a burning torch' };
+    const names = ENEMY_NAMES[Math.min(m.zone, ENEMY_NAMES.length - 1)];
     const cause = m.lastHitBy;
     const heading = won ? 'You survived the swarm!' : cause ? 'Knocked out by ' + names[cause] : 'Run ended';
     text(ctx, heading, cx, y, fitSize(ctx, heading, 30, w - 70), INKS, 'center', 700);
     if (!won) {
-      const tip = cause === 'spore' ? 'Torches fly straight. Sidestep them.' : cause === 'boss' ? 'The Ogre charges in a line. Step aside.' : this.movedFor < 2 ? 'Keep moving!' : cause === 'wolf' ? 'Boar riders dash. Keep some space.' : cause === 'brute' || cause === 'beetle' ? 'Circle big enemies and keep collecting amber.' : 'Collect amber and pick stronger skills.';
+      const tip = cause === 'spore' ? 'Thrown fire flies straight. Sidestep it.' : cause === 'boss' ? 'The boss charges in a line. Step aside.' : this.movedFor < 2 ? 'Keep moving!' : cause === 'wolf' ? 'Riders dash at you. Keep some space.' : cause === 'brute' || cause === 'beetle' ? 'Circle big enemies and keep collecting amber.' : 'Collect amber and pick stronger skills.';
       ctx.font = `italic 600 ${fitSize(ctx, tip, 22, w - 70)}px "Alegreya", Georgia, serif`;
       ctx.fillStyle = SOFT; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(tip, cx, y + 36);
     }
@@ -1721,6 +1733,7 @@ export class Game {
   private pressedCard = '';
 
   private drawMenu(ctx: Ctx): void {
+    this.clipsFor(this.meta.zone);  // start loading the chosen zone's enemies while the player is still on the menu
     const v = this.v;
     const meta = this.meta;
     // living backdrop: slow-scrolling ground
