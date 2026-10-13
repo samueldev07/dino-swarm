@@ -14,6 +14,7 @@ import {
   type SkillId, type CampId, type EnemyKind,
 } from './config';
 import { Sprites, type Sprite } from './sprites';
+import { Hero } from './hero';
 import { Fx } from './fx';
 import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar } from './ui';
 import { INK, fontFor, rrect } from './draw';
@@ -81,6 +82,8 @@ export class Game {
   private banked = 0;
   private doubled = false;
   private ground: CanvasPattern[] = [];
+  /** Test hero art (caveman Grok, tier 1); the old dino draws until it has loaded. */
+  private hero = new Hero('hero/grok-1/');
 
   constructor(
     stage: Stage, private input: Input, private audio: Audio, private sprites: Sprites, private poki: Poki,
@@ -268,6 +271,7 @@ export class Game {
 
     const fdt = m.hold > 0 ? dt * 0.35 : dt;
     this.fx.update(fdt);
+    this.hero.update(fdt, Math.hypot(m.mx, m.my) > 0.1 && m.status === 'play');
     for (let i = this.dying.length - 1; i >= 0; i--) {
       this.dying[i].t += dt;
       if (this.dying[i].t > 0.22) this.dying.splice(i, 1);
@@ -350,7 +354,7 @@ export class Game {
       case 'fire':
         if (e.w === 'stomp') { a.play('thud'); this.fx.burst(m.px, m.py, '#c8a070', 10, 260); }
         else if (e.w === 'roar') a.play('combo');
-        else if (e.w === 'bite') a.play('cast');
+        else if (e.w === 'bite') { a.play('cast'); this.hero.attack(); }
         break;
       case 'meteor':
         a.play('thud');
@@ -608,9 +612,13 @@ export class Game {
     const flip = m.faceX < -0.1 ? -1 : 1;
     const blink = m.invuln > 0 && m.status === 'play' && Math.floor(this.time * 18) % 2 === 0;
     const evo = this.evolveT > 0 ? 1 + Math.sin((1.3 - this.evolveT) * 14) * 0.08 * this.evolveT : 1;
-    ctx.globalAlpha = blink ? 0.55 : 1;
-    this.blit(ctx, s, m.px, m.py - bob, sc * evo, 1 - sq, 1 + sq, moving ? m.mx * 0.08 * flip : 0, this.evolveT > 0.9 ? 1 : 0, flip);
-    ctx.globalAlpha = 1;
+    if (this.hero.ready) {
+      this.hero.draw(ctx, m.px, m.py, pr * 4.4 * evo, flip, moving, this.evolveT > 0.9 ? 1 : 0, blink ? 0.55 : 1);
+    } else {
+      ctx.globalAlpha = blink ? 0.55 : 1;
+      this.blit(ctx, s, m.px, m.py - bob, sc * evo, 1 - sq, 1 + sq, moving ? m.mx * 0.08 * flip : 0, this.evolveT > 0.9 ? 1 : 0, flip);
+      ctx.globalAlpha = 1;
+    }
     // HP bar under the feet (green: never shares a hue with enemy bars)
     const w = 64;
     const r: Rect = { x: m.px - w / 2, y: m.py + 14, w, h: 9 };
