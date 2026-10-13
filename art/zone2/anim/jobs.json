@@ -1,0 +1,74 @@
+{
+ "shots": [
+  {
+   "id": "z2-froglet",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-froglet.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It waddles forward IN PLACE toward the right on its short legs, hood flapping, little stick bobbing, grumpy face. Smooth seamless loop."
+  },
+  {
+   "id": "z2-moth",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-moth.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It hovers in place flapping its ragged wings up and down in a smooth repeating loop, body bobbing slightly, antennae twitching. Smooth seamless loop."
+  },
+  {
+   "id": "z2-frogman",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-frogman.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It marches forward IN PLACE toward the right with heavy steps, the wooden door shield held in front, club swinging slightly, stern face. Smooth seamless loop."
+  },
+  {
+   "id": "z2-toadrider",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-toadrider.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. The toad hops forward IN PLACE toward the right in a fast repeating hopping gallop, the goblin rider bouncing on its back holding the spear forward. Smooth seamless loop."
+  },
+  {
+   "id": "z2-imp",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-imp.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It walks forward IN PLACE toward the right with quick light steps, holding the glowing ember coal up, the coal flickering. Smooth seamless loop."
+  },
+  {
+   "id": "z2-mudtroll",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-mudtroll.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It walks forward IN PLACE toward the right with slow heavy steps, dragging the rotten log, mud dripping, body swaying. Smooth seamless loop."
+  },
+  {
+   "id": "z2-orcboss",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-orcboss.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It walks forward IN PLACE toward the right with slow heavy armoured steps, the big cleaver-axe swinging slightly, shoulders rolling, angry face. Smooth seamless loop."
+  }
+ ]
+}

@@ -1,0 +1,157 @@
+{
+ "shots": [
+  {
+   "id": "v2-swarm-rat",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: a MARSH RAT: a small scruffy brown water rat standing hunched on its hind legs, long bald tail, big ears, tiny claws. Small swarm enemy, same size as the mushroom gnome reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-swarm-newt",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: an EMBER NEWT: a small stubby dark-brown salamander standing on four short legs with a few glowing ember-orange spots on its back, wide flat head. Small swarm enemy, same size as the mushroom gnome reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-tank-turtle",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: a SNAPPING TURTLE warrior: a stocky upright turtle walking on two legs with a thick ridged dark mossy shell on its back and a hooked beak, holding a heavy flat river stone in front of it like a shield. Tanky enemy, same size as the orc shieldbearer reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-tank-crab",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: an ARMORED CRAYFISH: a big muted rust-red crayfish standing upright on its back legs, heavy segmented armour shell, one huge raised claw held in front like a shield and one small claw. Tanky enemy, same size as the orc shieldbearer reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-ranged-imp",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: an EMBER IMP: a small skinny charcoal-grey imp with stubby horns and a thin tail, holding a glowing orange ember coal in one raised hand ready to throw it. Ranged thrower enemy, same size as the torch goblin reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-ranged-frog",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: a SPITTER FROG: a lanky dull-green frog standing upright on long legs, cheeks puffed full, a small ember-orange glob dripping from its wide mouth (it spits fire globs). Ranged enemy, same size as the torch goblin reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-boss-hag",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: THE BOG HAG (zone boss): a giant hunched old swamp witch with long grey-green hair full of reeds, a huge hooked nose, ragged dark shawl, carrying a big black iron cauldron on her back that leaks ember-orange smoke, gnarled walking staff. Huge, same size class as the ogre chief reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-boss-wyrm",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: THE PEAT WYRM (zone boss): a huge thick serpent-like marsh creature made of dark peat with glowing ember-orange cracks along its back, small stubby front legs, a heavy blunt head with a wide jaw and small angry eyes, rising up and coiled. Huge, same size class as the ogre chief reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "v2-boss-golem",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture, worn look, big head, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Clean and readable silhouette, NOT dirty or slimy-looking. Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, low saturation. Creature: THE REED GIANT (zone boss): a towering hunched giant woven from bundles of dry reeds and mud, tied with rope, a cracked old cart wheel on its back, ember-orange glowing eyes in a mask-like head, huge fists. Huge, same size class as the ogre chief reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/m-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  }
+ ]
+}

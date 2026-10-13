@@ -88,6 +88,8 @@ export class Game {
   }
   private banner: Banner | null = null;
   private bossesDown = 0;
+  private trayRight = 0;
+  private trayBottom = 0;
   private offersAt = 0;
   private hurtT = 0;
   private evolveT = 0;
@@ -505,7 +507,7 @@ export class Game {
     else if (this.result) this.drawResult(ctx, m);
     else if (this.busy) this.ui.scrim(ctx, v.w, v.h);
 
-    if (this.time < this.toastUntil) outlinedText(ctx, 'No ad available right now', v.w / 2, v.safe.t + 230, fitSize(ctx, 'No ad available right now', 28, v.w - 60), '#f6ead0', INK, 'center');
+    if (this.time < this.toastUntil) outlinedText(ctx, 'No ad available right now', v.w / 2, v.safe.t + 300, fitSize(ctx, 'No ad available right now', 28, v.w - 60), '#f6ead0', INK, 'center');
     // Joystick starts on any press no button claimed.
     const p = this.input.p;
     if (p.justDown && !this.ui.claimed && !m.offers && !this.paused && !this.result && !this.busy && !this.poki.adRunning) {
@@ -1191,10 +1193,11 @@ export class Game {
     // pause
     const pauseImg = this.sprites.image('hud-pause');
     if (pauseImg) {
-      this.ui.claimIfOver('pause', pauseR);
+      const hit = this.touchRect(pauseR);
+      this.ui.claimIfOver('pause', hit);
       const p = this.input.p;
       ctx.drawImage(pauseImg, pauseR.x, pauseR.y, pauseR.w, pauseR.h);
-      if (p.justUp && inside(pauseR, p.x, p.y) && inside(pauseR, p.downX, p.downY)) this.pause();
+      if (p.justUp && inside(hit, p.x, p.y) && inside(hit, p.downX, p.downY)) this.pause();
     } else if (this.ui.iconButton('pause', pauseR, ctx, () => {
       ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 3;
       for (const dx of [-9, 5]) { rrect(ctx, pauseR.x + 32 + dx, pauseR.y + 18, 9, 28, 3); ctx.fill(); ctx.stroke(); }
@@ -1226,9 +1229,14 @@ export class Game {
     // owned skills (left column)
     let ix = left, iy = top + 66;
     const all: [SkillId, number][] = [...m.weapons, ...m.passives];
+    // Columns that fit left of the clock: on a narrow portrait screen 5 columns ran under the timer and the boss bar.
+    const S = 60, perRow = Math.max(3, Math.min(5, Math.floor((v.w / 2 - 100 - left) / (S + 8))));
+    const trayBottom = iy + Math.ceil(all.length / perRow) * (S + 16);
+    this.trayRight = left + Math.min(all.length, perRow) * (S + 8);
+    this.trayBottom = all.length ? trayBottom : 0;
     all.forEach(([id, lv], i) => {
       // Owned skills: big enough to read at a glance (42 px read as specks/glitches), level pips under.
-      const S = 60, col = i % 5, row = Math.floor(i / 5);
+      const col = i % perRow, row = Math.floor(i / perRow);
       const x = ix + col * (S + 8), y = iy + row * (S + 16);
       const ic = this.sprites.icon(id, SKILLS[id].color);
       ctx.drawImage(ic.img, x, y, S, S);
@@ -1244,7 +1252,8 @@ export class Game {
     // boss bar
     if (m.boss) {
       const bw = Math.min(560, v.w * 0.62);
-      const br: Rect = { x: v.w / 2 - bw / 2, y: ty + 40, w: bw, h: 16 };
+      const overlaps = v.w / 2 - bw / 2 < this.trayRight + 10;
+      const br: Rect = { x: v.w / 2 - bw / 2, y: overlaps ? Math.max(ty + 40, this.trayBottom + 24) : ty + 40, w: bw, h: 16 };
       outlinedText(ctx, 'BOSS', v.w / 2, br.y - 2, 20, '#ff8a6b', INK, 'center');
       ctx.fillStyle = INK; rrect(ctx, br.x - 3, br.y + 10 - 3, br.w + 6, br.h + 6, 10); ctx.fill();
       ctx.fillStyle = '#3e2822'; rrect(ctx, br.x, br.y + 10, br.w, br.h, 8); ctx.fill();
@@ -1283,7 +1292,8 @@ export class Game {
     const k = b.t;
     const a = k < 0.2 ? k / 0.2 : k > b.len - 0.4 ? (b.len - k) / 0.4 : 1;
     const sc = k < 0.2 ? 0.7 + 0.3 * (k / 0.2) + Math.sin(k / 0.2 * Math.PI) * 0.12 : 1;
-    const y = v.safe.t + (this.m?.boss ? 230 : 190);
+    // below the skill tray (and the boss bar under it) when the tray is tall on a narrow screen
+    const y = Math.max(v.safe.t + (this.m?.boss ? 230 : 190), this.trayRight > v.w / 2 - 300 ? this.trayBottom + (this.m?.boss ? 110 : 56) : 0);
     ctx.save();
     ctx.globalAlpha = Math.max(0, a);
     ctx.translate(v.w / 2, y);
@@ -1336,7 +1346,7 @@ export class Game {
       const total = n * cw + (n - 1) * 36;
       for (let i = 0; i < n; i++) rects.push({ x: v.w / 2 - total / 2 + i * (cw + 36), y: v.safe.t + 210, w: cw, h: ch });
     } else {
-      const cw = Math.min(640, v.w - 60), ch = 190;
+      const cw = Math.min(640, v.w - 60), ch = 206;
       const total = n * ch + (n - 1) * 22;
       for (let i = 0; i < n; i++) rects.push({ x: v.w / 2 - cw / 2, y: v.h / 2 - total / 2 + 80 + i * (ch + 22), w: cw, h: ch });
     }
@@ -1417,7 +1427,7 @@ export class Game {
     ctx.strokeStyle = 'rgba(90,70,54,.35)'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(tx - (land ? tw * 0.3 : 0), y); ctx.lineTo(tx + (land ? tw * 0.3 : tw * 0.6), y + 1); ctx.stroke();
     y += 26;
-    this.wrapBalanced(ctx, desc, tx, y, tw, 23, align, '#4a3a2c');
+    const lastY = this.wrapBalanced(ctx, desc, tx, y, tw, 23, align, '#4a3a2c');
     let evolution = '';
     if (o.id !== 'heal' && o.id !== 'gold') {
       if (isWeapon(o.id)) evolution = 'Evolves with ' + SKILLS[EVOLUTIONS[o.id].passive].name;
@@ -1427,7 +1437,8 @@ export class Game {
       }
     }
     if (evolution) {
-      const ey = land ? r.h - 56 : r.h - 30;
+      // never on top of the description: below its last line when it runs long
+      const ey = Math.max(lastY + 28, land ? r.h - 56 : r.h - 30);
       ctx.font = `italic 600 ${fitSize(ctx, evolution, 18, tw)}px "Alegreya", Georgia, serif`;
       ctx.fillStyle = '#7a5a3a'; ctx.textAlign = align; ctx.textBaseline = 'middle';
       ctx.fillText(evolution, tx, ey);
@@ -1437,7 +1448,7 @@ export class Game {
   }
 
   /** Word wrap that splits lines evenly (no single orphan word on the last line). */
-  private wrapBalanced(ctx: Ctx, str: string, x: number, y: number, maxW: number, size: number, align: CanvasTextAlign, color: string): void {
+  private wrapBalanced(ctx: Ctx, str: string, x: number, y: number, maxW: number, size: number, align: CanvasTextAlign, color: string): number {
     ctx.font = fontFor(size, 600);
     const full = ctx.measureText(str).width;
     const lines = Math.max(1, Math.ceil(full / maxW));
@@ -1448,7 +1459,7 @@ export class Game {
       for (let i = 0; i < 12; i++) { const mid = (lo + hi) / 2; if (this.countLines(ctx, str, mid) > lines) lo = mid; else hi = mid; }
       w = hi + 1;
     }
-    this.wrap(ctx, str, x, y, w, size, align, color);
+    return this.wrap(ctx, str, x, y, w, size, align, color);
   }
 
   private countLines(ctx: Ctx, str: string, maxW: number): number {
@@ -1460,7 +1471,7 @@ export class Game {
     return n;
   }
 
-  private wrap(ctx: Ctx, str: string, x: number, y: number, maxW: number, size: number, align: CanvasTextAlign, color: string): void {
+  private wrap(ctx: Ctx, str: string, x: number, y: number, maxW: number, size: number, align: CanvasTextAlign, color: string): number {
     ctx.font = fontFor(size, 600);
     ctx.fillStyle = color;
     ctx.textAlign = align;
@@ -1474,6 +1485,7 @@ export class Game {
       else line = t;
     }
     if (line) ctx.fillText(line, x, yy);
+    return yy;
   }
 
   // ---------------------------------------------------------------- pause & results
@@ -1811,11 +1823,12 @@ export class Game {
     const sndImg = this.sprites.image('hud-sound');
     let sndClick = false;
     if (sndImg) {
-      this.ui.claimIfOver('menusnd', sr);
+      const hit = this.touchRect(sr);
+      this.ui.claimIfOver('menusnd', hit);
       const p = this.input.p;
       ctx.save(); if (!meta.sound) ctx.globalAlpha = 0.45; ctx.drawImage(sndImg, sr.x, sr.y, sr.w, sr.h); ctx.restore();
       if (!meta.sound) { ctx.strokeStyle = '#c8442e'; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(sr.x + 12, sr.y + 12); ctx.lineTo(sr.x + sr.w - 12, sr.y + sr.h - 12); ctx.stroke(); }
-      sndClick = p.justUp && inside(sr, p.x, p.y) && inside(sr, p.downX, p.downY);
+      sndClick = p.justUp && inside(hit, p.x, p.y) && inside(hit, p.downX, p.downY);
     } else sndClick = this.ui.iconButton('menusnd', sr, ctx, () => this.speaker(ctx, sr, meta.sound));
     if (sndClick) { meta.sound = !meta.sound; this.audio.sound = meta.sound; saveMeta(meta); }
     if (canFullscreen()) this.fullscreenButton(ctx, 'menufull', { x: sr.x - 64 - 14, y: sr.y, w: 64, h: 64 });
@@ -1824,9 +1837,10 @@ export class Game {
   /** Painted wooden plate (same family as pause/sound); F also toggles it on desktop. */
   private fullscreenButton(ctx: Ctx, id: string, r: Rect): void {
     const img = this.sprites.image('hud-full');
-    this.ui.claimIfOver(id, r);
+    const hit = this.touchRect(r);
+    this.ui.claimIfOver(id, hit);
     const p = this.input.p;
-    const pressed = p.down && inside(r, p.x, p.y) && inside(r, p.downX, p.downY);
+    const pressed = p.down && inside(hit, p.x, p.y) && inside(hit, p.downX, p.downY);
     ctx.save();
     if (pressed) { ctx.translate(r.x + r.w / 2, r.y + r.h / 2); ctx.scale(0.94, 0.94); ctx.translate(-r.x - r.w / 2, -r.y - r.h / 2); }
     if (img) ctx.drawImage(img, r.x, r.y, r.w, r.h);
@@ -1838,7 +1852,13 @@ export class Game {
       }
     }
     ctx.restore();
-    if (p.justUp && inside(r, p.x, p.y) && inside(r, p.downX, p.downY)) toggleFullscreen();
+    if (p.justUp && inside(hit, p.x, p.y) && inside(hit, p.downX, p.downY)) toggleFullscreen();
+  }
+
+  /** Grow a small painted control's tap area to at least 44 CSS px (the art keeps its size). */
+  private touchRect(r: Rect): Rect {
+    const need = 44 / this.v.scale, gx = Math.max(0, (need - r.w) / 2), gy = Math.max(0, (need - r.h) / 2);
+    return { x: r.x - gx, y: r.y - gy, w: r.w + gx * 2, h: r.h + gy * 2 };
   }
 
   private speaker(ctx: Ctx, r: Rect, on: boolean): void {

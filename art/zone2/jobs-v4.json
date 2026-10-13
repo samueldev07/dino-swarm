@@ -1,0 +1,70 @@
+{
+ "shots": [
+  {
+   "id": "v4-swarm-froglet",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, the same proportions logic (big head, short body), round white eyes with tiny pupils, serious grumpy face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a small FROGLET: a little round frog creature standing on two short legs, dull green warty skin, a tiny ragged sackcloth hood and a rope belt, holding a little sharpened stick. Same small size as the original. No mushroom cap. Not human.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v4-swarm-gremlin",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, the same proportions logic (big head, short body), round white eyes with tiny pupils, serious grumpy face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a small MUD GREMLIN: a little round lump of dark wet peat mud with stubby legs and thin twig arms, two small reed sprouts on its head, a cracked clay pot shard worn as a helmet. Same small size as the original. No mushroom cap. Not human.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v4-swarm-beetle",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, the same proportions logic (big head, short body), round white eyes with tiny pupils, serious grumpy face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a small EMBER BEETLE: a chubby little upright beetle bug standing on two of its legs, dark brown shell with a few faint glowing ember-orange spots, short antennae, a tiny ragged patched scarf. Same small size as the original. No mushroom cap. Not human.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v4-boss-turtle",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, the same proportions logic (big head, short body), round white eyes with tiny pupils, serious grumpy face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a GIANT SWAMP TURTLE beast (zone boss), on FOUR legs, totally different silhouette from the original: a huge ancient snapping turtle with a hooked beak and small angry eyes, a thick mossy shell carrying a small ruined wooden hut with a crooked chimney and reeds, rusty chains hanging from the shell. Huge and wide. Not human.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v4-boss-beast",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, the same proportions logic (big head, short body), round white eyes with tiny pupils, serious grumpy face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: THE MIRE BEAST (zone boss), on FOUR legs, totally different silhouette from the original: a huge shaggy hunched swamp beast like a giant bog bear-boar with dark matted fur full of moss and reeds, antlers made of dead twisted branches, glowing ember-orange eyes, a rusty broken harness and chains. Huge and heavy. Not human.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v4-boss-eel",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, the same proportions logic (big head, short body), round white eyes with tiny pupils, serious grumpy face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: THE BOG SERPENT (zone boss), totally different silhouette from the original: a huge thick swamp eel-serpent rising in an S-curve, dull olive-brown slick skin with dark blotches, a wide fishy mouth with small fangs, whiskers, small angry eyes, three old rusty harpoons with frayed ropes stuck in its back. Huge. Not human.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    }
+   ]
+  }
+ ]
+}

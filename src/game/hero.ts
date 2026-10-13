@@ -27,7 +27,7 @@ export class Hero {
 
   private async load(): Promise<void> {
     try {
-      const res = await fetch(this.base + 'hero.json', { cache: 'no-cache' });
+      const res = await fetch(this.base + 'hero.json', { cache: import.meta.env.DEV ? 'no-cache' : 'default' });
       if (!res.ok) return;
       const d = (await res.json()) as HeroData;
       this.data = d;

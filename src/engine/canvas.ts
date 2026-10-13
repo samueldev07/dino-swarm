@@ -57,7 +57,10 @@ export class Stage {
     const cssH = window.innerHeight;
     // Cap DPR: a 3x retina phone would otherwise shade 3x the pixels for
     // no visible gain on art this chunky.
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);  // painted art: 1.5x looks the same as 2x, ~45% fewer pixels
+    // Big desktop screens at 125-150% scaling made a 4-5 megapixel canvas and lagged on laptop GPUs:
+    // keep the backing store under ~2.6 MP (never below 1x, so the art stays sharp).
+    const budget = Math.sqrt(2.6e6 / Math.max(1, cssW * cssH));
+    const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 1.5, budget));  // painted art: 1.5x looks the same as 2x
 
     const scale = Math.min(cssW / MIN_W, cssH / MIN_H);
     const v = this.view;

@@ -22,7 +22,7 @@ export class Assets {
 
   async init(): Promise<void> {
     try {
-      const res = await fetch(this.base + 'manifest.json', { cache: 'no-cache' });
+      const res = await fetch(this.base + 'manifest.json', { cache: import.meta.env.DEV ? 'no-cache' : 'default' });
       if (!res.ok) return;
       const m = (await res.json()) as Manifest;
       this.files = m.files ?? {};

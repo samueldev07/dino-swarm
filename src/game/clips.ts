@@ -19,7 +19,7 @@ export class Clip {
 
   private async load(): Promise<void> {
     try {
-      const res = await fetch(this.base + 'clip.json', { cache: 'no-cache' });
+      const res = await fetch(this.base + 'clip.json', { cache: import.meta.env.DEV ? 'no-cache' : 'default' });
       if (!res.ok) return;
       const d = (await res.json()) as ClipData;
       this.data = d;

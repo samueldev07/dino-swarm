@@ -1,0 +1,37 @@
+{
+ "shots": [
+  {
+   "id": "v5-boss-orc-plate",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, worn patched cloth and rusty dull metal, round white eyes with tiny pupils, serious grim face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a ZONE BOSS ORC WARLORD of the ember marsh - the same kind of orc but much bigger, taller and broad-shouldered (muscular, NOT fat, not an ogre), heavy and imposing, filling most of the frame. He wears a few pieces of dented rusty iron armour: big round pauldrons, a riveted breastplate over patched leather, iron bracers, a simple rusty iron helmet with two short tusk-like horns. He carries a huge notched rusty cleaver-axe. Grey-green skin, big lower tusks.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v5-boss-orc-scale",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, worn patched cloth and rusty dull metal, round white eyes with tiny pupils, serious grim face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a ZONE BOSS ORC WARLORD of the ember marsh - the same kind of orc but much bigger, taller and broad-shouldered (muscular, NOT fat, not an ogre), heavy and imposing, filling most of the frame. He wears a long coat of rusty iron scale armour belted with rope over patched leather, one huge spiked iron pauldron on one shoulder, a dented open-face iron helmet, a ragged dark red cloth sash. He carries a heavy two-handed rusty war hammer. Dark olive skin, big lower tusks, a scar over one eye.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v5-boss-orc-bog",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture, worn patched cloth and rusty dull metal, round white eyes with tiny pupils, serious grim face, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a ZONE BOSS ORC WARLORD of the ember marsh - the same kind of orc but much bigger, taller and broad-shouldered (muscular, NOT fat, not an ogre), heavy and imposing, filling most of the frame. He wears crude marsh-made armour: rusty iron plates lashed together with rope and reeds over patched leather, a big turtle-shell shoulder guard, a dented iron helmet with a single ember-orange glowing crack, a heavy wooden-and-iron shield on his back. He carries a big rusty three-pronged eel spear. Mossy green skin, big lower tusks.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    }
+   ]
+  }
+ ]
+}

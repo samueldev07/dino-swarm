@@ -1,0 +1,92 @@
+{
+ "shots": [
+  {
+   "id": "v3-swarm-kobold",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a small MARSH KOBOLD: a little lizard-faced creature with dull olive-brown scaly skin, a short snout and a few faint ember-orange spots on its head, wearing the same kind of ragged patched sackcloth tunic with a rope belt, tiny clawed fists. No mushroom cap.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v3-swarm-ratkin",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a small RATKIN: a little rat-man with grey-brown fur, round ears, long whiskers and a bald pink-grey tail, wearing the same kind of ragged patched tunic with a rope belt, tiny fists. No mushroom cap.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v3-tank-frogman",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a FROGMAN GUARD: a stocky frog-man with dull green warty skin and a wide flat mouth, wearing a dented rusty iron helmet and patched leather armour, holding an old wooden plank door as a big shield in front and a short club. Same build and stance.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v3-tank-turtle",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a TURTLE-SHELL BRUTE: a stocky humanoid snapping-turtle warrior with a beaked face and a thick mossy dark shell on its back, wearing patched leather straps, holding a round rusty iron-bound wooden shield and a club. Same build and stance.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v3-ranged-imp",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: an EMBER IMP: a skinny imp with charcoal-grey skin and two stubby horns poking through the same kind of ragged brown hood and patched rags, holding up a glowing orange ember coal ready to throw instead of the torch. Same pose.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v3-ranged-blow",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: a FROGMAN SPITTER: a thin frog-man with dull green skin in the same kind of ragged hood and rags, holding a long reed blowpipe to its mouth instead of the torch, a small pouch of glowing ember darts at its belt. Same pose.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v3-boss-hag",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: THE BOG HAG: a giant hunched old swamp witch with stringy grey-green hair and a big hooked nose, wearing the same kind of heavy patched cloth dress and ragged shawl, a black iron cauldron strapped to her back leaking a thin wisp of smoke, holding a gnarled wooden staff instead of the club. Same huge size and build.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    }
+   ]
+  },
+  {
+   "id": "v3-boss-frogchief",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Keep EXACTLY the art style of this image: the same thick uneven hand-inked black-brown outline, the same flat muted earthy colours with one soft shading tone, the same grimy hand-painted texture and worn patched cloth, the same big-head short-body proportions, round white eyes with tiny pupils, the same serious grumpy face, the same size in the frame, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Change ONLY the character into: THE FROG CHIEFTAIN: a giant fat frog-man chief with dull green warty skin and a huge wide mouth, wearing the same kind of dented rusty iron helmet and heavy patched coat, a necklace of fish bones, resting the same kind of spiked club on his shoulder. Same huge size and build.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    }
+   ]
+  }
+ ]
+}
