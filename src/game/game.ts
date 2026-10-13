@@ -64,7 +64,7 @@ export class Game {
   private dying: Dying[] = [];
   /** Painted one-shot impacts: pop in, overshoot, fade; never a static stamp. */
   private meteorClip = new Clip('anim/meteor/');
-  private fxClips: Record<string, Clip> = { flask: new Clip('anim/flask/'), slam: new Clip('anim/slam/', 240), horn: new Clip('anim/horn/', 240), smoke: new Clip('anim/smoke/', 140) };
+  private fxClips: Record<string, Clip> = { flask: new Clip('anim/flask/'), slam: new Clip('anim/slam/', 240), smoke: new Clip('anim/smoke/', 140) };
   private shots: { clip: string; x: number; y: number; w: number; t: number; len: number }[] = [];
   private playFx(clip: string, x: number, y: number, w: number, frames: number): boolean {
     if (!this.fxClips[clip]?.ready) return false;
@@ -898,7 +898,7 @@ export class Game {
       const k = w.age / w.life;
       const r = w.r * (0.2 + 0.8 * Math.sqrt(k));
       ctx.globalAlpha = 1 - k;
-      if (w.kind !== 'revive' && this.fxClips[w.kind === 'stomp' ? 'slam' : 'horn'].ready) continue;
+      if (w.kind !== 'revive' && this.fxClips[w.kind === 'stomp' ? 'slam' : 'horn']?.ready) continue;
       const paint = this.sprites.image(w.kind === 'stomp' ? 'fx-slam' : 'fx-horn');
       if (paint) {
         const e = 1 - Math.pow(1 - k, 3);
