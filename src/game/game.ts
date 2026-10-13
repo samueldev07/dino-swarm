@@ -86,7 +86,10 @@ export class Game {
   /** Test hero art (caveman Grok, tier 1); the old dino draws until it has loaded. */
   private hero = new Hero('hero/grok-1/');
   /** Video-cut loops for painted enemies (test: grub crawl, raptor run). Missing ones draw the still sprite. */
-  private clips: Partial<Record<EnemyKind, Clip>> = { grub: new Clip('anim/grub/'), wolf: new Clip('anim/wolf/') };
+  private clips: Partial<Record<EnemyKind, Clip>> = {
+    grub: new Clip('anim/gnome/'), bat: new Clip('anim/bat/'), wolf: new Clip('anim/boarorc/'), beetle: new Clip('anim/orc/'),
+    shroom: new Clip('anim/goblin/'), brute: new Clip('anim/troll/'), boss: new Clip('anim/ogre/'),
+  };
 
   constructor(
     stage: Stage, private input: Input, private audio: Audio, private sprites: Sprites, private poki: Poki,

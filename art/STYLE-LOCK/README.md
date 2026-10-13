@@ -34,9 +34,9 @@ Không tự đổi phong cách. Muốn đổi gì phải hỏi chủ game trư�
 ## Bảng màu (khóa 13/10/2026)
 - `palette.json` + `palette.png`: 16 màu chủ đạo lấy từ bộ ảnh đã duyệt, cùng bảng màu theo vai trò
   (mực viền, da, vải, gỉ sắt, màu nhận diện từng quái...).
-- **Da người phải nằm trong dải đã khóa** (HSV: độ bão hòa 0,32–0,44, độ sáng 0,70–0,78; nhân vật chính sáng hơn quái một chút để nổi bật).
+- **Da người phải nằm trong dải đã khóa** (HSV: độ bão hòa 0,30–0,44, độ sáng 0,70–0,82. Nhân vật chính giữ màu da gốc (chủ game chốt), sáng hơn quái để nổi bật).
   Kiểm tra: `python tools/anim-lab/palette.py check <ảnh>`. Sửa tự động: `palette.py fixskin <vào> <ra>`.
-- `hero-master-skinfix.png` là **bản dùng trong game** (da đã kéo về dải trầm). `hero-master.png` giữ làm gốc vẽ.
+- `hero-master.png` là bản dùng trong game. `hero-master-skinfix.png` chỉ là bản thử, không dùng.
 - Không dùng trắng tinh hay đen tinh. Độ bão hòa tối đa 0,55, trừ lửa và hiệu ứng phép.
 
 ## Thang kích thước trên màn hình (chiều cao, đơn vị thế giới game)

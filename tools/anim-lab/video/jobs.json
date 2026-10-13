@@ -1,0 +1,24 @@
+{
+ "shots": [
+  {
+   "id": "vid-1-run",
+   "prompt": "2D hand-drawn cartoon game animation of EXACTLY the character in the image (same face, outfit, club, colours, line work). Camera completely static, locked off, no zoom, no pan. The character stays in the centre of the frame at the same size the whole time. Plain flat pure white background, no ground, no shadow, no other objects, no text. He runs IN PLACE toward the right (like on a treadmill): a smooth, continuous, repeating running cycle with clear leg strides and arm swings, holding the club, body bobbing slightly. Same side-facing 3/4 view for the whole clip.",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/video/start-1-run.jpg"
+    }
+   ]
+  },
+  {
+   "id": "vid-1-attack",
+   "prompt": "2D hand-drawn cartoon game animation of EXACTLY the character in the image (same face, outfit, club, colours, line work). Camera completely static, locked off, no zoom, no pan. The character stays in the centre of the frame at the same size the whole time. Plain flat pure white background, no ground, no shadow, no other objects, no text. He stands in a ready stance, then repeatedly performs a powerful overhead club strike toward the right: raises the club high behind his head, swings it down hard in front of him, recovers to the ready stance, and repeats. Fast, snappy, cartoon timing.",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/video/start-1-idle.jpg"
+    }
+   ]
+  }
+ ]
+}

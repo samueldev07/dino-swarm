@@ -26,7 +26,10 @@ def cut(a):
     lab, n = ndimage.label(white)
     edge = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
     sizes = ndimage.sum(np.ones_like(lab), lab, index=np.arange(n + 1))
-    keep_out = [i for i in range(1, n + 1) if i in edge or sizes[i] >= 120]
+    ys, _ = np.nonzero(~np.isin(lab, list(edge))); top, bot = ys.min(), ys.max(); head = top + (bot - top) * 0.4
+    cy = ndimage.center_of_mass(np.ones_like(lab), lab, index=np.arange(n + 1))
+    # enclosed white gaps are background only below the head band (eye whites stay)
+    keep_out = [i for i in range(1, n + 1) if i in edge or (sizes[i] >= 120 and cy[i][0] > head)]
     bg = np.isin(lab, keep_out)
     al = Image.fromarray(np.where(bg, 0, 255).astype(np.uint8)).filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8))
     im = Image.fromarray(a).convert('RGBA'); im.putalpha(al); return im
@@ -35,7 +38,7 @@ boxes = [im.getchannel('A').point(lambda v: 255 if v > 60 else 0).getbbox() for 
 ux0 = min(b[0] for b in boxes); uy0 = min(b[1] for b in boxes); ux1 = max(b[2] for b in boxes); uy1 = max(b[3] for b in boxes)
 cx = (boxes[0][0] + boxes[0][2]) / 2; foot = max(b[3] for b in boxes)
 refw = float(np.median([b[2] - b[0] for b in boxes]))
-scale = min(1, 260 / max(ux1 - ux0, uy1 - uy0))
+scale = min(1, float(os.environ.get('MAXPX', 220)) / max(ux1 - ux0, uy1 - uy0))
 os.makedirs(out, exist_ok=True)
 for f in os.listdir(out): os.remove(os.path.join(out, f))
 fr = []
