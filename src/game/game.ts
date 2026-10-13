@@ -13,9 +13,11 @@ import {
   EVOLUTIONS, isWeapon,
   type SkillId, type CampId, type EnemyKind,
 } from './config';
+import { PlayerAnim } from './anim';
+import { drawRig, type RigDefinition } from './rig';
 import { Sprites, type Sprite } from './sprites';
 import { Fx } from './fx';
-import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar } from './ui';
+import { UI, type Rect, setUISkin, drawUISkin, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar } from './ui';
 import { INK, fontFor, rrect } from './draw';
 import { type Meta, loadMeta, saveMeta, speciesUnlocked, zoneUnlocked, buyCamp } from './meta';
 
@@ -24,7 +26,7 @@ import { progressMissions, claimMissions, missionLabel, type Mission } from './m
 type Ctx = CanvasRenderingContext2D;
 type Screen = 'menu' | 'run' | 'camp';
 
-interface Dying { s: Sprite; x: number; y: number; scale: number; t: number; flip: number }
+interface Dying { rig?: RigDefinition; s: Sprite; x: number; y: number; scale: number; t: number; flip: number }
 interface Banner { text: string; sub: string; t: number; color: string }
 
 const GROUND: [string, string, string, string][] = [
@@ -55,6 +57,8 @@ export class Game {
   private busy = false;            // an ad is running / a run is being prepared
   private time = 0;
 
+  private playerAnim = new PlayerAnim();
+  private bossRoarUntil = new Map<number, number>();
   private dying: Dying[] = [];
   private banner: Banner | null = null;
   private offersAt = 0;
@@ -88,6 +92,7 @@ export class Game {
     this.ctx = stage.ctx;
     this.v = stage.view;
     this.ui = new UI(input);
+    setUISkin(this.ctx, sprites.assets);
     this.meta = loadMeta();
     this.audio.sound = this.meta.sound;
     this.audio.music = this.meta.music;
@@ -125,6 +130,7 @@ export class Game {
       this.missionsDirty = false; this.toastUntil = 0;
       this.doubled = false;
       this.dying = [];
+      this.playerAnim = new PlayerAnim(); this.bossRoarUntil.clear();
       this.banner = null;
       this.movedFor = 0;
       this.joy.on = false;
@@ -270,7 +276,7 @@ export class Game {
     this.fx.update(fdt);
     for (let i = this.dying.length - 1; i >= 0; i--) {
       this.dying[i].t += dt;
-      if (this.dying[i].t > 0.22) this.dying.splice(i, 1);
+      if (this.dying[i].t > (this.dying[i].rig ? 0.55 : 0.22)) this.dying.splice(i, 1);
     }
     if (this.banner) { this.banner.t += dt; if (this.banner.t > 2.4) this.banner = null; }
     if (this.hurtT > 0) this.hurtT -= dt;
@@ -309,7 +315,7 @@ export class Game {
           this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
         }
         const s = this.sprites.enemy(e.kind, m.zone);
-        this.dying.push({ s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s), t: 0, flip: 1 });
+        this.dying.push({ rig: e.kind === 'boss' ? this.sprites.readyBossRig(m.zone) : undefined, s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s), t: 0, flip: 1 });
         this.fx.burst(e.x, e.y - 14, e.kind === 'boss' ? '#ffd24a' : '#e8dcc0', e.kind === 'boss' ? 40 : 6, e.kind === 'boss' ? 420 : 170);
         if (this.time - this.lastKillSound > 0.06) { a.play('kill'); this.lastKillSound = this.time; }
         if (e.kind === 'brute') this.fx.shake(0.5, 0.25);
@@ -350,7 +356,7 @@ export class Game {
       case 'fire':
         if (e.w === 'stomp') { a.play('thud'); this.fx.burst(m.px, m.py, '#c8a070', 10, 260); }
         else if (e.w === 'roar') a.play('combo');
-        else if (e.w === 'bite') a.play('cast');
+        else if (e.w === 'bite') { this.playerAnim.bite(this.time); a.play('cast'); }
         break;
       case 'meteor':
         a.play('thud');
@@ -525,7 +531,9 @@ export class Game {
     if (!drewPlayer) this.drawPlayer(ctx, m);
 
     for (const d of this.dying) {
-      const k = d.t / 0.22;
+      const k = d.t / (d.rig ? 0.55 : 0.22);
+      ctx.globalAlpha = 1;
+      if (d.rig && drawRig(ctx, d.rig, key => this.sprites.painted(key), d.x, d.y, d.s.w*d.scale, { clip: 'death', time: this.time, progress: k, flip: d.flip })) continue;
       ctx.globalAlpha = 1 - k;
       this.blit(ctx, d.s, d.x, d.y, d.scale, 1 + k * 0.5, 1 - k * 0.7, 0, 0.6);
     }
@@ -582,7 +590,16 @@ export class Game {
     let sx = 1 + Math.sin(walk * 2) * 0.04, sy = 1 - Math.sin(walk * 2) * 0.04;
     if (e.mode === 1) { x += Math.sin(this.time * 70) * 3; sx = 1.12; sy = 0.88; }
     if (e.stun > 0) y += 0;
-    this.blit(ctx, s, x, y, sc, sx, sy, e.mode === 2 ? 0 : Math.sin(walk) * 0.05, e.flash > 0 ? e.flash * 8 : e.mode === 1 ? 0.35 : 0, e.facing);
+    const rig = e.def.kind === 'boss' ? this.sprites.bossRig(m.zone) : undefined;
+    let rigDrawn = false;
+    if (rig) {
+      // The model has no roar event: a fresh ring of eight or more spores is a visual cue.
+      const ring = m.projs.filter(p => p.kind === 'enemy' && p.age < .15 && Math.hypot(p.x-e.x,p.y-e.y) < e.r+50);
+      if (ring.length >= 8) this.bossRoarUntil.set(e.id, this.time + .45);
+      const clip = e.mode === 1 ? 'windup' : e.mode === 2 ? 'charge' : (this.bossRoarUntil.get(e.id) ?? 0) > this.time ? 'roar' : e.stun > 0 ? 'idle' : 'walk';
+      rigDrawn = drawRig(ctx, rig, key => this.sprites.painted(key), e.x, e.y, s.w*sc, { clip, time: e.age, flip: e.facing, flash: e.flash*8 });
+    }
+    if (!rigDrawn) this.blit(ctx, s, x, y, sc, sx, sy, e.mode === 2 ? 0 : Math.sin(walk) * 0.05, e.flash > 0 ? e.flash * 8 : e.mode === 1 ? 0.35 : 0, e.facing);
     if (e.stun > 0) {
       ctx.fillStyle = '#ffe28a'; ctx.strokeStyle = INK; ctx.lineWidth = 2;
       for (let i = 0; i < 3; i++) {
@@ -598,18 +615,20 @@ export class Game {
   }
 
   private drawPlayer(ctx: Ctx, m: Model): void {
-    const s = this.sprites.dino(m.species, m.form);
+    const moving = Math.hypot(m.mx, m.my) > 0.1 && m.status === 'play';
+    const motion = this.playerAnim.sample(this.time, m.speed*Math.hypot(m.mx,m.my), moving, m.mx*(m.faceX < 0 ? -1 : 1), matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const painted = this.sprites.hasDinoArt(m.species, m.form);
+    const s = painted ? this.sprites.dinoPose(m.species, m.form, motion.pose) : this.sprites.dino(m.species, m.form);
     const pr = m.playerRadius;
     const sc = (pr * 3.9) / s.w;
-    const moving = Math.hypot(m.mx, m.my) > 0.1 && m.status === 'play';
     const walk = this.time * 13;
-    const bob = moving ? Math.abs(Math.sin(walk)) * 6 : Math.sin(this.time * 2.2) * 1.5;
-    const sq = moving ? Math.sin(walk * 2) * 0.05 : Math.sin(this.time * 2.2) * 0.02;
+    const bob = painted ? motion.bob : moving ? Math.abs(Math.sin(walk)) * 6 : Math.sin(this.time * 2.2) * 1.5;
+    const sq = painted ? motion.squash : moving ? Math.sin(walk * 2) * 0.05 : Math.sin(this.time * 2.2) * 0.02;
     const flip = m.faceX < -0.1 ? -1 : 1;
     const blink = m.invuln > 0 && m.status === 'play' && Math.floor(this.time * 18) % 2 === 0;
     const evo = this.evolveT > 0 ? 1 + Math.sin((1.3 - this.evolveT) * 14) * 0.08 * this.evolveT : 1;
     ctx.globalAlpha = blink ? 0.55 : 1;
-    this.blit(ctx, s, m.px, m.py - bob, sc * evo, 1 - sq, 1 + sq, moving ? m.mx * 0.08 * flip : 0, this.evolveT > 0.9 ? 1 : 0, flip);
+    this.blit(ctx, s, m.px, m.py - bob, sc * evo, 1 - sq, 1 + sq, painted ? motion.lean : moving ? m.mx * 0.08 * flip : 0, this.evolveT > 0.9 ? 1 : 0, flip);
     ctx.globalAlpha = 1;
     // HP bar under the feet (green: never shares a hue with enemy bars)
     const w = 64;
@@ -759,9 +778,12 @@ export class Game {
       g.addColorStop(0, '#ffe07a'); g.addColorStop(1, '#f0a020');
       ctx.fillStyle = g; rrect(ctx, xr.x, xr.y, Math.max(xr.h, xr.w * pct), xr.h, 11); ctx.fill();
     }
-    ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR + 3, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ffb02e'; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ffd86a'; ctx.beginPath(); ctx.arc(left + lvR - 3, xr.y + xr.h / 2 - 4, lvR - 7, 0, Math.PI * 2); ctx.fill();
+    drawUISkin(ctx, 'ui-bar-frame', xr);
+    if (!drawUISkin(ctx, 'ui-medallion', { x: left, y: xr.y+xr.h/2-lvR, w: lvR*2, h: lvR*2 })) {
+      ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR + 3, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffb02e'; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffd86a'; ctx.beginPath(); ctx.arc(left + lvR - 3, xr.y + xr.h / 2 - 4, lvR - 7, 0, Math.PI * 2); ctx.fill();
+    }
     outlinedText(ctx, String(m.level), left + lvR, xr.y + xr.h / 2 + 1, fitSize(ctx, String(m.level), 30, lvR * 1.5), '#fff', INK, 'center');
 
     if (this.firstRun) text(ctx, 'XP', xr.x + 45, xr.y + xr.h / 2, 18, '#fff', 'left', 700);
@@ -932,9 +954,16 @@ export class Game {
     ctx.scale(s, s);
     ctx.translate(-r.w / 2, -r.h / 2);
     // paper card: ink outline, cream face, coloured top edge
-    ctx.fillStyle = INK; rrect(ctx, -5, -5, r.w + 10, r.h + 12, 26); ctx.fill();
-    ctx.fillStyle = '#f6e8c8'; rrect(ctx, 0, 0, r.w, r.h, 22); ctx.fill();
-    ctx.fillStyle = '#e8d4a8'; rrect(ctx, 0, r.h - 14, r.w, 14, 8); ctx.fill();
+    ctx.save();
+    if (pressed) ctx.filter = 'brightness(.82)';
+    const skinnedCard = drawUISkin(ctx, 'ui-card', { x: 0, y: 0, w: r.w, h: r.h });
+    ctx.restore();
+    if (!skinnedCard) {
+      ctx.fillStyle = INK; rrect(ctx, -5, -5, r.w + 10, r.h + 12, 26); ctx.fill();
+      ctx.fillStyle = '#f6e8c8'; rrect(ctx, 0, 0, r.w, r.h, 22); ctx.fill();
+      ctx.fillStyle = '#e8d4a8'; rrect(ctx, 0, r.h - 14, r.w, 14, 8); ctx.fill();
+
+    }
 
     const icon = this.sprites.icon(o.id, def.color);
     const isz = land ? 110 : 120;

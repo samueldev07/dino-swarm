@@ -1,9 +1,39 @@
 import type { Input } from '../engine/input';
 import { rrect, INK, fontFor } from './draw';
+import type { Assets, SliceInsets } from '../engine/assets';
 
 type Ctx = CanvasRenderingContext2D;
 
 export interface Rect { x: number; y: number; w: number; h: number }
+
+const skins = new WeakMap<CanvasRenderingContext2D, Assets>();
+export function setUISkin(ctx: CanvasRenderingContext2D, assets: Assets): void { skins.set(ctx, assets); }
+export function hasUISkin(ctx: CanvasRenderingContext2D, key: string): boolean { return !!skins.get(ctx)?.get(key); }
+
+/** Insets are source pixels: corners stay fixed, only center/edges stretch. */
+export function nineSlice(ctx: CanvasRenderingContext2D, image: HTMLImageElement | HTMLCanvasElement, r: Rect, insets: SliceInsets): boolean {
+  const [l, t, right, b] = insets, w = image.width, h = image.height;
+  if (![...insets, r.w, r.h].every(Number.isFinite) || insets.some(v => v < 0) || l + right >= w || t + b >= h || r.w <= 0 || r.h <= 0) return false;
+  const k = Math.min(1, r.w / Math.max(1, l + right), r.h / Math.max(1, t + b));
+  const sx = [0, l, w - right, w], sy = [0, t, h - b, h];
+  const dx = [r.x, r.x + l*k, r.x + r.w - right*k, r.x + r.w], dy = [r.y, r.y + t*k, r.y + r.h - b*k, r.y + r.h];
+  for (let row = 0; row < 3; row++) for (let col = 0; col < 3; col++) {
+    const sw = sx[col+1]-sx[col], sh = sy[row+1]-sy[row], dw = dx[col+1]-dx[col], dh = dy[row+1]-dy[row];
+    if (sw > 0 && sh > 0 && dw > 0 && dh > 0) ctx.drawImage(image, sx[col], sy[row], sw, sh, dx[col], dy[row], dw, dh);
+  }
+  return true;
+}
+
+export function drawUISkin(ctx: CanvasRenderingContext2D, key: string, r: Rect, pressed = false): boolean {
+  const assets = skins.get(ctx), image = assets?.get(key);
+  if (!image) return false;
+  // Artists normally supply insets; a quarter-size default keeps old manifests usable.
+  const insets = assets!.slice(key) ?? [Math.floor(image.width/4), Math.floor(image.height/4), Math.floor(image.width/4), Math.floor(image.height/4)];
+  ctx.save();
+  if (pressed) { ctx.translate(r.x+r.w/2, r.y+r.h/2); ctx.scale(.96,.96); ctx.translate(-r.x-r.w/2,-r.y-r.h/2); ctx.filter = 'brightness(.82)'; }
+  const drawn = nineSlice(ctx, image, r, insets);
+  ctx.restore(); return drawn;
+}
 
 export function inside(r: Rect, x: number, y: number): boolean {
   return x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
@@ -85,27 +115,33 @@ export class UI {
     const { pressed, clicked } = this.track(id, r, disabled);
     const tone = TONES[opts.tone ?? 'green'];
     const rad = opts.radius ?? Math.min(18, r.h * 0.3);
-    const dy = pressed ? 4 : 0;
+    const skinKey = `ui-btn-${opts.tone ?? 'green'}`;
+    const painted = hasUISkin(ctx, skinKey);
+    const dy = painted ? 0 : pressed ? 4 : 0;
     const lip = pressed ? 2 : 6;
 
     ctx.save();
     if (disabled) ctx.filter = 'grayscale(.85) brightness(.9)';
+    else if (painted && pressed) { ctx.translate(r.x+r.w/2,r.y+r.h/2); ctx.scale(.96,.96); ctx.translate(-r.x-r.w/2,-r.y-r.h/2); ctx.filter='brightness(.82)'; }
 
-    ctx.fillStyle = INK;
-    rrect(ctx, r.x - 3, r.y - 3 + dy, r.w + 6, r.h + lip + 6, rad + 3);
-    ctx.fill();
-    ctx.fillStyle = tone.lip;
-    rrect(ctx, r.x, r.y + dy, r.w, r.h + lip, rad);
-    ctx.fill();
-    const g = ctx.createLinearGradient(0, r.y + dy, 0, r.y + dy + r.h);
-    g.addColorStop(0, tone.top);
-    g.addColorStop(1, tone.bottom);
-    ctx.fillStyle = g;
-    rrect(ctx, r.x, r.y + dy, r.w, r.h, rad);
-    ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,.28)';
-    rrect(ctx, r.x + 6, r.y + dy + 4, r.w - 12, r.h * 0.3, rad * 0.6);
-    ctx.fill();
+    if (!drawUISkin(ctx, skinKey, r)) {
+      ctx.fillStyle = INK;
+      rrect(ctx, r.x - 3, r.y - 3 + dy, r.w + 6, r.h + lip + 6, rad + 3);
+      ctx.fill();
+      ctx.fillStyle = tone.lip;
+      rrect(ctx, r.x, r.y + dy, r.w, r.h + lip, rad);
+      ctx.fill();
+      const g = ctx.createLinearGradient(0, r.y + dy, 0, r.y + dy + r.h);
+      g.addColorStop(0, tone.top);
+      g.addColorStop(1, tone.bottom);
+      ctx.fillStyle = g;
+      rrect(ctx, r.x, r.y + dy, r.w, r.h, rad);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.28)';
+      rrect(ctx, r.x + 6, r.y + dy + 4, r.w - 12, r.h * 0.3, rad * 0.6);
+      ctx.fill();
+
+    }
 
     const sub = opts.sub;
     const room = r.w - 24;
@@ -177,17 +213,19 @@ export class UI {
 
 /** Parchment-and-stone panel used by every modal. */
 export function panel(ctx: Ctx, r: Rect, title?: string): void {
-  ctx.save();
-  ctx.fillStyle = INK;
-  rrect(ctx, r.x - 5, r.y - 5, r.w + 10, r.h + 10, 30);
-  ctx.fill();
-  ctx.fillStyle = '#8a7d6c';
-  rrect(ctx, r.x, r.y, r.w, r.h, 26);
-  ctx.fill();
-  ctx.fillStyle = '#f3e2bf';
-  rrect(ctx, r.x + 12, r.y + 12, r.w - 24, r.h - 24, 18);
-  ctx.fill();
-  ctx.restore();
+  if (!drawUISkin(ctx, 'ui-panel', r)) {
+    ctx.save();
+    ctx.fillStyle = INK;
+    rrect(ctx, r.x - 5, r.y - 5, r.w + 10, r.h + 10, 30);
+    ctx.fill();
+    ctx.fillStyle = '#8a7d6c';
+    rrect(ctx, r.x, r.y, r.w, r.h, 26);
+    ctx.fill();
+    ctx.fillStyle = '#f3e2bf';
+    rrect(ctx, r.x + 12, r.y + 12, r.w - 24, r.h - 24, 18);
+    ctx.fill();
+    ctx.restore();
+  }
   if (title) {
     const tw = Math.min(r.w * 0.7, 360);
     const tr: Rect = { x: r.x + (r.w - tw) / 2, y: r.y - 30, w: tw, h: 60 };
@@ -200,6 +238,7 @@ export function panel(ctx: Ctx, r: Rect, title?: string): void {
  * Result card in the reference style: an orange frame around cream paper.
  */
 export function fancyPanel(ctx: Ctx, r: Rect): void {
+  if (drawUISkin(ctx, 'ui-panel', r)) return;
   ctx.save();
   ctx.fillStyle = INK;
   rrect(ctx, r.x - 5, r.y - 5, r.w + 10, r.h + 10, 40);
@@ -229,45 +268,47 @@ export function ribbon(ctx: Ctx, cx: number, y: number, w: number, text: string,
     : ['#ff7a8a', '#e8384f', '#a3202f', '#7a1424'];
   const h = 78;
   const x = cx - w / 2;
-  ctx.save();
-  ctx.lineJoin = 'round';
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = INK;
-  // tails behind
-  for (const side of [-1, 1]) {
-    const ex = side < 0 ? x - 34 : x + w + 34;
-    const ix = side < 0 ? x + 26 : x + w - 26;
-    ctx.fillStyle = dark;
+  if (!drawUISkin(ctx, `ui-ribbon-${tone}`, { x, y, w, h })) {
+    ctx.save();
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = INK;
+    // tails behind
+    for (const side of [-1, 1]) {
+      const ex = side < 0 ? x - 34 : x + w + 34;
+      const ix = side < 0 ? x + 26 : x + w - 26;
+      ctx.fillStyle = dark;
+      ctx.beginPath();
+      ctx.moveTo(ix, y + 22);
+      ctx.lineTo(ex, y + 26);
+      ctx.lineTo(ex + side * -18, y + 52);
+      ctx.lineTo(ex, y + 80);
+      ctx.lineTo(ix, y + 80);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
+    // main band, gently arched
+    const g = ctx.createLinearGradient(0, y, 0, y + h);
+    g.addColorStop(0, top);
+    g.addColorStop(1, bottom);
+    ctx.fillStyle = g;
     ctx.beginPath();
-    ctx.moveTo(ix, y + 22);
-    ctx.lineTo(ex, y + 26);
-    ctx.lineTo(ex + side * -18, y + 52);
-    ctx.lineTo(ex, y + 80);
-    ctx.lineTo(ix, y + 80);
+    ctx.moveTo(x, y + 10);
+    ctx.quadraticCurveTo(cx, y - 12, x + w, y + 10);
+    ctx.lineTo(x + w, y + h - 6);
+    ctx.quadraticCurveTo(cx, y + h - 26, x, y + h - 6);
     ctx.closePath();
     ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.3)';
+    ctx.beginPath();
+    ctx.moveTo(x + 14, y + 14);
+    ctx.quadraticCurveTo(cx, y - 4, x + w - 14, y + 14);
+    ctx.lineTo(x + w - 14, y + 22);
+    ctx.quadraticCurveTo(cx, y + 4, x + 14, y + 22);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
   }
-  // main band, gently arched
-  const g = ctx.createLinearGradient(0, y, 0, y + h);
-  g.addColorStop(0, top);
-  g.addColorStop(1, bottom);
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.moveTo(x, y + 10);
-  ctx.quadraticCurveTo(cx, y - 12, x + w, y + 10);
-  ctx.lineTo(x + w, y + h - 6);
-  ctx.quadraticCurveTo(cx, y + h - 26, x, y + h - 6);
-  ctx.closePath();
-  ctx.fill(); ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,.3)';
-  ctx.beginPath();
-  ctx.moveTo(x + 14, y + 14);
-  ctx.quadraticCurveTo(cx, y - 4, x + w - 14, y + 14);
-  ctx.lineTo(x + w - 14, y + 22);
-  ctx.quadraticCurveTo(cx, y + 4, x + 14, y + 22);
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
   const size = fitSize(ctx, text, 44, w - 60);
   ctx.font = fontFor(size);
   ctx.textAlign = 'center';
@@ -372,6 +413,7 @@ export function bar(ctx: Ctx, r: Rect, pct: number, fill: string): void {
     ctx.fill();
   }
   ctx.restore();
+  drawUISkin(ctx, 'ui-bar-frame', r);
 }
 
 /** Largest font size <= `size` at which `str` fits in `maxW` (svg/canvas text never wraps). */

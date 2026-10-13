@@ -10,6 +10,7 @@
 import { INK } from './draw';
 import type { Assets } from '../engine/assets';
 import type { EnemyKind, SpeciesId, SkillId } from './config';
+import { parseRig, type RigDefinition } from './rig';
 
 export interface Sprite {
   img: HTMLCanvasElement | HTMLImageElement;
@@ -304,7 +305,47 @@ function amber(c: Ctx, s: number, base: string, shade: string): void {
 
 export class Sprites {
   private cache = new Map<string, Sprite>();
-  constructor(private assets: Assets) {}
+  constructor(readonly assets: Assets) {}
+  private paintedCache = new Map<string, Sprite>();
+  private rigCache = new Map<string, { source: unknown; rig: RigDefinition | undefined }>();
+
+  bossRig(zone: number): RigDefinition | undefined {
+    const key = `enemy-boss-${zone}`, source = this.assets.getRig(key);
+    if (source === undefined) return undefined;
+    const cached = this.rigCache.get(key);
+    if (cached?.source === source) return cached.rig;
+    const rig = parseRig(source);
+    if (rig) this.assets.preload(rig.parts.map(p => p.key));
+    this.rigCache.set(key, { source, rig });
+    return rig;
+  }
+
+  readyBossRig(zone: number): RigDefinition | undefined {
+    const rig = this.bossRig(zone);
+    return rig && rig.parts.every(p => !!this.painted(p.key)) ? rig : undefined;
+  }
+
+  /** Raw full-canvas sprite for rigs/UI; never manufactures missing parts. */
+  painted(key: string): Sprite | undefined {
+    const img = this.assets.get(key);
+    if (!img) return undefined;
+    const old = this.paintedCache.get(key);
+    if (old?.img === img) return old;
+    const sprite = { img, white: whiteOf(img), w: img.naturalWidth, h: img.naturalHeight, ax: 0.5, ay: 0.9 };
+    this.paintedCache.set(key, sprite);
+    return sprite;
+  }
+
+  dinoPose(sp: SpeciesId, form: number, pose: 'idle' | 'run' | 'bite'): Sprite {
+    const base = this.dino(sp, form);
+    const image = this.painted(`player-${sp}-${form + 1}-${pose}`);
+    return image ? { ...base, img: image.img, white: image.white, h: base.w * image.h / image.w } : base;
+  }
+
+  hasDinoArt(sp: SpeciesId, form: number): boolean {
+    const key = `player-${sp}-${form + 1}`;
+    return [key, ...['idle', 'run', 'bite'].map(pose => `${key}-${pose}`)].some(k => !!this.assets.get(k));
+  }
 
   /** Painted art (manifest key) wins over the procedural fallback once it has loaded. */
   private pick(key: string, fallback: () => Sprite): Sprite {
@@ -323,7 +364,8 @@ export class Sprites {
   }
 
   dino(sp: SpeciesId, form: number): Sprite {
-    return this.pick(`player-${sp}-${form + 1}`, () => dinoSprite(sp, form));
+    const sprite = this.pick(`player-${sp}-${form + 1}`, () => dinoSprite(sp, form));
+    return sprite.img instanceof HTMLImageElement ? { ...sprite, h: sprite.w * sprite.img.height / sprite.img.width } : sprite;
   }
 
   enemy(kind: EnemyKind, zone: number): Sprite {
