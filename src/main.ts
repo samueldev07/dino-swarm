@@ -21,6 +21,8 @@ async function boot(): Promise<void> {
   const audio = new Audio();
   const assets = new Assets();
   await Promise.race([assets.init(), new Promise((r) => setTimeout(r, 1000))]);
+  // Painted creatures + ground: start loading now so the first frames never show stand-ins.
+  assets.preload(['ground-0', ...['grub', 'bat', 'beetle', 'wolf', 'shroom', 'brute', 'boss'].map((k) => `enemy-${k}`)]);
   await Promise.race([
     Promise.all([document.fonts.load('700 20px Fredoka'), document.fonts.load('20px "Lilita One"')]),
     new Promise((r) => setTimeout(r, 1200)),

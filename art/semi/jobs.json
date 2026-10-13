@@ -1,0 +1,113 @@
+{
+ "shots": [
+  {
+   "id": "enemy-grub",
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. Single creature game sprite, full body, three-quarter top-down view (seen slightly from above) facing RIGHT, centred, on a plain flat pure white background, no ground, no shadow, no text, no frame. Readable silhouette at small size. A teal segmented cave larva with one big angry orange eye and small mandibles, many tiny legs - EXACTLY the creature in the first reference image (same design).",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ]
+  },
+  {
+   "id": "enemy-bat",
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. Single creature game sprite, full body, three-quarter top-down view (seen slightly from above) facing RIGHT, centred, on a plain flat pure white background, no ground, no shadow, no text, no frame. Readable silhouette at small size. A dark slate-grey prehistoric bat-winged pterosaur hatchling with leathery wings spread, small toothy beak, glowing yellow eyes. Fast flyer.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ]
+  },
+  {
+   "id": "enemy-beetle",
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. Single creature game sprite, full body, three-quarter top-down view (seen slightly from above) facing RIGHT, centred, on a plain flat pure white background, no ground, no shadow, no text, no frame. Readable silhouette at small size. A big armoured horned rhinoceros beetle with a mossy dark-green shell, thick legs, one large horn. Tanky.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ]
+  },
+  {
+   "id": "enemy-wolf",
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. Single creature game sprite, full body, three-quarter top-down view (seen slightly from above) facing RIGHT, centred, on a plain flat pure white background, no ground, no shadow, no text, no frame. Readable silhouette at small size. A lean grey-blue velociraptor pack hunter, crouched ready to pounce, sharp claws, angry yellow eye, stripes on the back.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ]
+  },
+  {
+   "id": "enemy-shroom",
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. Single creature game sprite, full body, three-quarter top-down view (seen slightly from above) facing RIGHT, centred, on a plain flat pure white background, no ground, no shadow, no text, no frame. Readable silhouette at small size. A walking poisonous mushroom creature: red-brown cap with cream spots, stubby root legs, angry face on the stem, puffing spores.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ]
+  },
+  {
+   "id": "enemy-brute",
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. Single creature game sprite, full body, three-quarter top-down view (seen slightly from above) facing RIGHT, centred, on a plain flat pure white background, no ground, no shadow, no text, no frame. Readable silhouette at small size. A huge stone golem made of mossy boulders with glowing amber cracks, massive fists, tiny angry eyes. Heavy and slow.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ]
+  },
+  {
+   "id": "enemy-boss",
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. Single creature game sprite, full body, three-quarter top-down view (seen slightly from above) facing RIGHT, centred, on a plain flat pure white background, no ground, no shadow, no text, no frame. Readable silhouette at small size. A giant purple triceratops boss with cream horns, large bony frill with spikes, armoured skin, furious glare - like the dinosaur in the second reference image.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ]
+  },
+  {
+   "id": "ground-0",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ],
+   "prompt": "Match the art style of the reference images exactly: semi-realistic hand-painted game art, visible gouache/oil brush texture, dark brown painted outline, rich but slightly muted colours, warm top-left light with soft painted shading. Not 3D render, not flat vector, not cute chibi. A seamless tileable top-down GROUND TEXTURE of a dark mossy jungle forest floor (like the ground in the reference image): soft painted patches of moss green and earthy brown, a few tiny grass tufts and small pebbles, very LOW contrast and calm, evenly lit, no large objects, no plants, no shadows of trees, no characters, no vignette, no border, fills the whole frame edge to edge."
+  }
+ ]
+}

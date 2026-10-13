@@ -312,7 +312,9 @@ export class Sprites {
     const hit = this.cache.get(key);
     if (img && (!hit || !(hit.img instanceof HTMLImageElement))) {
       const fb = hit ?? fallback();
-      const s: Sprite = { ...fb, img, white: whiteOf(img) };
+      // Painted art keeps the fallback's width but its own aspect; feet sit near the bottom.
+      const h = (fb.w * img.naturalHeight) / Math.max(1, img.naturalWidth);
+      const s: Sprite = { ...fb, img, white: whiteOf(img), h, ax: 0.5, ay: 0.9 };
       this.cache.set(key, s);
       return s;
     }
@@ -326,8 +328,15 @@ export class Sprites {
     return this.pick(`player-${sp}-${form + 1}`, () => dinoSprite(sp, form));
   }
 
+  /** A loaded painted image by manifest key (ground tiles etc.), or undefined. */
+  image(key: string): HTMLImageElement | undefined {
+    return this.assets.get(key);
+  }
+
   enemy(kind: EnemyKind, zone: number): Sprite {
-    return this.pick(`enemy-${kind}-${zone}`, () => {
+    // Per-zone art if it exists, else one painted creature for every zone.
+    const key = this.assets.has(`enemy-${kind}-${zone}`) ? `enemy-${kind}-${zone}` : `enemy-${kind}`;
+    return this.pick(key, () => {
       const [w, h, draw] = enemyDraw(kind, zone);
       return make(w, h, 0.5, 0.9, draw);
     });

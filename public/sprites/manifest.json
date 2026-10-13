@@ -1,1 +1,12 @@
-{"files":{}}
+{
+ "files": {
+  "enemy-grub": "enemy-grub.webp",
+  "enemy-bat": "enemy-bat.webp",
+  "enemy-beetle": "enemy-beetle.webp",
+  "enemy-wolf": "enemy-wolf.webp",
+  "enemy-shroom": "enemy-shroom.webp",
+  "enemy-brute": "enemy-brute.webp",
+  "enemy-boss": "enemy-boss.webp",
+  "ground-0": "ground-0.webp"
+ }
+}

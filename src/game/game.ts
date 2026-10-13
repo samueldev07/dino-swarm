@@ -434,7 +434,8 @@ export class Game {
   }
 
   private enemyScale(kind: EnemyKind, s: Sprite): number {
-    const r = { grub: 18, bat: 15, beetle: 25, wolf: 20, shroom: 19, brute: 38, boss: 62 }[kind];
+    // Painted creatures: thin shapes (raptor, bat) need more size to read in a crowd.
+    const r = { grub: 18, bat: 21, beetle: 27, wolf: 30, shroom: 21, brute: 38, boss: 62 }[kind];
     return (r * 2.9) / s.w;
   }
 
@@ -449,7 +450,7 @@ export class Game {
     const L = this.cam.x - hw, R = this.cam.x + hw, T = this.cam.y - hh, B = this.cam.y + hh;
     const vis = (x: number, y: number, pad = 0) => x > L - pad && x < R + pad && y > T - pad && y < B + pad;
 
-    ctx.fillStyle = this.ground[m.zone];
+    ctx.fillStyle = this.groundFor(m.zone);
     ctx.fillRect(L, T, R - L, B - T);
 
     // thorn patches (ground layer)
@@ -708,6 +709,22 @@ export class Game {
     ctx.globalAlpha = 1;
   }
 
+  private painted: (CanvasPattern | null)[] = [];
+  /** Painted ground tile (public/sprites ground-<zone>) once loaded, else the procedural one. */
+  private groundFor(zone: number): CanvasPattern {
+    if (this.painted[zone]) return this.painted[zone]!;
+    const img = this.sprites.image(`ground-${zone}`);
+    if (img) {
+      const p = this.ctx.createPattern(img, 'repeat');
+      if (p) {
+        p.setTransform(new DOMMatrix().scale(0.8));
+        this.painted[zone] = p;
+        return p;
+      }
+    }
+    return this.ground[zone];
+  }
+
   private makeGround(zone: number): CanvasPattern {
     const S = 512;
     const c = document.createElement('canvas');
@@ -840,7 +857,7 @@ export class Game {
     outlinedText(ctx, touch ? 'Drag anywhere to move' : 'WASD / Arrow keys to move', 0, 0, 42, '#fff', INK, 'center');
     ctx.restore();
     ctx.save(); ctx.globalAlpha = this.firstRun ? Math.max(0, 1 - this.hintFade / 0.4) : 1;
-    outlinedText(ctx, 'Your dino attacks by itself. Survive 10 minutes!', v.w / 2, y + 52, 24, '#ffe28a', INK, 'center');
+    outlinedText(ctx, 'You attack automatically. Survive 10 minutes!', v.w / 2, y + 52, 24, '#ffe28a', INK, 'center');
     ctx.restore();
   }
 
