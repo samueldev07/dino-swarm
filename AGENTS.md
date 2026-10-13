@@ -32,7 +32,7 @@ It does **not** run git (no branch switching in a shared working copy). It only 
 ## Rules that always apply
 - Game rules live only in `model.ts` (pure, no DOM). The view (`game.ts`) never decides rules.
 - In-game text: American English. Reports to the owner: Vietnamese, plain words.
-- UI rules: follow the owner's rejected-patterns list (copy kept in the brief): no boxed-everything, one primary
+- UI rules: follow docs/ui-rules.md (the owner's rejected-patterns list): no boxed-everything, one primary
   button per panel, 44 px hit areas, text fitted to its box, no emoji icons, roar = jagged burst (never concentric arcs).
 - Poki SDK rules: see `DESIGN.md` → "Poki SDK". Rewarded buttons are never green, carry the clapper icon, and
   always sit next to a plain option at least as big. Never add ad timers.

@@ -16,7 +16,7 @@ never push to main. When done: commit, `git push -u origin codex/ux-round1`, and
 You are working on "Dino Swarm Survivors", a survivor-like HTML5 game (TypeScript + Canvas2D, Vite) built for Poki.
 Read first: DESIGN.md, TASKS.md, src/game/game.ts (the whole view), src/game/meta.ts, src/game/ui.ts,
 src/engine/poki.ts, and the public API of src/game/model.ts (read only). Also read
-C:/Users/84762/.claude/skills/game-ui-craft/SKILL.md — the owner's UI rules; follow them (no boxed-everything,
+docs/ui-rules.md — the owner's UI rules; follow them (no boxed-everything,
 one primary button per panel, 44px hit areas, no emoji icons, text fitted with fitSize, etc.).
 
 FILES YOU MAY EDIT: src/game/game.ts, src/game/meta.ts, and a NEW file src/game/missions.ts.
