@@ -58,9 +58,9 @@ const TIERS = {
   },
 };
 const WEAPON = {
-  1: { src: ART + 'weapon-club.png',       grip: [256, 440], len: 0.55 },
-  2: { src: ART + 'weapon-bone-sword.png', grip: [256, 440], len: 0.6 },
-  3: { src: ART + 'weapon-fire-sword.png', grip: [256, 440], len: 0.62 },
+  1: { src: ART + 'weapon-club.png',       grip: [256, 405], len: 0.55 },
+  2: { src: ART + 'weapon-bone-sword.png', grip: [256, 410], len: 0.6 },
+  3: { src: ART + 'weapon-fire-sword.png', grip: [256, 415], len: 0.62 },
 };
 const SHIELD = { src: ART + 'shield-turtle.png', grip: [256, 256], fromTier: 3 };
 
@@ -186,6 +186,13 @@ function drawGrok(ctx, x, y, H) {
     const ws = (H * W.len) / 360;
     ctx.save(); ctx.translate(hx, hy); ctx.rotate(ang * Math.PI / 180);
     ctx.drawImage(W.img, -W.grip[0] * ws, -W.grip[1] * ws, W.img.naturalWidth * ws, W.img.naturalHeight * ws);
+    ctx.restore();
+    // Grip: redraw the fist on top of the handle, so the handle goes INTO the hand
+    // and the pommel shows below it (fingers wrapped around the grip).
+    const fr = H * 0.048 * (p.fist || 1);
+    ctx.save();
+    ctx.beginPath(); ctx.ellipse(hx, hy, fr * 1.05, fr, 0, 0, Math.PI * 2); ctx.clip();
+    ctx.drawImage(im, ox, oy, im.naturalWidth * s, im.naturalHeight * s);
     ctx.restore();
   }
   if (!shieldBehind) drawShield();
