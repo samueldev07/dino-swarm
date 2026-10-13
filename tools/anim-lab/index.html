@@ -27,6 +27,7 @@
   <button id="auto" class="on">Auto demo</button>
   <button id="up">UPGRADE ▲</button>
   <button id="flip" class="ghost">Face left/right</button>
+  <button id="armed" class="on">Weapon in hand</button>
   <span class="note">Big view left · real game size (≈90 px) right</span>
 </header>
 <canvas id="c"></canvas>
@@ -57,6 +58,17 @@ const TIERS = {
     strike: P('grok-3-strike.png', [623, 631], [83, 342],  361, 0.76, 115),
   },
 };
+// ARMED mode: every pose re-drawn WITH the weapon (and tier-3 shield) gripped in hand, on a 1024 canvas.
+// Anchors: [hip-centre x, feet y] measured from each image's alpha (armed-anchor.json).
+const ARMED_ANCHOR = {"1-idle": [489, 847], "1-run": [505, 875], "1-run2": [515, 859], "1-raise": [584, 871], "1-strike": [608, 857], "2-idle": [515, 971], "2-run": [475, 937], "2-run2": [497, 937], "2-raise": [586, 931], "2-strike": [548, 938], "3-idle": [536, 927], "3-run": [456, 912], "3-run2": [457, 909], "3-raise": [582, 931], "3-strike": [518, 923]};
+let armed = true;
+for (const t in TIERS) {
+  TIERS[t].run2 = { ...TIERS[t].run };                  // second run frame shares the run scale
+  for (const p in TIERS[t]) {
+    const a = ARMED_ANCHOR[`${t}-${p}`];
+    TIERS[t][p].armed = { src: `armed-${t}-${p}.png`, cx: a[0], foot: a[1] };
+  }
+}
 const WEAPON = {
   1: { src: ART + 'weapon-club.png',       grip: [256, 405], len: 0.55 },
   2: { src: ART + 'weapon-bone-sword.png', grip: [256, 410], len: 0.6 },
@@ -65,7 +77,7 @@ const WEAPON = {
 const SHIELD = { src: ART + 'shield-turtle.png', grip: [256, 256], fromTier: 3 };
 
 const load = (src) => { const i = new Image(); i.src = src; return i; };
-for (const t in TIERS) for (const p in TIERS[t]) TIERS[t][p].img = load(TIERS[t][p].src);
+for (const t in TIERS) for (const p in TIERS[t]) { const q = TIERS[t][p]; q.img = load(q.src); q.armed.img = load(q.armed.src); }
 for (const t in WEAPON) WEAPON[t].img = load(WEAPON[t].src);
 SHIELD.img = load(SHIELD.src);
 const ready = (i) => i && i.complete && i.naturalWidth > 0;
@@ -89,6 +101,7 @@ $('#atk').onclick = () => { auto = false; attack(); sync(); };
 $('#auto').onclick = () => { auto = !auto; sync(); };
 $('#up').onclick = () => upgrade();
 $('#flip').onclick = () => facing = -facing;
+$('#armed').onclick = (e) => { armed = !armed; e.target.classList.toggle('on', armed); };
 function sync() {
   document.querySelectorAll('[data-tier]').forEach((b) => b.classList.toggle('on', +b.dataset.tier === tier));
   $('#run').classList.toggle('on', running); $('#auto').classList.toggle('on', auto);
@@ -110,8 +123,8 @@ function currentPose() {
   }
   if (running && T.run) {
     // 2-frame run: contact (run pose) / passing (idle pose), ~6 steps per second
-    const contact = Math.sin(phase) > -0.35;
-    const p = contact ? T.run : T.idle;
+    const contact = Math.sin(phase) > 0;
+    const p = contact ? T.run : (armed ? T.run2 : T.idle);
     return { p, ang: p.ang + Math.sin(phase) * 12 };
   }
   const p = T.idle;
@@ -141,7 +154,9 @@ function drawGrok(ctx, x, y, H) {
   ctx.translate(0, -bob);
   ctx.rotate(lean);
   ctx.scale(1 - squash * 0.5, 1 + squash);
-  const im = p.img, ox = -p.cx * s, oy = -im.naturalHeight * s;
+  const useArmed = armed && ready(p.armed.img);
+  const im = useArmed ? p.armed.img : p.img;
+  const ox = -(useArmed ? p.armed.cx : p.cx) * s, oy = -(useArmed ? p.armed.foot : im.naturalHeight) * s;
   const at = (q) => [ox + q[0] * s, oy + q[1] * s];
 
   // slash arc (behind the weapon, in front of the body) during the strike
@@ -172,7 +187,7 @@ function drawGrok(ctx, x, y, H) {
   // the shield sits behind the body when the off arm is pulled back (strike), in front otherwise
   const shieldBehind = p === TIERS[tier].strike;
   const drawShield = () => {
-    if (tier < SHIELD.fromTier || !ready(SHIELD.img)) return;
+    if (useArmed || tier < SHIELD.fromTier || !ready(SHIELD.img)) return;
     const [sx, sy] = at(p.off), ss = (H * 0.4) / 300;
     ctx.drawImage(SHIELD.img, sx - SHIELD.grip[0] * ss, sy - SHIELD.grip[1] * ss, SHIELD.img.naturalWidth * ss, SHIELD.img.naturalHeight * ss);
   };
@@ -181,7 +196,7 @@ function drawGrok(ctx, x, y, H) {
   if (flash > 0) { ctx.globalAlpha = flash; ctx.drawImage(whiteOf(im), ox, oy, im.naturalWidth * s, im.naturalHeight * s); ctx.globalAlpha = 1; }
 
   // weapon on the weapon fist
-  if (ready(W.img)) {
+  if (!useArmed && ready(W.img)) {
     const [hx, hy] = at(p.hand);
     const ws = (H * W.len) / 360;
     ctx.save(); ctx.translate(hx, hy); ctx.rotate(ang * Math.PI / 180);

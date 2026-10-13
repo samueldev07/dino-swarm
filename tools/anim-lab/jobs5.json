@@ -1,0 +1,65 @@
+{
+ "shots": [
+  {
+   "id": "armed-1-idle",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/armed-1-idle-old.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/armed-1-run.jpg"
+    }
+   ],
+   "prompt": "Edit the FIRST reference image. Keep exactly the same character, outfit, standing pose, size, position and art style. Move the weapon to the OTHER hand: he now holds it in the hand on the RIGHT side of the image (the same hand that holds it in the second reference image), fingers wrapped around the handle, weapon resting at his side angled up. The other hand is an empty relaxed fist. Plain flat pure white background, no shadow, no text."
+  },
+  {
+   "id": "armed-2-idle",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/armed-2-idle-old.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/armed-2-run.jpg"
+    }
+   ],
+   "prompt": "Edit the FIRST reference image. Keep exactly the same character, outfit, standing pose, size, position and art style. Move the weapon to the OTHER hand: he now holds it in the hand on the RIGHT side of the image (the same hand that holds it in the second reference image), fingers wrapped around the handle, weapon resting at his side angled up. The other hand is an empty relaxed fist. Plain flat pure white background, no shadow, no text."
+  },
+  {
+   "id": "armed-1-run2",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/armed-1-run.jpg"
+    }
+   ],
+   "prompt": "Edit the reference image into the NEXT frame of the same run cycle: the PASSING position - both legs under the body, one knee lifted and passing the other leg, body slightly higher, arms and weapon (and shield if any) in nearly the same place, same character, same outfit, same size, same position in the frame, same art style. Plain flat pure white background, no shadow, no motion lines, no text."
+  },
+  {
+   "id": "armed-2-run2",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/armed-2-run.jpg"
+    }
+   ],
+   "prompt": "Edit the reference image into the NEXT frame of the same run cycle: the PASSING position - both legs under the body, one knee lifted and passing the other leg, body slightly higher, arms and weapon (and shield if any) in nearly the same place, same character, same outfit, same size, same position in the frame, same art style. Plain flat pure white background, no shadow, no motion lines, no text."
+  },
+  {
+   "id": "armed-3-run2",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/armed-3-run.jpg"
+    }
+   ],
+   "prompt": "Edit the reference image into the NEXT frame of the same run cycle: the PASSING position - both legs under the body, one knee lifted and passing the other leg, body slightly higher, arms and weapon (and shield if any) in nearly the same place, same character, same outfit, same size, same position in the frame, same art style. Plain flat pure white background, no shadow, no motion lines, no text."
+  }
+ ]
+}

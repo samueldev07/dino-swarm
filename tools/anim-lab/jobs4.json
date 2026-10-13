@@ -1,0 +1,184 @@
+{
+ "shots": [
+  {
+   "id": "armed-1-idle",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: holding the a knobby wooden club wrapped with vines in his RIGHT hand, fingers clearly wrapped around the handle, weapon resting at his side angled up and forward. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-1.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-club.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-1-run",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: holding the a knobby wooden club wrapped with vines in his RIGHT hand while running, fingers wrapped around the handle, weapon carried forward and up. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-1-run.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-club.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-1-raise",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: gripping the a knobby wooden club wrapped with vines with his RIGHT hand raised high above and behind his head, the weapon pointing back over his shoulder, ready to strike. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-1-raise.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-club.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-1-strike",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: the a knobby wooden club wrapped with vines gripped in his RIGHT hand, swung down and forward in front of him, weapon pointing forward-down at the end of the strike. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-1-strike.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-club.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-2-idle",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: holding the a jagged bone sword with a leather-wrapped hilt in his RIGHT hand, fingers clearly wrapped around the handle, weapon resting at his side angled up and forward. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-2.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-bone-sword.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-2-run",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: holding the a jagged bone sword with a leather-wrapped hilt in his RIGHT hand while running, fingers wrapped around the handle, weapon carried forward and up. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-2-run.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-bone-sword.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-2-raise",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: gripping the a jagged bone sword with a leather-wrapped hilt with his RIGHT hand raised high above and behind his head, the weapon pointing back over his shoulder, ready to strike. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-2-raise.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-bone-sword.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-2-strike",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: the a jagged bone sword with a leather-wrapped hilt gripped in his RIGHT hand, swung down and forward in front of him, weapon pointing forward-down at the end of the strike. The weapon looks like the second reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-2-strike.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-bone-sword.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-3-idle",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: holding the a glowing amber lava-stone fire sword in his RIGHT hand, fingers clearly wrapped around the handle, weapon resting at his side angled up and forward. The weapon looks like the second reference image. A spiked turtle-shell shield is strapped to his LEFT forearm (not held in the fist), matching the third reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-body-3.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-fire-sword.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/shield-turtle.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-3-run",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: holding the a glowing amber lava-stone fire sword in his RIGHT hand while running, fingers wrapped around the handle, weapon carried forward and up. The weapon looks like the second reference image. A spiked turtle-shell shield is strapped to his LEFT forearm (not held in the fist), matching the third reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-3-run.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-fire-sword.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/shield-turtle.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-3-raise",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: gripping the a glowing amber lava-stone fire sword with his RIGHT hand raised high above and behind his head, the weapon pointing back over his shoulder, ready to strike. The weapon looks like the second reference image. A spiked turtle-shell shield is strapped to his LEFT forearm (not held in the fist), matching the third reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-3-raise.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-fire-sword.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/shield-turtle.png"
+    }
+   ]
+  },
+  {
+   "id": "armed-3-strike",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY the same character, outfit, pose, body position, size and art style - change nothing else. Add a weapon: the a glowing amber lava-stone fire sword gripped in his RIGHT hand, swung down and forward in front of him, weapon pointing forward-down at the end of the strike. The weapon looks like the second reference image. A spiked turtle-shell shield is strapped to his LEFT forearm (not held in the fist), matching the third reference image. The hand naturally grips it (thumb and fingers around the handle, correct perspective). Plain flat pure white background, no shadow, no motion lines, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/tools/anim-lab/raw/grok-3-strike.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/weapon-fire-sword.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/caveman-test/shield-turtle.png"
+    }
+   ]
+  }
+ ]
+}

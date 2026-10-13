@@ -28,9 +28,11 @@ for y0 in range(int(H * 0.45), H):
         if len(comp) > 60:
             for x, y in comp: ap[x, y] = 0
 a = a.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8))
-out = im.convert('RGBA'); out.putalpha(a); out = out.crop(a.getbbox()); out.save(dst)
+out = im.convert("RGBA"); out.putalpha(a)
+if "--nocrop" not in sys.argv: out = out.crop(a.getbbox())
+out.save(dst)
 print(dst, out.size)
-if len(sys.argv) > 3:
+if len(sys.argv) > 3 and not sys.argv[3].startswith("--"):
     g = Image.new('RGB', out.size, (125, 160, 90)); g.paste(out, (0, 0), out); d = ImageDraw.Draw(g)
     for x in range(0, out.width, 50): d.line([(x, 0), (x, out.height)], fill=(255, 255, 255) if x % 100 == 0 else (190, 190, 190))
     for y in range(0, out.height, 50): d.line([(0, y), (out.width, y)], fill=(255, 255, 255) if y % 100 == 0 else (190, 190, 190))
