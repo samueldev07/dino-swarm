@@ -90,7 +90,7 @@ export type GameEvent =
   | { t: 'fire'; w: WeaponId }
   | { t: 'meteor'; x: number; y: number; r: number }
   | { t: 'boss'; n: number }
-  | { t: 'bossDead'; x: number; y: number }
+  | { t: 'bossDead'; x: number; y: number; tier: number }
   | { t: 'wave'; kind: 'ring' | 'stream' | 'brute' }
   | { t: 'win' }
   | { t: 'dead' };
@@ -602,7 +602,7 @@ export class Model {
       this.pickups.push(this.pickup('chest', e.x, e.y, 1));
       this.pickups.push(this.pickup('magnet', e.x + 40, e.y, 1));
       this.pickups.push(this.pickup('coin', e.x - 40, e.y, 25));
-      this.events.push({ t: 'bossDead', x: e.x, y: e.y });
+      this.events.push({ t: 'bossDead', x: e.x, y: e.y, tier: e.tier });
       this.bossKills++;
       if (this.boss === e) this.boss = this.enemies.find((o) => !o.dead && o.def.kind === 'boss') ?? null;
     } else if (e.def.kind === 'brute' || (e.elite && this.rng() < 0.15)) {
