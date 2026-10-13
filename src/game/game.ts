@@ -631,21 +631,16 @@ export class Game {
       ctx.ellipse(e.x, e.y + fly, e.r, e.r * 0.34, 0, 0, Math.PI * 2);
     }
     ctx.fill();
-    // Hero light shaft: a soft, blurred beam from above + a faint glow on the ground, baked once.
+    // Hero aura: a soft warm glow wrapped around his body (no beam), baked once.
     if (!this.heroPool) {
-      const c = document.createElement('canvas'); c.width = 160; c.height = 320;
+      const c = document.createElement('canvas'); c.width = 200; c.height = 240;
       const x = c.getContext('2d')!;
-      x.filter = 'blur(10px)';
-      const beam = x.createLinearGradient(0, 0, 0, 300);
-      beam.addColorStop(0, 'rgba(255,236,190,0)'); beam.addColorStop(0.55, 'rgba(255,236,190,0.14)'); beam.addColorStop(1, 'rgba(255,230,170,0.26)');
-      x.fillStyle = beam;
-      x.beginPath(); x.moveTo(62, 10); x.lineTo(98, 10); x.lineTo(126, 285); x.lineTo(34, 285); x.closePath(); x.fill();
-      const pool = x.createRadialGradient(80, 285, 0, 80, 285, 70);
-      pool.addColorStop(0, 'rgba(255,230,170,0.35)'); pool.addColorStop(1, 'rgba(255,230,170,0)');
-      x.fillStyle = pool; x.beginPath(); x.ellipse(80, 285, 70, 22, 0, 0, Math.PI * 2); x.fill();
+      const gr = x.createRadialGradient(100, 130, 0, 100, 130, 105);
+      gr.addColorStop(0, 'rgba(255,232,180,0.30)'); gr.addColorStop(0.55, 'rgba(255,225,165,0.14)'); gr.addColorStop(1, 'rgba(255,225,165,0)');
+      x.fillStyle = gr; x.beginPath(); x.ellipse(100, 130, 100, 115, 0, 0, Math.PI * 2); x.fill();
       this.heroPool = c;
     }
-    ctx.drawImage(this.heroPool!, m.px - 80, m.py - 290, 160, 320);
+    ctx.drawImage(this.heroPool!, m.px - 100, m.py - 190, 200, 240);
     // Hero: one clear ground shadow under the feet, sized to the art (not the hitbox).
     // Soft contact shadow: baked radial falloff (dark core, feathered edge), no hard rim.
     if (!this.softShadow) {
@@ -1287,7 +1282,7 @@ export class Game {
     this.ui.swallow();
   }
 
-  private card(ctx: Ctx, id: string, r: Rect, o: Offer, land: boolean, ready: boolean, idx: number): boolean {
+  private card(ctx: Ctx, id: string, r: Rect, o: Offer, land: boolean, ready: boolean, _idx: number): boolean {
     const p = this.input.p;
     const over = inside(r, p.x, p.y);
     if (ready && p.justDown && over && !this.ui.claimed) { this.ui.claimed = true; this.pressedCard = id; }
@@ -1319,24 +1314,34 @@ export class Game {
 
     const tx = land ? r.w / 2 : ix + isz + 24;
     const align: CanvasTextAlign = land ? 'center' : 'left';
-    const tw = land ? r.w - 36 : r.w - tx - 20;
-    let y = land ? iy + isz + 52 : 52;
-    const ns = fitSize(ctx, def.name, 34, tw);
+    const tw = land ? r.w - 56 : r.w - tx - 28;
+    let y = land ? iy + isz + 44 : 46;
+    // Title in ink, small-caps serif.
+    const ns = fitSize(ctx, def.name, 32, tw);
     ctx.font = fontFor(ns); ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillStyle = INK;
     ctx.fillText(def.name, tx, y);
-    y += 40;
-    if (isNew) outlinedText(ctx, 'NEW!', tx, y, 24, '#f0c060', INK, align);
-    else if (o.level > 0) {
-      const pipW = 22, gap = 6, total = MAX_LEVEL * pipW + (MAX_LEVEL - 1) * gap;
-      const x0 = land ? tx - total / 2 : tx;
+    y += 34;
+    // Level as small inked diamonds; a new skill gets a quiet rust-red label instead of a sticker.
+    if (isNew) {
+      text(ctx, 'NEW SKILL', tx, y, 17, '#9a3a22', align, 700);
+    } else if (o.level > 0) {
+      const d = 7, gap = 20, total = (MAX_LEVEL - 1) * gap;
+      const x0 = land ? tx - total / 2 : tx + d;
       for (let i = 0; i < MAX_LEVEL; i++) {
-        ctx.fillStyle = INK; rrect(ctx, x0 + i * (pipW + gap) - 2, y - 8, pipW + 4, 16, 6); ctx.fill();
-        ctx.fillStyle = i < o.level - 1 ? '#f0a020' : i === o.level - 1 ? '#ffe07a' : '#d8c8a0';
-        rrect(ctx, x0 + i * (pipW + gap), y - 6, pipW, 12, 5); ctx.fill();
+        const cx = x0 + i * gap;
+        ctx.beginPath(); ctx.moveTo(cx, y - d - 1.5); ctx.lineTo(cx + d + 1.5, y); ctx.lineTo(cx, y + d + 1.5); ctx.lineTo(cx - d - 1.5, y); ctx.closePath();
+        ctx.fillStyle = INK; ctx.fill();
+        ctx.beginPath(); ctx.moveTo(cx, y - d + 1); ctx.lineTo(cx + d - 1, y); ctx.lineTo(cx, y + d - 1); ctx.lineTo(cx - d + 1, y); ctx.closePath();
+        ctx.fillStyle = i < o.level - 1 ? '#b8792e' : i === o.level - 1 ? '#e8b04a' : '#e2d3b0';
+        ctx.fill();
       }
     }
-    y += 38;
-    this.wrap(ctx, desc, tx, y, tw, 24, align, '#5a4636');
+    y += 22;
+    // thin hand-drawn rule, then the description (balanced lines, no orphan words)
+    ctx.strokeStyle = 'rgba(90,70,54,.35)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(tx - (land ? tw * 0.3 : 0), y); ctx.lineTo(tx + (land ? tw * 0.3 : tw * 0.6), y + 1); ctx.stroke();
+    y += 26;
+    this.wrapBalanced(ctx, desc, tx, y, tw, 23, align, '#4a3a2c');
     let evolution = '';
     if (o.id !== 'heal' && o.id !== 'gold') {
       if (isWeapon(o.id)) evolution = 'Evolves with ' + SKILLS[EVOLUTIONS[o.id].passive].name;
@@ -1345,12 +1350,38 @@ export class Game {
         if (weapon) evolution = 'Evolves ' + SKILLS[weapon].name;
       }
     }
-    if (evolution) text(ctx, evolution, tx, land ? r.h - 62 : r.h - 24, fitSize(ctx, evolution, 19, tw), '#7a5a3a', align);
-    if (!pressed && this.keys.size === 0 && !matchMedia('(pointer: coarse)').matches) {
-      text(ctx, `[${idx + 1}]`, land ? r.w / 2 : r.w - 34, r.h - 30, 18, '#a08a6a', 'center');
+    if (evolution) {
+      const ey = land ? r.h - 56 : r.h - 30;
+      ctx.font = `italic 600 ${fitSize(ctx, evolution, 18, tw)}px "Alegreya", Georgia, serif`;
+      ctx.fillStyle = '#7a5a3a'; ctx.textAlign = align; ctx.textBaseline = 'middle';
+      ctx.fillText(evolution, tx, ey);
     }
     ctx.restore();
     return clicked;
+  }
+
+  /** Word wrap that splits lines evenly (no single orphan word on the last line). */
+  private wrapBalanced(ctx: Ctx, str: string, x: number, y: number, maxW: number, size: number, align: CanvasTextAlign, color: string): void {
+    ctx.font = fontFor(size, 600);
+    const full = ctx.measureText(str).width;
+    const lines = Math.max(1, Math.ceil(full / maxW));
+    let w = maxW;
+    if (lines > 1) {
+      // shrink the box until one more line would appear: lines come out even
+      let lo = full / lines, hi = maxW;
+      for (let i = 0; i < 12; i++) { const mid = (lo + hi) / 2; if (this.countLines(ctx, str, mid) > lines) lo = mid; else hi = mid; }
+      w = hi + 1;
+    }
+    this.wrap(ctx, str, x, y, w, size, align, color);
+  }
+
+  private countLines(ctx: Ctx, str: string, maxW: number): number {
+    let n = 1, line = '';
+    for (const word of str.split(' ')) {
+      const t = line ? line + ' ' + word : word;
+      if (ctx.measureText(t).width > maxW && line) { n++; line = word; } else line = t;
+    }
+    return n;
   }
 
   private wrap(ctx: Ctx, str: string, x: number, y: number, maxW: number, size: number, align: CanvasTextAlign, color: string): void {
