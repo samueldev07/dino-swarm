@@ -17,7 +17,7 @@ import { Sprites, type Sprite } from './sprites';
 import { Hero } from './hero';
 import { Clip } from './clips';
 import { Fx } from './fx';
-import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar } from './ui';
+import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar, nine, kitImage } from './ui';
 import { INK, fontFor, rrect } from './draw';
 import { type Meta, loadMeta, saveMeta, speciesUnlocked, zoneUnlocked, buyCamp } from './meta';
 
@@ -813,18 +813,25 @@ export class Game {
     // XP bar + level medallion
     const lvR = 34;
     const xr: Rect = { x: left + lvR, y: top + 14, w: pauseR.x - 16 - left - lvR, h: 22 };
-    ctx.fillStyle = INK; rrect(ctx, xr.x - 3, xr.y - 3, xr.w + 6, xr.h + 6, 14); ctx.fill();
-    ctx.fillStyle = '#3e3028'; rrect(ctx, xr.x, xr.y, xr.w, xr.h, 11); ctx.fill();
     const pct = Math.min(1, m.xp / m.xpNeed);
-    if (pct > 0) {
-      const g = ctx.createLinearGradient(0, xr.y, 0, xr.y + xr.h);
-      g.addColorStop(0, '#ffe07a'); g.addColorStop(1, '#f0a020');
-      ctx.fillStyle = g; rrect(ctx, xr.x, xr.y, Math.max(xr.h, xr.w * pct), xr.h, 11); ctx.fill();
+    if (kitImage('ui-bar-frame')) {
+      bar(ctx, { x: xr.x + 10, y: xr.y + 2, w: xr.w - 10, h: xr.h - 4 }, pct, '#d89a3a');
+    } else {
+      ctx.fillStyle = INK; rrect(ctx, xr.x - 3, xr.y - 3, xr.w + 6, xr.h + 6, 14); ctx.fill();
+      ctx.fillStyle = '#3e3028'; rrect(ctx, xr.x, xr.y, xr.w, xr.h, 11); ctx.fill();
+      if (pct > 0) {
+        const g = ctx.createLinearGradient(0, xr.y, 0, xr.y + xr.h);
+        g.addColorStop(0, '#ffe07a'); g.addColorStop(1, '#f0a020');
+        ctx.fillStyle = g; rrect(ctx, xr.x, xr.y, Math.max(xr.h, xr.w * pct), xr.h, 11); ctx.fill();
+      }
     }
-    ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR + 3, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ffb02e'; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ffd86a'; ctx.beginPath(); ctx.arc(left + lvR - 3, xr.y + xr.h / 2 - 4, lvR - 7, 0, Math.PI * 2); ctx.fill();
-    outlinedText(ctx, String(m.level), left + lvR, xr.y + xr.h / 2 + 1, fitSize(ctx, String(m.level), 30, lvR * 1.5), '#fff', INK, 'center');
+    const med = kitImage('ui-medallion');
+    if (med) ctx.drawImage(med, left + lvR - (lvR + 8), xr.y + xr.h / 2 - (lvR + 8), (lvR + 8) * 2, (lvR + 8) * 2);
+    else {
+      ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR + 3, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffb02e'; ctx.beginPath(); ctx.arc(left + lvR, xr.y + xr.h / 2, lvR, 0, Math.PI * 2); ctx.fill();
+    }
+    outlinedText(ctx, String(m.level), left + lvR, xr.y + xr.h / 2 + 1, fitSize(ctx, String(m.level), 30, lvR * 1.5), '#f6ead0', INK, 'center');
 
     if (this.firstRun) text(ctx, 'XP', xr.x + 45, xr.y + xr.h / 2, 18, '#fff', 'left', 700);
     // pause
@@ -994,9 +1001,11 @@ export class Game {
     ctx.scale(s, s);
     ctx.translate(-r.w / 2, -r.h / 2);
     // paper card: ink outline, cream face, coloured top edge
-    ctx.fillStyle = INK; rrect(ctx, -5, -5, r.w + 10, r.h + 12, 26); ctx.fill();
-    ctx.fillStyle = '#f6e8c8'; rrect(ctx, 0, 0, r.w, r.h, 22); ctx.fill();
-    ctx.fillStyle = '#e8d4a8'; rrect(ctx, 0, r.h - 14, r.w, 14, 8); ctx.fill();
+    if (!nine(ctx, 'ui-panel', { x: -10, y: -10, w: r.w + 20, h: r.h + 20 }, land ? 0.5 : 0.4)) {
+      ctx.fillStyle = INK; rrect(ctx, -5, -5, r.w + 10, r.h + 12, 26); ctx.fill();
+      ctx.fillStyle = '#f6e8c8'; rrect(ctx, 0, 0, r.w, r.h, 22); ctx.fill();
+      ctx.fillStyle = '#e8d4a8'; rrect(ctx, 0, r.h - 14, r.w, 14, 8); ctx.fill();
+    }
 
     const icon = this.sprites.icon(o.id, def.color);
     const isz = land ? 110 : 120;
@@ -1210,7 +1219,7 @@ export class Game {
     // living backdrop: slow-scrolling ground
     ctx.save();
     ctx.translate(-((this.time * 30) % 512), -((this.time * 12) % 512));
-    ctx.fillStyle = this.ground[meta.zone];
+    ctx.fillStyle = this.groundFor(meta.zone);
     ctx.fillRect(0, 0, v.w + 1024, v.h + 1024);
     ctx.restore();
     const g = ctx.createLinearGradient(0, 0, 0, v.h);
@@ -1242,7 +1251,10 @@ export class Game {
     ctx.beginPath(); ctx.ellipse(cx, dy + 10, 90, 22, 0, 0, Math.PI * 2); ctx.fill();
     ctx.save();
     if (!unlocked) ctx.filter = 'brightness(0) opacity(.6)';
-    this.blit(ctx, dino, cx, dy + Math.sin(this.time * 2.4) * 3, 2.1, 1, 1, 0, 0);
+    if (this.hero.ready) {
+      this.hero.update(1 / 60, false);
+      this.hero.draw(ctx, cx, dy + 10, 230, 1, false, 0, 1);
+    } else this.blit(ctx, dino, cx, dy + Math.sin(this.time * 2.4) * 3, 2.1, 1, 1, 0, 0);
     ctx.restore();
     outlinedText(ctx, sp.name.toUpperCase(), cx, dy + 50, 40, '#fff', INK, 'center');
     const blurb = unlocked ? sp.blurb : `Clear ${ZONES[sp.unlockZone].name} to unlock`;
@@ -1314,7 +1326,7 @@ export class Game {
   private drawCamp(ctx: Ctx): void {
     const v = this.v;
     const meta = this.meta;
-    ctx.fillStyle = this.ground[meta.zone];
+    ctx.fillStyle = this.groundFor(meta.zone);
     ctx.fillRect(0, 0, v.w, v.h);
     this.ui.scrim(ctx, v.w, v.h);
     const w = Math.min(760, v.w - 40);

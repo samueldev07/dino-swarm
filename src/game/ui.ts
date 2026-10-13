@@ -5,6 +5,43 @@ type Ctx = CanvasRenderingContext2D;
 
 export interface Rect { x: number; y: number; w: number; h: number }
 
+/**
+ * Painted folk UI kit (art/ui-folk, see art/STYLE-LOCK). Images come from the asset
+ * layer; when one is missing the old procedural drawing is used, so the game never
+ * breaks while art is still landing.
+ */
+type ImgGet = (key: string) => HTMLImageElement | undefined;
+let kit: ImgGet = () => undefined;
+/** Source-pixel insets [left, top, right, bottom] that must not stretch (art/ui-folk/slices.json). */
+const SLICES: Record<string, [number, number, number, number]> = {
+  'ui-panel': [72, 72, 72, 72], 'ui-card': [56, 56, 56, 56],
+  'ui-btn-primary': [88, 24, 88, 24], 'ui-btn-primary-pressed': [88, 24, 88, 24],
+  'ui-btn-ad': [88, 24, 88, 24], 'ui-btn-quiet': [88, 24, 88, 24],
+  'ui-ribbon-win': [190, 48, 190, 48], 'ui-ribbon-lose': [190, 48, 190, 48],
+  'ui-bar-frame': [42, 16, 42, 16], 'ui-medallion': [32, 32, 32, 32], 'ui-iconbtn': [32, 32, 32, 32],
+};
+export function setUiKit(get: ImgGet): void { kit = get; }
+export function kitImage(key: string): HTMLImageElement | undefined { return kit(key); }
+
+/** Draws a 9-slice image into r; `scale` maps source pixels of the fixed borders to world units. */
+export function nine(ctx: Ctx, key: string, r: Rect, scale = 0.5): boolean {
+  const img = kit(key);
+  if (!img) return false;
+  const [l, t, rr, b] = SLICES[key] ?? [0, 0, 0, 0];
+  const W = img.naturalWidth, H = img.naturalHeight;
+  const k = Math.min(scale, r.w / (l + rr || 1), r.h / (t + b || 1));
+  const L = l * k, T = t * k, R = rr * k, B = b * k;
+  const xs = [0, l, W - rr, W], ys = [0, t, H - b, H];
+  const dx = [r.x, r.x + L, r.x + r.w - R, r.x + r.w], dy = [r.y, r.y + T, r.y + r.h - B, r.y + r.h];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      const sw = xs[i + 1] - xs[i], sh = ys[j + 1] - ys[j], w = dx[i + 1] - dx[i], h = dy[j + 1] - dy[j];
+      if (sw > 0 && sh > 0 && w > 0 && h > 0) ctx.drawImage(img, xs[i], ys[j], sw, sh, dx[i], dy[j], w, h);
+    }
+  }
+  return true;
+}
+
 export function inside(r: Rect, x: number, y: number): boolean {
   return x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
 }
@@ -90,6 +127,32 @@ export class UI {
 
     ctx.save();
     if (disabled) ctx.filter = 'grayscale(.85) brightness(.9)';
+    const plank = opts.tone === 'gold' || opts.tone === 'green' ? (pressed ? 'ui-btn-primary-pressed' : 'ui-btn-primary')
+      : opts.tone === 'blue' ? 'ui-btn-ad' : 'ui-btn-quiet';
+    if (kit(plank)) {
+      const pr = { x: r.x - 8, y: r.y - 6 + (pressed ? 2 : 0), w: r.w + 16, h: r.h + 12 };
+      if (pressed) { ctx.translate(r.x + r.w / 2, r.y + r.h / 2); ctx.scale(0.97, 0.97); ctx.translate(-(r.x + r.w / 2), -(r.y + r.h / 2)); }
+      nine(ctx, plank, pr, Math.min(0.55, pr.h / 160));
+      const light = opts.tone === 'gold' || opts.tone === 'green';
+      const fill = light ? '#2a1d16' : '#f3e6cc', edge = light ? 'rgba(255,236,190,.55)' : '#1e1510';
+      const sub = opts.sub, room = r.w - 40;
+      const size = fitSize(ctx, opts.label, opts.size ?? Math.round(r.h * (sub ? 0.34 : 0.42)), room);
+      const cy = r.y + (pressed ? 2 : 0) + r.h * (sub ? 0.4 : 0.52);
+      outlinedText(ctx, opts.label, r.x + r.w / 2, cy, size, fill, edge, 'center');
+      if (sub) {
+        let subSize = fitSize(ctx, sub, Math.round(size * 0.62), room);
+        const sy = cy + size * 0.72;
+        if (opts.subIcon) {
+          subSize = fitSize(ctx, sub, subSize, room - subSize * 1.4);
+          ctx.font = fontFor(subSize);
+          const tw = ctx.measureText(sub).width, is = subSize * 1.25, x0 = r.x + r.w / 2 - (is + 6 + tw) / 2;
+          opts.subIcon(ctx, x0 + is / 2, sy, is);
+          outlinedText(ctx, sub, x0 + is + 6, sy, subSize, fill, edge, 'left');
+        } else outlinedText(ctx, sub, r.x + r.w / 2, sy, subSize, fill, edge, 'center');
+      }
+      ctx.restore();
+      return clicked;
+    }
 
     ctx.fillStyle = INK;
     rrect(ctx, r.x - 3, r.y - 3 + dy, r.w + 6, r.h + lip + 6, rad + 3);
@@ -137,6 +200,14 @@ export class UI {
     const { pressed, clicked } = this.track(id, r, false);
     const dy = pressed ? 3 : 0;
     ctx.save();
+    const ib = kit('ui-iconbtn');
+    if (ib) {
+      ctx.drawImage(ib, r.x - 6, r.y - 6 + dy, r.w + 12, r.h + 12);
+      ctx.translate(0, dy);
+      drawIcon();
+      ctx.restore();
+      return clicked;
+    }
     ctx.fillStyle = INK;
     rrect(ctx, r.x - 3, r.y - 3 + dy, r.w + 6, r.h + 11, 20);
     ctx.fill();
@@ -165,7 +236,7 @@ export class UI {
 
   /** Dimmer behind a modal. Swallows stray taps so the world never sees them. */
   scrim(ctx: Ctx, w: number, h: number): void {
-    ctx.fillStyle = 'rgba(20,12,6,.62)';
+    ctx.fillStyle = 'rgba(16,14,8,.6)';
     ctx.fillRect(0, 0, w, h);
   }
 
@@ -177,6 +248,10 @@ export class UI {
 
 /** Parchment-and-stone panel used by every modal. */
 export function panel(ctx: Ctx, r: Rect, title?: string): void {
+  if (nine(ctx, 'ui-panel', { x: r.x - 14, y: r.y - 14, w: r.w + 28, h: r.h + 28 }, 0.6)) {
+    if (title) ribbon(ctx, r.x + r.w / 2, r.y - 40, Math.min(r.w * 0.8, 420), title, 'green');
+    return;
+  }
   ctx.save();
   ctx.fillStyle = INK;
   rrect(ctx, r.x - 5, r.y - 5, r.w + 10, r.h + 10, 30);
@@ -200,6 +275,7 @@ export function panel(ctx: Ctx, r: Rect, title?: string): void {
  * Result card in the reference style: an orange frame around cream paper.
  */
 export function fancyPanel(ctx: Ctx, r: Rect): void {
+  if (nine(ctx, 'ui-panel', { x: r.x - 14, y: r.y - 14, w: r.w + 28, h: r.h + 28 }, 0.6)) return;
   ctx.save();
   ctx.fillStyle = INK;
   rrect(ctx, r.x - 5, r.y - 5, r.w + 10, r.h + 10, 40);
@@ -224,6 +300,14 @@ export function fancyPanel(ctx: Ctx, r: Rect): void {
 
 /** Ribbon banner across the top of a card, with folded tails. */
 export function ribbon(ctx: Ctx, cx: number, y: number, w: number, text: string, tone: 'green' | 'red'): void {
+  const key = tone === 'green' ? 'ui-ribbon-win' : 'ui-ribbon-lose';
+  if (kit(key)) {
+    const h = 96, ww = w + 120;
+    nine(ctx, key, { x: cx - ww / 2, y: y - 6, w: ww, h }, 0.5);
+    const size = fitSize(ctx, text, 40, w - 40);
+    outlinedText(ctx, text, cx, y + h * 0.4, size, '#f6ead0', '#2a1d16', 'center');
+    return;
+  }
   const [top, bottom, dark, outline] = tone === 'green'
     ? ['#7ee05a', '#3fae35', '#2c7a24', '#1f5a1a']
     : ['#ff7a8a', '#e8384f', '#a3202f', '#7a1424'];
@@ -355,6 +439,15 @@ export function pill(ctx: Ctx, r: Rect): void {
 }
 
 export function bar(ctx: Ctx, r: Rect, pct: number, fill: string): void {
+  if (kit('ui-bar-frame')) {
+    ctx.save();
+    ctx.fillStyle = '#2a2018'; rrect(ctx, r.x, r.y, r.w, r.h, r.h / 3); ctx.fill();
+    const w = Math.max(0, Math.min(1, pct)) * r.w;
+    if (w > 1) { ctx.fillStyle = fill; rrect(ctx, r.x, r.y, Math.max(w, 4), r.h, r.h / 3); ctx.fill(); }
+    ctx.restore();
+    nine(ctx, 'ui-bar-frame', { x: r.x - 6, y: r.y - 5, w: r.w + 12, h: r.h + 10 }, Math.min(0.35, (r.h + 10) / 64));
+    return;
+  }
   ctx.save();
   ctx.fillStyle = INK;
   rrect(ctx, r.x - 3, r.y - 3, r.w + 6, r.h + 6, (r.h + 6) / 2);

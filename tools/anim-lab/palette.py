@@ -29,7 +29,7 @@ LOCK = 'art/STYLE-LOCK/'
 MASTERS = ['enemy-gnome.jpg', 'enemy-bat.jpg', 'enemy-boarorc.jpg', 'enemy-orc.jpg', 'enemy-goblin.jpg',
            'enemy-troll.jpg', 'enemy-ogre.jpg', 'hero-master.png']
 # Locked ranges (HSV 0-1), measured from the approved ogre + reference crops, then darkened for the dark forest floor.
-SKIN = {'h': (0.03, 0.10), 's': (0.34, 0.48), 'v': (0.60, 0.72)}
+SKIN = {'h': (0.03, 0.10), 's': (0.32, 0.44), 'v': (0.70, 0.78)}  # hero may sit slightly above the enemies (he must pop)
 
 def pixels(path):
     a = np.asarray(Image.open(LOCK + path if not path.startswith(('art', 'public', 'C:', 'D:')) else path).convert('RGBA'), np.float32) / 255

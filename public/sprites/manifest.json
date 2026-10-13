@@ -7,6 +7,17 @@
   "enemy-shroom": "enemy-shroom.webp",
   "enemy-brute": "enemy-brute.webp",
   "enemy-boss": "enemy-boss.webp",
-  "ground-0": "ground-0.webp"
+  "ground-0": "ground-0.webp",
+  "ui-bar-frame": "ui-bar-frame.webp",
+  "ui-btn-ad": "ui-btn-ad.webp",
+  "ui-btn-primary-pressed": "ui-btn-primary-pressed.webp",
+  "ui-btn-primary": "ui-btn-primary.webp",
+  "ui-btn-quiet": "ui-btn-quiet.webp",
+  "ui-card": "ui-card.webp",
+  "ui-iconbtn": "ui-iconbtn.webp",
+  "ui-medallion": "ui-medallion.webp",
+  "ui-panel": "ui-panel.webp",
+  "ui-ribbon-lose": "ui-ribbon-lose.webp",
+  "ui-ribbon-win": "ui-ribbon-win.webp"
  }
 }
