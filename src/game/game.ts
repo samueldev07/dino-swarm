@@ -640,7 +640,6 @@ export class Game {
       x.fillStyle = gr; x.beginPath(); x.ellipse(100, 130, 100, 115, 0, 0, Math.PI * 2); x.fill();
       this.heroPool = c;
     }
-    ctx.drawImage(this.heroPool!, m.px - 100, m.py - 190, 200, 240);
     // Hero: one clear ground shadow under the feet, sized to the art (not the hitbox).
     // Soft contact shadow: baked radial falloff (dark core, feathered edge), no hard rim.
     if (!this.softShadow) {

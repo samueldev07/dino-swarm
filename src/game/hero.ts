@@ -35,6 +35,16 @@ export class Hero {
       this.total = frames.length;
       const textures = await loadAtlas(frames.map(fr => this.base + fr.f), 300);
       frames.forEach((fr, i) => Object.assign(fr, textures[i]));
+      // Silhouette glow per frame, on a padded canvas so the blur is never cut off by the frame box.
+      const P = 10;
+      for (const fr of frames) {
+        if (!fr.white || fr.sw === undefined) continue;
+        const g = document.createElement('canvas'); g.width = fr.sw + P * 2; g.height = fr.sh! + P * 2;
+        const x = g.getContext('2d')!;
+        x.filter = 'blur(4px)'; x.drawImage(fr.white, fr.tx!, fr.ty!, fr.sw, fr.sh!, P, P, fr.sw, fr.sh!); x.filter = 'none';
+        x.globalCompositeOperation = 'source-in'; x.fillStyle = 'rgb(255,232,180)'; x.fillRect(0, 0, g.width, g.height);
+        (fr as Frame & { glow?: HTMLCanvasElement }).glow = g;
+      }
       this.loaded = textures.length;
     } catch { /* no hero art: keep the old player */ }
   }
@@ -95,6 +105,14 @@ export class Hero {
     ctx.translate(x, y - bob);
     ctx.scale(flip * (1 - breathe * 0.5), 1 + breathe);
     const w = fr.width * s, h = fr.height * s;
+    const glow = (fr as Frame & { glow?: HTMLCanvasElement }).glow;
+    if (glow) {
+      // subtle: a thin warm halo hugging the silhouette
+      const k = w / fr.sw!, pad = 10 * k;
+      ctx.globalAlpha = alpha * 0.32;
+      ctx.drawImage(glow, -fr.cx * s - pad, -fr.foot * s - pad, w + pad * 2, h + pad * 2);
+      ctx.globalAlpha = alpha;
+    }
     ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.sw!, fr.sh!, -fr.cx * s, -fr.foot * s, w, h);
     if (flash > 0) {
       ctx.globalAlpha = alpha * Math.min(1, flash);
