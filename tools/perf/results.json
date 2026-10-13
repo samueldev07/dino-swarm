@@ -1,0 +1,856 @@
+{
+  "baseline": "a19be07",
+  "candidate": "codex/perf",
+  "environment": {
+    "os": "Windows",
+    "chrome": "154.0.8037.98",
+    "mode": "headless",
+    "renderer": "ANGLE NVIDIA GeForce GTX 1070 Direct3D11",
+    "cpuThrottle": 4,
+    "warmupSeconds": 2.5,
+    "measurementSeconds": 12,
+    "profileSeconds": 4,
+    "tracingDuringMeasurement": false,
+    "enemyCount": 300,
+    "elitePercent": 10
+  },
+  "before": [
+    {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 2,
+      "cpuThrottle": 4,
+      "count": 36,
+      "frame": {
+        "avg": 328.2583333333333,
+        "p95": 383.1999999999998
+      },
+      "update": {
+        "avg": 7.386111105481784,
+        "p95": 15.5
+      },
+      "draw": {
+        "avg": 301.79444444179535,
+        "p95": 350.7000000476837
+      },
+      "costs": {
+        "drawWorld": {
+          "ms": 11147.100000023842,
+          "calls": 37
+        },
+        "drawProps": {
+          "ms": 21.80000001192093,
+          "calls": 37
+        },
+        "drawLight": {
+          "ms": 4.900000154972076,
+          "calls": 37
+        },
+        "drawHud": {
+          "ms": 43.799999952316284,
+          "calls": 37
+        },
+        "drawEdgeArrows": {
+          "ms": 7.399999976158142,
+          "calls": 37
+        }
+      },
+      "enemies": 300,
+      "canvas": [
+        780,
+        1688
+      ],
+      "top": [
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 3684.286
+        },
+        {
+          "functionName": "(program)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 1821.141
+        },
+        {
+          "functionName": "fillRect",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 670.579
+        },
+        {
+          "functionName": "save",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 44.67
+        },
+        {
+          "functionName": "drawEnemy",
+          "scriptId": "19",
+          "url": "http://127.0.0.1:5183/src/game/game.ts",
+          "lineNumber": 724,
+          "columnNumber": 11,
+          "ms": 41.445
+        },
+        {
+          "functionName": "near",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:5183/src/game/model.ts",
+          "lineNumber": 386,
+          "columnNumber": 6,
+          "ms": 40.542
+        },
+        {
+          "functionName": "(garbage collector)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 24.79
+        },
+        {
+          "functionName": "",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:5183/src/game/model.ts",
+          "lineNumber": 492,
+          "columnNumber": 31,
+          "ms": 19.34
+        },
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 18.31
+        },
+        {
+          "functionName": "draw",
+          "scriptId": "25",
+          "url": "http://127.0.0.1:5183/src/game/clips.ts",
+          "lineNumber": 28,
+          "columnNumber": 6,
+          "ms": 17.121
+        },
+        {
+          "functionName": "drawWorld",
+          "scriptId": "19",
+          "url": "http://127.0.0.1:5183/src/game/game.ts",
+          "lineNumber": 526,
+          "columnNumber": 11,
+          "ms": 15.961
+        },
+        {
+          "functionName": "moveEnemies",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:5183/src/game/model.ts",
+          "lineNumber": 412,
+          "columnNumber": 13,
+          "ms": 12.667
+        },
+        {
+          "functionName": "translate",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 10.783
+        },
+        {
+          "functionName": "stroke",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 9.664
+        },
+        {
+          "functionName": "restore",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 8.495
+        },
+        {
+          "functionName": "ellipse",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 8.118
+        },
+        {
+          "functionName": "draw",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:5183/src/game/fx.ts",
+          "lineNumber": 108,
+          "columnNumber": 6,
+          "ms": 7.731
+        },
+        {
+          "functionName": "ellipse",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 7.645
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "deviceScaleFactor": 1,
+      "cpuThrottle": 4,
+      "count": 49,
+      "frame": {
+        "avg": 241.8510204081633,
+        "p95": 283.40000000000055
+      },
+      "update": {
+        "avg": 10.722448980321689,
+        "p95": 15.5
+      },
+      "draw": {
+        "avg": 206.0816326506284,
+        "p95": 251.19999998807907
+      },
+      "costs": {
+        "drawWorld": {
+          "ms": 10309.700000047684,
+          "calls": 50
+        },
+        "drawProps": {
+          "ms": 37.70000022649765,
+          "calls": 50
+        },
+        "drawLight": {
+          "ms": 9.29999989271164,
+          "calls": 50
+        },
+        "drawHud": {
+          "ms": 66.2999997138977,
+          "calls": 50
+        },
+        "drawEdgeArrows": {
+          "ms": 7.600000083446503,
+          "calls": 50
+        }
+      },
+      "enemies": 300,
+      "canvas": [
+        1280,
+        720
+      ],
+      "top": [
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 3135.767
+        },
+        {
+          "functionName": "(program)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 2085.842
+        },
+        {
+          "functionName": "fillRect",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 486.831
+        },
+        {
+          "functionName": "save",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 45.525
+        },
+        {
+          "functionName": "drawEnemy",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5183/src/game/game.ts",
+          "lineNumber": 724,
+          "columnNumber": 11,
+          "ms": 41.965
+        },
+        {
+          "functionName": "near",
+          "scriptId": "23",
+          "url": "http://127.0.0.1:5183/src/game/model.ts",
+          "lineNumber": 386,
+          "columnNumber": 6,
+          "ms": 41.174
+        },
+        {
+          "functionName": "draw",
+          "scriptId": "26",
+          "url": "http://127.0.0.1:5183/src/game/clips.ts",
+          "lineNumber": 28,
+          "columnNumber": 6,
+          "ms": 33.035
+        },
+        {
+          "functionName": "",
+          "scriptId": "23",
+          "url": "http://127.0.0.1:5183/src/game/model.ts",
+          "lineNumber": 492,
+          "columnNumber": 31,
+          "ms": 26.126
+        },
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 22.824
+        },
+        {
+          "functionName": "moveEnemies",
+          "scriptId": "23",
+          "url": "http://127.0.0.1:5183/src/game/model.ts",
+          "lineNumber": 412,
+          "columnNumber": 13,
+          "ms": 21.74
+        },
+        {
+          "functionName": "has",
+          "scriptId": "15",
+          "url": "http://127.0.0.1:5183/src/engine/assets.ts",
+          "lineNumber": 16,
+          "columnNumber": 5,
+          "ms": 17.546
+        },
+        {
+          "functionName": "ellipse",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 14.599
+        },
+        {
+          "functionName": "stroke",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 14.276
+        },
+        {
+          "functionName": "(idle)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 13.006
+        },
+        {
+          "functionName": "drawWorld",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5183/src/game/game.ts",
+          "lineNumber": 526,
+          "columnNumber": 11,
+          "ms": 12.545
+        },
+        {
+          "functionName": "strokeText",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 8.645
+        },
+        {
+          "functionName": "restore",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 7.48
+        },
+        {
+          "functionName": "buildGrid",
+          "scriptId": "23",
+          "url": "http://127.0.0.1:5183/src/game/model.ts",
+          "lineNumber": 373,
+          "columnNumber": 11,
+          "ms": 7.4
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "after": [
+    {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 2,
+      "cpuThrottle": 4,
+      "count": 49,
+      "frame": {
+        "avg": 242.52857142857138,
+        "p95": 283.2999999999993
+      },
+      "update": {
+        "avg": 7.991836736396867,
+        "p95": 14
+      },
+      "draw": {
+        "avg": 226.30204081900266,
+        "p95": 256.30000001192093
+      },
+      "costs": {
+        "drawWorld": {
+          "ms": 11212,
+          "calls": 50
+        },
+        "drawProps": {
+          "ms": 41.200000047683716,
+          "calls": 50
+        },
+        "drawLight": {
+          "ms": 6.6999998688697815,
+          "calls": 50
+        },
+        "drawHud": {
+          "ms": 85.09999990463257,
+          "calls": 50
+        },
+        "drawEdgeArrows": {
+          "ms": 9.700000286102295,
+          "calls": 50
+        }
+      },
+      "enemies": 300,
+      "canvas": [
+        780,
+        1688
+      ],
+      "top": [
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 3384.998
+        },
+        {
+          "functionName": "(program)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 2013.425
+        },
+        {
+          "functionName": "fillRect",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 796.181
+        },
+        {
+          "functionName": "restore",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 47.758
+        },
+        {
+          "functionName": "near",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:5182/src/game/model.ts",
+          "lineNumber": 386,
+          "columnNumber": 6,
+          "ms": 46.749
+        },
+        {
+          "functionName": "drawEnemy",
+          "scriptId": "19",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 704,
+          "columnNumber": 11,
+          "ms": 39.642
+        },
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 23.747
+        },
+        {
+          "functionName": "drawWorld",
+          "scriptId": "19",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 538,
+          "columnNumber": 11,
+          "ms": 22.066
+        },
+        {
+          "functionName": "scale",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 21.474
+        },
+        {
+          "functionName": "",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:5182/src/game/model.ts",
+          "lineNumber": 492,
+          "columnNumber": 31,
+          "ms": 21.368
+        },
+        {
+          "functionName": "stroke",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 18.157
+        },
+        {
+          "functionName": "fillText",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 13.167
+        },
+        {
+          "functionName": "ellipse",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 11.803
+        },
+        {
+          "functionName": "ellipse",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 11.303
+        },
+        {
+          "functionName": "restore",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 10.722
+        },
+        {
+          "functionName": "moveEnemies",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:5182/src/game/model.ts",
+          "lineNumber": 412,
+          "columnNumber": 13,
+          "ms": 9.818
+        },
+        {
+          "functionName": "save",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 8.76
+        },
+        {
+          "functionName": "buildGrid",
+          "scriptId": "22",
+          "url": "http://127.0.0.1:5182/src/game/model.ts",
+          "lineNumber": 373,
+          "columnNumber": 11,
+          "ms": 8.541
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "deviceScaleFactor": 1,
+      "cpuThrottle": 4,
+      "count": 67,
+      "frame": {
+        "avg": 178.86716417910452,
+        "p95": 200
+      },
+      "update": {
+        "avg": 11.013432833685803,
+        "p95": 16.69999998807907
+      },
+      "draw": {
+        "avg": 159.19402985341515,
+        "p95": 174.9000000357628
+      },
+      "costs": {
+        "drawWorld": {
+          "ms": 10700.000000059605,
+          "calls": 68
+        },
+        "drawProps": {
+          "ms": 46.80000030994415,
+          "calls": 68
+        },
+        "drawLight": {
+          "ms": 8.699999928474426,
+          "calls": 68
+        },
+        "drawHud": {
+          "ms": 89.69999986886978,
+          "calls": 68
+        },
+        "drawEdgeArrows": {
+          "ms": 9.70000010728836,
+          "calls": 68
+        }
+      },
+      "enemies": 300,
+      "canvas": [
+        1280,
+        720
+      ],
+      "top": [
+        {
+          "functionName": "(program)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 4492.084
+        },
+        {
+          "functionName": "scale",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 4132.866
+        },
+        {
+          "functionName": "restore",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 546.294
+        },
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 417.68
+        },
+        {
+          "functionName": "moveEnemies",
+          "scriptId": "23",
+          "url": "http://127.0.0.1:5182/src/game/model.ts",
+          "lineNumber": 412,
+          "columnNumber": 13,
+          "ms": 17.835
+        },
+        {
+          "functionName": "drawWorld",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 538,
+          "columnNumber": 11,
+          "ms": 8.945
+        },
+        {
+          "functionName": "stroke",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 6.098
+        },
+        {
+          "functionName": "vis",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 547,
+          "columnNumber": 16,
+          "ms": 5.579
+        },
+        {
+          "functionName": "ellipse",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 5.058
+        },
+        {
+          "functionName": "save",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 3.999
+        },
+        {
+          "functionName": "step",
+          "scriptId": "23",
+          "url": "http://127.0.0.1:5182/src/game/model.ts",
+          "lineNumber": 239,
+          "columnNumber": 6,
+          "ms": 3.902
+        },
+        {
+          "functionName": "drawEnemy",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 704,
+          "columnNumber": 11,
+          "ms": 3.547
+        },
+        {
+          "functionName": "update",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 244,
+          "columnNumber": 8,
+          "ms": 3.228
+        },
+        {
+          "functionName": "drawImage",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 2.731
+        },
+        {
+          "functionName": "drawEdgeArrows",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 1320,
+          "columnNumber": 16,
+          "ms": 2.105
+        },
+        {
+          "functionName": "",
+          "scriptId": "20",
+          "url": "http://127.0.0.1:5182/src/game/game.ts?t=1791895839161",
+          "lineNumber": 1045,
+          "columnNumber": 16,
+          "ms": 2.037
+        },
+        {
+          "functionName": "save",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 2.03
+        },
+        {
+          "functionName": "fillText",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1,
+          "ms": 2.022
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "visualComparison": [
+    {
+      "scene": "1280-camp.png",
+      "meanChannelDifference": 0.0,
+      "maxChannelDifference": 0
+    },
+    {
+      "scene": "1280-flash.png",
+      "meanChannelDifference": 0.006425057870370371,
+      "maxChannelDifference": 29
+    },
+    {
+      "scene": "1280-menu.png",
+      "meanChannelDifference": 0.08049840856481481,
+      "maxChannelDifference": 102
+    },
+    {
+      "scene": "1280-offers.png",
+      "meanChannelDifference": 0.10821650752314815,
+      "maxChannelDifference": 37
+    },
+    {
+      "scene": "1280-pause.png",
+      "meanChannelDifference": 0.17053602430555556,
+      "maxChannelDifference": 39
+    },
+    {
+      "scene": "1280-run.png",
+      "meanChannelDifference": 0.6088169126157407,
+      "maxChannelDifference": 98
+    },
+    {
+      "scene": "390-camp.png",
+      "meanChannelDifference": 0.0,
+      "maxChannelDifference": 0
+    },
+    {
+      "scene": "390-flash.png",
+      "meanChannelDifference": 0.006635071090047393,
+      "maxChannelDifference": 64
+    },
+    {
+      "scene": "390-menu.png",
+      "meanChannelDifference": 0.10763407866488435,
+      "maxChannelDifference": 64
+    },
+    {
+      "scene": "390-offers.png",
+      "meanChannelDifference": 0.09236085794142666,
+      "maxChannelDifference": 41
+    },
+    {
+      "scene": "390-pause.png",
+      "meanChannelDifference": 0.1307689775995463,
+      "maxChannelDifference": 41
+    },
+    {
+      "scene": "390-run.png",
+      "meanChannelDifference": 0.5117969477862844,
+      "maxChannelDifference": 125
+    }
+  ],
+  "goalMet": false
+}
