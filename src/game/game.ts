@@ -490,9 +490,11 @@ export class Game {
 
     // thorn patches (ground layer)
     const thorn = this.sprites.thorn();
+    const bramble = this.sprites.image('fx-thorn');
     for (const t of m.thorns) {
       if (!vis(t.x, t.y, 60)) continue;
-      ctx.globalAlpha = Math.min(0.85, t.life * 1.5);
+      ctx.globalAlpha = Math.min(0.9, t.life * 1.5);
+      if (bramble) { const d = t.r * 2.3; ctx.drawImage(bramble, t.x - d / 2, t.y - d / 2, d, d); continue; }
       const s = (t.r * 1.7) / thorn.w;
       ctx.drawImage(thorn.img, t.x - thorn.w * s / 2, t.y - thorn.h * s / 2, thorn.w * s, thorn.h * s);
     }
@@ -584,9 +586,11 @@ export class Game {
     this.drawWaves(ctx, m);
 
     // falling meteors
+    const rock = this.sprites.image('proj-rock');
     for (const mt of m.meteors) {
       const k = 1 - mt.t / METEOR_DELAY;
       const x = mt.x - 260 * (1 - k), y = mt.y - 620 * (1 - k);
+      if (rock) { const d = 70 + mt.r * 0.3; ctx.drawImage(rock, x - d / 2, y - d * 0.8, d, d * (rock.naturalHeight / rock.naturalWidth)); continue; }
       ctx.strokeStyle = 'rgba(255,170,60,.55)'; ctx.lineWidth = 16;
       ctx.beginPath(); ctx.moveTo(x - 60, y - 140); ctx.lineTo(x, y); ctx.stroke();
       ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
@@ -736,6 +740,21 @@ export class Game {
   }
 
   private drawSlashes(ctx: Ctx, m: Model): void {
+    const jab = this.sprites.image('fx-jab');
+    if (jab) {
+      for (const s of m.slashes) {
+        const k = s.age / s.life;
+        ctx.save();
+        ctx.translate(s.x, s.y - 30);
+        ctx.rotate(s.angle);
+        ctx.globalAlpha = 1 - k * k;
+        const len = s.r * (0.7 + 0.5 * Math.min(1, k * 4)), h = (len * jab.naturalHeight) / jab.naturalWidth;
+        ctx.drawImage(jab, 10, -h / 2, len, h);
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+      return;
+    }
     for (const s of m.slashes) {
       const k = s.age / s.life;
       const r = s.r * (0.75 + 0.25 * Math.min(1, k * 3));
@@ -767,6 +786,12 @@ export class Game {
       const k = w.age / w.life;
       const r = w.r * (0.2 + 0.8 * Math.sqrt(k));
       ctx.globalAlpha = 1 - k;
+      const paint = this.sprites.image(w.kind === 'stomp' ? 'fx-slam' : 'fx-horn');
+      if (paint) {
+        const d = r * 2.1;
+        ctx.drawImage(paint, w.x - d / 2, w.y - d * 0.45, d, d * 0.9);
+        continue;
+      }
       if (w.kind === 'stomp') {
         ctx.strokeStyle = INK; ctx.lineWidth = 18 * (1 - k) + 4;
         ctx.beginPath(); ctx.ellipse(w.x, w.y, r, r * 0.8, 0, 0, Math.PI * 2); ctx.stroke();

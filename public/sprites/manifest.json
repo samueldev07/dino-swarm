@@ -62,6 +62,13 @@
   "skill-stomp": "skill-stomp.webp",
   "skill-swift": "skill-swift.webp",
   "skill-thorns": "skill-thorns.webp",
-  "skill-vitality": "skill-vitality.webp"
+  "skill-vitality": "skill-vitality.webp",
+  "fx-fire": "fx-fire.webp",
+  "fx-horn": "fx-horn.webp",
+  "fx-jab": "fx-jab.webp",
+  "fx-slam": "fx-slam.webp",
+  "fx-thorn": "fx-thorn.webp",
+  "proj-lid": "proj-lid.webp",
+  "proj-rock": "proj-rock.webp"
  }
 }

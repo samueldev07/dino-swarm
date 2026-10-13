@@ -1,0 +1,402 @@
+{
+ "shots": [
+  {
+   "id": "skill-bite",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a pitchfork thrusting diagonally with short motion lines (dark iron prongs, brown handle).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-spit",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a round clay flask with a burning cloth wick, bright orange flames.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-boomerang",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a curved iron sickle with two curved spin arcs (grey-blue blade).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-orbit",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: three round iron pot lids with handles circling around a small centre dot (grey iron, warm highlights).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-stomp",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a big wooden mallet hitting the ground, jagged orange impact burst under it.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-meteor",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: three grey rocks falling diagonally with dust streaks.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-thorns",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a curling green thorny bramble vine with red thorns.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-roar",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a curved cream war horn with a jagged yellow spiky burst coming out (never concentric arcs).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-vitality",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a red heart over a steaming bowl of stew.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-swift",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a pair of brown leather boots with a blue speed swoosh.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-might",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a grey whetstone with a bright yellow spark.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-haste",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: an hourglass with glowing purple sand.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-magnet",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a dark lodestone pulling small orange amber crystals.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-regen",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a bundle of green herbs with a green plus sign.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-heal",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a roasted meat leg on a bone.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "skill-gold",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "A round game SKILL ICON for a hand-drawn folk fairy-tale game: a thin dark iron-riveted wooden RIM, and inside it a LIGHT cream parchment disc. On the parchment, a bold, simple, high-contrast symbol drawn with a thick dark hand-inked outline and flat colours, with ONE strong accent colour, filling about 70% of the disc, readable at 40 pixels. Front view, centred. Same ink style as the reference characters. Background around the icon: ONE flat pure magenta #FF00FF (chroma key). No text. Symbol: a small pile of gold coins.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-medallion.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "proj-lid",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a round dented iron pot lid with a small handle on top, spinning, seen from above (grey iron with warm rust spots).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "proj-flask",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a small round clay flask with a burning wick and a short fire trail behind it, flying to the right.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "proj-bone",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a curved iron sickle blade with a short wooden handle, seen from above, with a faint curved motion smear.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "proj-rock",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a chunky grey falling rock with a short dust trail above it.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "fx-jab",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a forward pitchfork thrust streak: three sharp white-cream speed lines tapering to points, pointing right, with a small impact star at the tip.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "fx-fire",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a round fire splash burst: orange and yellow flames with a few dark smoke puffs, seen from above.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "fx-slam",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a cracked-ground impact ring seen from above: jagged brown ground cracks radiating out with small dust puffs and rock bits (a flat ring, empty centre).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "fx-thorn",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a small patch of dark green thorny brambles with red thorns, seen from above, flat on the ground.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  },
+  {
+   "id": "fx-horn",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game VISUAL EFFECT / PROJECTILE sprite seen from a top-down view, hand-drawn in the same style as the reference characters (thick uneven dark ink outline, flat bright-but-earthy colours, simple bold shapes), readable at small size, centred. Background: ONE flat pure magenta #FF00FF everywhere. No text. Sprite: a jagged spiky shockwave star burst (yellow-cream with dark outline), many sharp points, seen from above. NOT concentric arcs.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    }
+   ]
+  }
+ ]
+}
