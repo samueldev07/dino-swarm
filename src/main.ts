@@ -23,7 +23,7 @@ async function boot(): Promise<void> {
   const assets = new Assets();
   await Promise.race([assets.init(), new Promise((r) => setTimeout(r, 1000))]);
   // Painted creatures + ground: start loading now so the first frames never show stand-ins.
-  assets.preload(['ui-panel', 'ui-card', 'ui-btn-primary', 'ui-btn-primary-pressed', 'ui-btn-ad', 'ui-btn-quiet', 'ui-ribbon-win', 'ui-ribbon-lose', 'ui-medallion', 'ui-bar-frame', 'ui-iconbtn', 'ground-0', ...['grub', 'bat', 'beetle', 'wolf', 'shroom', 'brute', 'boss'].map((k) => `enemy-${k}`)]);
+  assets.preload(['ui-panel', 'ui-card', 'ui-btn-primary', 'ui-btn-primary-pressed', 'ui-btn-ad', 'ui-btn-quiet', 'ui-ribbon-win', 'ui-ribbon-lose', 'ui-medallion', 'ui-bar-frame', 'ui-iconbtn', 'ground-0', 'prop-stump-large', 'prop-mossy-rock', 'prop-roots-mound', 'prop-stump-twisted', ...['grub', 'bat', 'beetle', 'wolf', 'shroom', 'brute', 'boss'].map((k) => `enemy-${k}`)]);
   await Promise.race([
     Promise.all([document.fonts.load('700 20px Alegreya'), document.fonts.load('800 20px "Alegreya SC"')]),
     new Promise((r) => setTimeout(r, 1200)),

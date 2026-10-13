@@ -485,6 +485,8 @@ export class Game {
     ctx.fillStyle = this.groundFor(m.zone);
     ctx.fillRect(L, T, R - L, B - T);
 
+    this.drawProps(ctx, L, R, T, B);
+
     // thorn patches (ground layer)
     const thorn = this.sprites.thorn();
     for (const t of m.thorns) {
@@ -589,6 +591,34 @@ export class Game {
 
     this.fx.draw(ctx);
     ctx.restore();
+  }
+
+  /**
+   * Decorative props (stumps, rocks, root mounds) scattered on a fixed world grid:
+   * a hash of the cell picks whether a prop exists and which one, so the forest never
+   * repeats visibly and never changes when the player comes back. Purely visual.
+   */
+  private drawProps(ctx: Ctx, L: number, R: number, T: number, B: number): void {
+    const CELL = 620;
+    const keys = ['prop-stump-large', 'prop-mossy-rock', 'prop-roots-mound', 'prop-stump-twisted'];
+    const size = [150, 95, 130, 135];
+    for (let cx = Math.floor(L / CELL) - 1; cx <= Math.floor(R / CELL) + 1; cx++) {
+      for (let cy = Math.floor(T / CELL) - 1; cy <= Math.floor(B / CELL) + 1; cy++) {
+        let h = (cx * 73856093) ^ (cy * 19349663);
+        h = Math.imul(h ^ (h >>> 13), 0x5bd1e995); h ^= h >>> 15;
+        const r = (h >>> 0) / 4294967296;
+        if (r > 0.55 || (Math.abs(cx) <= 0 && Math.abs(cy) <= 0)) continue;
+        const i = Math.floor(r * 1000) % keys.length;
+        const img = this.sprites.image(keys[i]);
+        if (!img) continue;
+        const x = cx * CELL + ((h >>> 8) & 255) / 255 * CELL * 0.7, y = cy * CELL + ((h >>> 16) & 255) / 255 * CELL * 0.7;
+        const w = size[i], hh = (w * img.naturalHeight) / img.naturalWidth;
+        const flip = (h & 1) ? -1 : 1;
+        ctx.save(); ctx.translate(x, y); ctx.scale(flip, 1);
+        ctx.drawImage(img, -w / 2, -hh * 0.85, w, hh);
+        ctx.restore();
+      }
+    }
   }
 
   /** Draw a sprite with its ground anchor at (x, y). */

@@ -1,0 +1,26 @@
+{
+  "shots": [
+    {
+      "id": "bg-forest-arena-wide",
+      "prompt": "Match the dark folk fairy-tale art style of the reference image: 2D hand-drawn ink cartoon, thick dark-brown ink outlines (#221a14), muted earthy dark olive and moss green palette. Create a WIDE EXPANSIVE TOP-DOWN BATTLE ARENA (large game background) of an ancient mossy forest glade: The center 85 percent of the screen is a vast, open, unobstructed battlefield of calm dark-olive mossy turf, damp earthy ground, and scattered fallen oak leaves with soft lighting. Ancient gnarled oak tree trunks, massive moss-covered stumps, and twisted roots are strictly located along the very outer edges and corners of the screen framing the arena. Calm, low-contrast playing field in the middle, dim fairy-tale woodland atmosphere. ABSOLUTELY NO characters, NO monsters, NO UI, NO text, fills the entire 16:9 frame.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ground-moss-tile",
+      "prompt": "Match the dark folk fairy-tale style: 2D hand-drawn ink texture, completely flat overhead 90-degree view of mossy forest ground. Uniform texture of dark olive moss, rich damp earth patches, scattered dry brown autumn leaves, subtle ink hatching. Low contrast, completely flat and even illumination across all edges, NO vignette, NO center highlight, NO tree trunks, NO large rocks, NO characters. Perfectly uniform density across the 1:1 canvas for seamless game tiling.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        }
+      ]
+    }
+  ]
+}

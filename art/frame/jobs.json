@@ -1,0 +1,66 @@
+{
+ "shots": [
+  {
+   "id": "frame-a",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "A FOREGROUND FRAME overlay for a top-down 2D game screen, 16:9, in the art style of the reference character and creature images (thick uneven hand-inked outlines, flat muted earthy colours, soft shadow, grimy texture). Around ALL FOUR EDGES of the image, close to the camera and slightly darker than the play area: big fern leaves, tangled tree roots, mossy rocks, a few grass clumps and a couple of small mushrooms, overlapping the screen edges and the corners (heavier in the corners, thinner along the top edge). The ENTIRE CENTRE of the image (about 80% of the width and 75% of the height) must be filled with ONE flat pure bright green colour #00FF00 (chroma key), with no objects, no shading and no texture in it. No characters, no text, no UI.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "frame-b",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "A FOREGROUND FRAME overlay for a top-down 2D game screen, 16:9, in the art style of the reference character and creature images (thick uneven hand-inked outlines, flat muted earthy colours, soft shadow, grimy texture). Around ALL FOUR EDGES of the image, close to the camera and slightly darker than the play area: big fern leaves, tangled tree roots, mossy rocks, a few grass clumps and a couple of small mushrooms, overlapping the screen edges and the corners (heavier in the corners, thinner along the top edge). The ENTIRE CENTRE of the image (about 80% of the width and 75% of the height) must be filled with ONE flat pure bright green colour #00FF00 (chroma key), with no objects, no shading and no texture in it. No characters, no text, no UI. Make the foliage a little sparser and more varied (one broken tree stump in a corner).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "logo-plate-wood",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "Keep the logo in the first reference image exactly (same letters, pot, pitchfork, subtitle). Place it on a BACKPLATE so it stays readable on any background: a weathered dark wooden sign board with iron corner brackets hanging from two ropes, a few ivy leaves. Same hand-inked style. Plain flat pure white background around it.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/logo/logo-pitchfork-pot.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-panel.png"
+    }
+   ]
+  },
+  {
+   "id": "logo-plate-parchment",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "Keep the logo in the first reference image exactly (same letters, pot, pitchfork, subtitle). Place it on a BACKPLATE so it stays readable on any background: a torn, slightly dirty parchment scroll with a dark ink border and a soft dark drop shadow, a little moss and a mushroom at one corner. Same hand-inked style. Plain flat pure white background around it.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/logo/logo-pitchfork-pot.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/ui-panel.png"
+    }
+   ]
+  }
+ ]
+}

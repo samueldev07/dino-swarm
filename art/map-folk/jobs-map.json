@@ -1,0 +1,40 @@
+{
+  "shots": [
+    {
+      "id": "bg-forest-arena-large",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim. Create a MASSIVE EXPANSIVE TOP-DOWN BATTLE ARENA (large game background) of a deep mossy ancient forest clearing for a survivor game: Very large, wide open central battlefield clearing with muted dark olive-green mossy turf, damp earthy ground, scattered dry autumn leaves, soft low-contrast lighting so characters, enemies, and UI stand out with maximum clarity. The outer borders and corners of the screen are framed by ancient gnarled oak trees, massive mossy tree stumps with rings, and twisted roots anchoring the clearing. Expansive space in the middle for intense swarming gameplay, dim fairy-tale woodland mood, soft top-left ambient light. ABSOLUTELY NO characters, NO monsters, NO UI, NO text, fills the entire 16:9 frame.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ground-forest-seamless",
+      "prompt": "Match the ground texture style of the reference image EXACTLY: 2D hand-drawn dark folk fairy-tale, muted dark olive-green mossy grass, rich dark brown earth patches, scattered dry autumn leaves, tiny subtle moss tufts, dark ink accents. Top-down seamless tileable ground texture: completely flat overhead 90-degree view of the mossy forest floor. Low contrast, calm, uniform density across the entire canvas with no prominent central focal points, no lighting vignettes, no dark edges, no borders, no tree trunks, no characters. Fills the entire 1:1 square canvas seamlessly.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        }
+      ]
+    },
+    {
+      "id": "prop-stumps-and-roots",
+      "prompt": "Match the art style of the reference image EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with soft painted shadow tone, muted earthy palette, charming and slightly grim. Environment props sheet on a pure flat solid white background: Several individual isolated forest obstacles/props displayed side by side: 1) A large ancient weathered mossy tree stump with visible wood rings on top and mossy bark. 2) A smaller twisted mossy stump with roots. 3) A cluster of gnarled tree roots emerging from the earth. 4) A mossy boulder / weathered forest rock. Top-left light source. Centered, isolated on pure flat white background, no floor shadow, no characters, no text.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+ "shots": [
+  {
+   "id": "logo-pot-helmet-hero",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "Game LOGO for a hand-drawn dark folk fairy-tale survivor game. Match the art style of the reference images exactly: thick uneven hand-inked black-brown outlines, flat muted earthy colours with one soft shadow tone, slightly grimy texture. The title lettering is chunky, hand-carved and slightly wonky (like letters cut into a weathered wooden sign), easy to read even when small, warm off-white/parchment letters with a dark ink outline. Composition: wide horizontal logo, centred, on a plain flat pure white background, no scene, no characters' full bodies. Spell the text EXACTLY: \"POT HELMET HERO\". Decorate with a dented rusty cooking pot sitting on top of the first word and a wooden pitchfork crossing behind the letters.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "logo-pitchfork-pot",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "Game LOGO for a hand-drawn dark folk fairy-tale survivor game. Match the art style of the reference images exactly: thick uneven hand-inked black-brown outlines, flat muted earthy colours with one soft shadow tone, slightly grimy texture. The title lettering is chunky, hand-carved and slightly wonky (like letters cut into a weathered wooden sign), easy to read even when small, warm off-white/parchment letters with a dark ink outline. Composition: wide horizontal logo, centred, on a plain flat pure white background, no scene, no characters' full bodies. Spell the text EXACTLY: \"PITCHFORK & POT\" with a small subtitle \"Survive the Swarm\". A rusty pot as the ampersand area and a pitchfork underlining the title.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "logo-wildwood-swarm",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "Game LOGO for a hand-drawn dark folk fairy-tale survivor game. Match the art style of the reference images exactly: thick uneven hand-inked black-brown outlines, flat muted earthy colours with one soft shadow tone, slightly grimy texture. The title lettering is chunky, hand-carved and slightly wonky (like letters cut into a weathered wooden sign), easy to read even when small, warm off-white/parchment letters with a dark ink outline. Composition: wide horizontal logo, centred, on a plain flat pure white background, no scene, no characters' full bodies. Spell the text EXACTLY: \"WILDWOOD SWARM\". Small angry mushroom gnomes peeking over the letters and a pitchfork crossing behind them.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  }
+ ]
+}
