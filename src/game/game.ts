@@ -1270,9 +1270,13 @@ export class Game {
     });
     if (this.input.p.justUp) this.pressedCard = '';
     const bottom = Math.max(...rects.map(r => r.y + r.h)) + 28;
-    const bh = Math.max(82, 44 / v.scale), bw = Math.min(260, (v.w - 100) / 2);
-    if (m.rerolls > 0 && this.quietButton(ctx, 'reroll', { x: v.w / 2 - bw - 12, y: bottom, w: bw, h: bh }, 'REROLL (' + m.rerolls + ')', !ready, '#f3d79a')) this.rerollOffers();
-    if (m.banishes > 0 && this.quietButton(ctx, 'banish', { x: v.w / 2 + 12, y: bottom, w: bw, h: bh }, (this.banishing ? 'CANCEL' : 'BANISH') + ' (' + m.banishes + ')', !ready, '#f3d79a')) this.banishing = !this.banishing;
+    // Secondary actions on painted dark-wood planks (quiet tone: the cards stay the primary choice).
+    const bh = Math.max(78, 44 / v.scale), bw = Math.min(260, (v.w - 100) / 2);
+    const canAct = ready && !this.busy && !this.poki.adRunning;
+    if (m.rerolls > 0 && this.ui.button('reroll', { x: v.w / 2 - bw - 14, y: bottom, w: bw, h: bh },
+      { label: 'REROLL', sub: `${m.rerolls} left`, tone: 'stone', disabled: !ready, size: 30 }, ctx) && canAct) this.rerollOffers();
+    if (m.banishes > 0 && this.ui.button('banish', { x: v.w / 2 + 14, y: bottom, w: bw, h: bh },
+      { label: this.banishing ? 'CANCEL' : 'BANISH', sub: this.banishing ? 'tap a card' : `${m.banishes} left`, tone: 'stone', disabled: !ready, size: 30 }, ctx) && canAct) this.banishing = !this.banishing;
     this.ui.swallow();
   }
 
