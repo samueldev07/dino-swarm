@@ -14,8 +14,9 @@ export function startLoop(tick: Tick): () => void {
     if (!running) return;
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
-    tick(dt, now);
+    // Schedule first: one bad frame must never stop the game for good.
     raf = requestAnimationFrame(frame);
+    try { tick(dt, now); } catch (err) { console.error(err); }
   };
   raf = requestAnimationFrame(frame);
 

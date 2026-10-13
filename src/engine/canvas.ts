@@ -52,6 +52,8 @@ export class Stage {
 
   resize(): void {
     const cssW = window.innerWidth;
+    // A hidden/collapsed frame can report 0x0: keep the last good size instead of dividing by zero.
+    if (!(window.innerWidth > 0 && window.innerHeight > 0)) return;
     const cssH = window.innerHeight;
     // Cap DPR: a 3x retina phone would otherwise shade 3x the pixels for
     // no visible gain on art this chunky.
