@@ -1110,13 +1110,16 @@ export class Game {
     let ix = left, iy = top + 66;
     const all: [SkillId, number][] = [...m.weapons, ...m.passives];
     all.forEach(([id, lv], i) => {
-      const col = i % 6, row = Math.floor(i / 6);
-      const x = ix + col * 46, y = iy + row * 54;
+      // Owned skills: big enough to read at a glance (42 px read as specks/glitches), level pips under.
+      const S = 60, col = i % 5, row = Math.floor(i / 5);
+      const x = ix + col * (S + 8), y = iy + row * (S + 16);
       const ic = this.sprites.icon(id, SKILLS[id].color);
-      ctx.drawImage(ic.img, x, y, 42, 42);
+      ctx.drawImage(ic.img, x, y, S, S);
       for (let p = 0; p < MAX_LEVEL; p++) {
-        ctx.fillStyle = p < lv ? '#ffd24a' : 'rgba(42,29,22,.55)';
-        ctx.fillRect(x + 3 + p * 7.6, y + 44, 6, 5);
+        const px = x + S / 2 - (MAX_LEVEL * 10) / 2 + p * 10;
+        ctx.fillStyle = '#1e1610'; ctx.fillRect(px - 1, y + S + 2, 9, 8);
+        ctx.fillStyle = p < lv ? '#ffd24a' : '#5a4a3a';
+        ctx.fillRect(px, y + S + 3, 7, 6);
       }
     });
     void ix;

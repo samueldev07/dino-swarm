@@ -43,7 +43,10 @@ export class Assets {
 
     const img = new Image();
     img.decoding = 'async';
-    img.onload = () => { void img.decode().catch(() => {}).then(() => this.ready.add(key)); };
+    // decode() can stall in hidden/background tabs: mark ready after onload + decode, or 1.2 s at most.
+    img.onload = () => {
+      void Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 1200))]).then(() => this.ready.add(key));
+    };
     img.onerror = () => { delete this.files[key]; };
     img.src = this.base + file;
     this.images.set(key, img);

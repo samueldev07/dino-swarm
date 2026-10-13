@@ -4,13 +4,24 @@ interface Prop {
   x: number;
   y: number;
   flip: boolean;
+  rot: number;
 }
 const LAYERS: {
   cell: number;
   chance: number;
   salt: number;
   items: [string, number][];
+  spin?: boolean;
 }[] = [
+  {
+    // Fallen leaves, cut from the ground painting itself and scattered (the tile is leafless so
+    // its seams stay invisible; loose leaves never repeat on the tile grid).
+    cell: 170,
+    chance: 0.45,
+    salt: 31,
+    spin: true,
+    items: [["leaf-0", 30], ["leaf-1", 34], ["leaf-2", 28], ["leaf-3", 32], ["leaf-4", 26], ["leaf-5", 28]],
+  },
   {
     // Sparse: owner found the second decor batch ugly and too dense (13/10).
     cell: 700,
@@ -70,6 +81,7 @@ export class PropScatter {
               x: cx * C + (((h >>> 8) & 255) / 255) * C * 0.8,
               y: cy * C + (((h >>> 16) & 255) / 255) * C * 0.8,
               flip: !!(h & 1),
+              rot: ly.spin ? (((h >>> 4) & 1023) / 1023) * Math.PI * 2 : 0,
             });
           }
       }
@@ -81,7 +93,8 @@ export class PropScatter {
         ctx.save();
         ctx.translate(p.x, p.y);
         if (p.flip) ctx.scale(-1, 1);
-        ctx.drawImage(img, -p.w / 2, -h * 0.8, p.w, h);
+        if (p.rot) { ctx.rotate(p.rot); ctx.drawImage(img, -p.w / 2, -h / 2, p.w, h); }
+        else ctx.drawImage(img, -p.w / 2, -h * 0.8, p.w, h);
         ctx.restore();
       }
     }
