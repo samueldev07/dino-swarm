@@ -573,9 +573,9 @@ export class Game {
 
     // orbiting eggs
     const egg = this.sprites.egg();
-    const goose = this.sprites.image('proj-egg');
+    const goose = this.sprites.image('proj-lid');
     for (const o of m.orbitPositions()) {
-      if (goose) { const a = Math.atan2(o.y - m.py, o.x - m.px) + Math.PI / 2; ctx.save(); ctx.translate(o.x, o.y); ctx.rotate(a); ctx.drawImage(goose, -36, -36, 72, 72); ctx.restore(); }
+      if (goose) { const a = Math.atan2(o.y - m.py, o.x - m.px) + Math.PI / 2; ctx.save(); ctx.translate(o.x, o.y); ctx.rotate(a + this.time * 9); ctx.drawImage(goose, -30, -30, 60, 60); ctx.restore(); }
       else this.blit(ctx, egg, o.x, o.y + 10, 1.1, 1, 1, this.time * 6, 0);
     }
 
