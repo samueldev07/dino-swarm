@@ -165,3 +165,39 @@ art the game must look exactly like main (compare screenshots 1280x720 and 390x8
 temporary test images (keep them OUT of public/sprites — load them from a test folder in the viewer/harness) every
 fallback path works. Report the shipped size before/after.
 ```
+
+---
+
+# Vòng 3: Codex tối ưu tốc độ (13/10/2026)
+Chủ game báo game **giật lag**. Trên PC thứ hai:
+`git fetch && git checkout main && git pull && git checkout -b codex/perf`, rồi dán đoạn dưới đây vào Codex:
+
+```
+FIRST read AGENTS.md and obey it (branch codex/perf, never push to main, hand-off file handoff/codex-perf.md).
+The game is now "Pitchfork & Pot" (folk fairy-tale art; see art/STYLE-LOCK/README.md). It LAGS. Goal: a steady 60 fps on a
+mid-range phone (test with Chrome DevTools CPU throttling 4x, viewport 390x844 and 1280x720) with ~300 enemies on screen,
+WITHOUT changing how the game looks or plays.
+
+FILES YOU MAY EDIT: src/game/game.ts, src/game/hero.ts, src/game/clips.ts, src/game/sprites.ts, src/game/ui.ts, src/game/fx.ts,
+src/engine/canvas.ts, src/engine/assets.ts, src/main.ts, vite.config.ts, and NEW files under src/game/perf/ or tools/perf/.
+DO NOT EDIT: src/game/model.ts, src/game/config.ts (rules/balance), tools/test-model.ts, tools/balance-sim.ts, art/**,
+and do not change any image content in public/ (you MAY re-pack/re-encode images into atlases if they look identical).
+
+First MEASURE (Performance panel + a tiny in-game FPS/frame-time overlay behind ?debug), report the top costs, then fix
+the biggest ones. Likely suspects to check:
+ - 2 MB+ of WebP animation frames (public/anim/*, public/hero/*): many separate images, large source sizes drawn small
+   every frame -> pre-scale each frame to its on-screen size at load (OffscreenCanvas/ImageBitmap cache per zoom level),
+   or pack into atlases; decode up front (img.decode / createImageBitmap) so nothing decodes mid-run.
+ - white hit-flash silhouettes (whiteOf) created lazily on first hit -> build them at load or use a cheaper flash.
+ - ctx.shadowBlur on elites, ctx.filter, per-frame createRadialGradient/createLinearGradient (lighting, vignette, HP bars)
+   -> cache gradients / pre-render the vignette once per resize.
+ - y-sort of all enemies every frame, array allocations in hot loops (filter/map/sort/spread, new objects per frame).
+ - decoration scatter (drawProps) recomputing hashes for every cell every frame -> cache visible cells.
+ - device pixel ratio: cap at 1.5 on phones if it helps; offscreen ground pattern; avoid clearing+drawing the full
+   pattern twice.
+ - floating damage numbers/particles: caps and text measuring (measureText/fitSize) every frame in the HUD.
+Keep the visual result identical (compare screenshots before/after at both viewports).
+Verify: npm run build passes; node --experimental-strip-types --no-warnings tools/test-model.ts says "all passed".
+Report in handoff/codex-perf.md: before/after frame times (avg and 95th percentile) at 390x844 with 4x CPU throttle,
+what you changed (file:line), and anything you could not fix.
+```
