@@ -66,7 +66,9 @@ export class Game {
   private dying: Dying[] = [];
   /** Painted one-shot impacts: pop in, overshoot, fade; never a static stamp. */
   private meteorClip = new Clip('anim/meteor/');
-  private fxClips: Record<string, Clip> = { flask: new Clip('anim/flask/'), slam: new Clip('anim/slam/', 240), smoke: new Clip('anim/smoke/', 140) };
+  private fxClips: Record<string, Clip> = { flask: new Clip('anim/flask/'), slam: new Clip('anim/slam/', 240) };
+  /** Simple cartoon smoke puffs on kills: a few round inked balls that pop out and fade. */
+  private puffs: { x: number; y: number; r: number; t: number; seed: number }[] = [];
   private shots: { clip: string; x: number; y: number; w: number; t: number; len: number }[] = [];
   private playFx(clip: string, x: number, y: number, w: number, frames: number): boolean {
     if (!this.fxClips[clip]?.ready) return false;
@@ -310,6 +312,10 @@ export class Game {
       this.blasts[i].t += fdt;
       if (this.blasts[i].t >= 25 / 24) this.blasts.splice(i, 1);
     }
+    for (let i = this.puffs.length - 1; i >= 0; i--) {
+      this.puffs[i].t += fdt;
+      if (this.puffs[i].t >= 0.38) this.puffs.splice(i, 1);
+    }
     for (let i = this.shots.length - 1; i >= 0; i--) {
       this.shots[i].t += fdt;
       if (this.shots[i].t >= this.shots[i].len) this.shots.splice(i, 1);
@@ -355,7 +361,8 @@ export class Game {
         break;
       case 'kill': {
         // every kill vanishes in a puff of black smoke (no squash); bigger monsters, bigger puff
-        this.playFx('smoke', e.x, e.y + 4, Math.min(260, ENEMIES_R[e.kind] * 6), 24);
+        this.puffs.push({ x: e.x, y: e.y - ENEMIES_R[e.kind] * 0.6, r: ENEMIES_R[e.kind], t: 0, seed: (e.x * 7 + e.y * 13) | 0 });
+        if (this.puffs.length > 60) this.puffs.shift();
         if (this.firstRun && !this.taughtAmber) {
           this.taughtAmber = true; this.amberT = 3;
           this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
@@ -877,7 +884,24 @@ export class Game {
     }
   }
 
+  private drawPuffs(ctx: Ctx): void {
+    for (const p of this.puffs) {
+      const k = p.t / 0.38, e = 1 - Math.pow(1 - k, 3);
+      ctx.globalAlpha = k < 0.5 ? 1 : 1 - (k - 0.5) / 0.5;
+      for (let i = 0; i < 4; i++) {
+        const a = (p.seed % 6) * 0.5 + (i / 4) * Math.PI * 2;
+        const d = p.r * 0.75 * e, rr = p.r * (0.38 + 0.12 * ((p.seed >> i) & 1)) * (0.6 + 0.6 * e) * (1 - 0.3 * k);
+        const x = p.x + Math.cos(a) * d, y = p.y + Math.sin(a) * d * 0.8 - 6 * e;
+        ctx.fillStyle = '#2a1d16'; ctx.beginPath(); ctx.arc(x, y, rr + 2, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#4a4440'; ctx.beginPath(); ctx.arc(x, y, rr, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#6a625a'; ctx.beginPath(); ctx.arc(x - rr * 0.3, y - rr * 0.3, rr * 0.45, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
   private drawImpacts(ctx: Ctx): void {
+    this.drawPuffs(ctx);
     for (const b of this.blasts) this.meteorClip.draw(ctx, b.x, b.y + b.r * 0.25, b.r * 1.9, b.t, 1, 0);
     for (const f of this.shots) this.fxClips[f.clip].draw(ctx, f.x, f.y, f.w, f.t, 1, 0);
     for (const p of this.impacts) {
