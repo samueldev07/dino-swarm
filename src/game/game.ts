@@ -15,10 +15,11 @@ import {
 } from './config';
 import { Sprites, type Sprite } from './sprites';
 import { Hero } from './hero';
+import { canFullscreen, isFullscreen, toggleFullscreen } from '../engine/fullscreen';
 import { Clip } from './clips';
 import { PropScatter } from './perf/props';
 import { Fx } from './fx';
-import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar, nine, kitImage } from './ui';
+import { UI, type Rect, inside, fancyPanel, ribbon, outlinedText, fitSize, text, bar, nine, kitImage } from './ui';
 import { INK, fontFor, rrect, inkEllipse } from './draw';
 import { type Meta, loadMeta, saveMeta, speciesUnlocked, zoneUnlocked, buyCamp } from './meta';
 
@@ -28,7 +29,7 @@ type Ctx = CanvasRenderingContext2D;
 type Screen = 'menu' | 'run' | 'camp';
 
 interface Dying { s: Sprite; x: number; y: number; scale: number; t: number; flip: number }
-interface Banner { text: string; sub: string; t: number; color: string }
+interface Banner { text: string; sub: string; t: number; color: string; len: number }
 
 const GROUND: [string, string, string, string][] = [
   // base, blotch, tuft, pebble
@@ -86,6 +87,7 @@ export class Game {
     this.impacts.push({ key, x, y, size, t: 0, life, rot: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 3 });
   }
   private banner: Banner | null = null;
+  private bossesDown = 0;
   private offersAt = 0;
   private hurtT = 0;
   private evolveT = 0;
@@ -165,7 +167,7 @@ export class Game {
       this.missionsDirty = false; this.toastUntil = 0;
       this.doubled = false;
       this.dying = [];
-      this.banner = null;
+      this.banner = null; this.bossesDown = 0;
       this.movedFor = 0;
       this.joy.on = false;
       this.cam.x = 0; this.cam.y = 0;
@@ -191,6 +193,7 @@ export class Game {
   }
 
   private onKey(k: string): void {
+    if (k === 'f' && canFullscreen()) { toggleFullscreen(); return; }
     if (this.busy || this.poki.adRunning) return;
     const m = this.m;
     if (this.screen === 'run' && m) {
@@ -283,7 +286,11 @@ export class Game {
     const blocked = this.paused || this.busy || this.poki.adRunning || this.result !== null;
     if (!blocked) {
       m.setMove(kx, ky);
-      if (m.status === 'ready' && kl > 0.2) { m.start(); this.poki.gameplayStart(); }
+      if (m.status === 'ready' && kl > 0.2) {
+        m.start(); this.poki.gameplayStart();
+        // say the goal once, up front: the run is long and bosses come in three waves
+        this.showBanner('SURVIVE ' + fmtTime(m.T.runLength), 'Bosses at ' + m.T.bossAt.map(fmtTime).join(', '), '#f0c060', 3.2);
+      }
       if (m.status === 'play' && !m.offers && kl > 0.2) this.movedFor += dt;
       const wasOffers = !!m.offers;
       for (const enemy of m.enemies) if (enemy.def.kind === 'boss') this.knownBosses.set(enemy.id, enemy);
@@ -335,7 +342,7 @@ export class Game {
       this.dying[i].t += dt;
       if (this.dying[i].t > 0.22) this.dying.splice(i, 1);
     }
-    if (this.banner) { this.banner.t += dt; if (this.banner.t > 2.4) this.banner = null; }
+    if (this.banner) { this.banner.t += dt; if (this.banner.t > this.banner.len) this.banner = null; }
     if (this.hurtT > 0) this.hurtT -= dt;
     if (this.evolveT > 0) this.evolveT -= dt;
     this.lagHp += (m.hp / m.maxHp - this.lagHp) * Math.min(1, dt * 3);
@@ -429,7 +436,15 @@ export class Game {
         this.fx.burst(e.x, e.y, '#6a5a50', 8, 220);
         break;
       case 'boss': a.play('boss'); this.fx.shake(0.6, 0.6); this.showBanner('BOSS INCOMING!', 'Keep moving!', '#ff6a5a'); break;
-      case 'bossDead': a.play('win'); this.fx.shake(1, 0.6); this.showBanner('BOSS DEFEATED!', 'Grab the treasure', '#7bdc5a'); break;
+      case 'bossDead': {
+        a.play('win'); this.fx.shake(1, 0.6);
+        // tell the player the run goes on, and what comes next
+        const total = m.T.bossAt.length, done = Math.min(total, this.bossesDown = this.bossesDown + 1);
+        const next = m.T.bossAt[done];
+        if (done < total) this.showBanner(`BOSS ${done} OF ${total} DEFEATED!`, `Keep going: the next boss comes at ${fmtTime(next)}`, '#7bdc5a', 4);
+        else this.showBanner('ALL BOSSES DEFEATED!', `Survive until ${fmtTime(m.T.runLength)} to clear the zone`, '#7bdc5a', 4);
+        break;
+      }
       case 'wave':
         if (e.kind === 'ring') this.showBanner('SURROUNDED!', 'Break out of the ring', '#ff9a3c');
         else if (e.kind === 'stream') this.showBanner('A SWARM IS COMING!', '', '#ff9a3c');
@@ -440,8 +455,8 @@ export class Game {
     }
   }
 
-  private showBanner(t: string, sub: string, color: string): void {
-    this.banner = { text: t, sub, t: 0, color };
+  private showBanner(t: string, sub: string, color: string, len = 2.4): void {
+    this.banner = { text: t, sub, t: 0, color, len };
   }
 
   // ================================================================ draw
@@ -1147,10 +1162,11 @@ export class Game {
     const top = s.t + 14;
     const left = s.l + 16, right = v.w - s.r - 16;
     const pauseR: Rect = { x: right - 64, y: top, w: 64, h: 64 };
+    const fullR: Rect | null = canFullscreen() ? { x: pauseR.x - 64 - 14, y: top, w: 64, h: 64 } : null;
 
     // XP bar + level medallion
     const lvR = 34;
-    const xr: Rect = { x: left + lvR, y: top + 14, w: pauseR.x - 16 - left - lvR, h: 22 };
+    const xr: Rect = { x: left + lvR, y: top + 14, w: (fullR ?? pauseR).x - 16 - left - lvR, h: 22 };
     const pct = Math.min(1, m.xp / m.xpNeed);
     if (kitImage('ui-bar-frame')) {
       bar(ctx, { x: xr.x + 10, y: xr.y + 2, w: xr.w - 10, h: xr.h - 4 }, pct, '#d89a3a');
@@ -1184,11 +1200,19 @@ export class Game {
       for (const dx of [-9, 5]) { rrect(ctx, pauseR.x + 32 + dx, pauseR.y + 18, 9, 28, 3); ctx.fill(); ctx.stroke(); }
     })) this.pause();
 
+    if (fullR) this.fullscreenButton(ctx, 'hudfull', fullR);
+
     // timer (count up to 10:00)
     const ty = top + 78;
     const remain = Math.max(0, m.T.runLength - m.time);
     const late = remain < 60;
     outlinedText(ctx, fmtTime(m.time), v.w / 2, ty, 46, late ? '#f0c060' : '#fff', INK, 'center');
+    // what the clock is counting toward: the next boss, then the zone clear (the boss bar takes this spot in a fight)
+    if (!m.boss && m.status === 'play') {
+      const next = m.T.bossAt[m.bossesSpawned];
+      const goal = next !== undefined ? 'NEXT BOSS IN ' + fmtTime(next - m.time) : 'ZONE CLEAR IN ' + fmtTime(remain);
+      outlinedText(ctx, goal, v.w / 2, ty + 40, 20, next !== undefined ? '#f3d79a' : '#bfe39a', INK, 'center');
+    }
 
     // kills + coins (right column, under pause)
     const ry = top + 98;
@@ -1257,7 +1281,7 @@ export class Game {
     const b = this.banner!;
     const v = this.v;
     const k = b.t;
-    const a = k < 0.2 ? k / 0.2 : k > 2 ? (2.4 - k) / 0.4 : 1;
+    const a = k < 0.2 ? k / 0.2 : k > b.len - 0.4 ? (b.len - k) / 0.4 : 1;
     const sc = k < 0.2 ? 0.7 + 0.3 * (k / 0.2) + Math.sin(k / 0.2 * Math.PI) * 0.12 : 1;
     const y = v.safe.t + (this.m?.boss ? 230 : 190);
     ctx.save();
@@ -1454,23 +1478,54 @@ export class Game {
 
   // ---------------------------------------------------------------- pause & results
   private drawPause(ctx: Ctx): void {
-    const v = this.v;
+    const v = this.v, m = this.m!, cx = v.w / 2;
     this.ui.scrim(ctx, v.w, v.h);
-    const w = Math.min(520, v.w - 60), h = 440;
-    const r: Rect = { x: v.w / 2 - w / 2, y: v.h / 2 - h / 2, w, h };
+    const rows: { id: string; label: string; on: boolean; flip: () => void }[] = [
+      { id: 'snd', label: 'Sound', on: this.meta.sound, flip: () => { this.meta.sound = !this.meta.sound; this.audio.sound = this.meta.sound; saveMeta(this.meta); } },
+      { id: 'mus', label: 'Music', on: this.meta.music, flip: () => { this.meta.music = !this.meta.music; this.audio.setMusic(this.meta.music); saveMeta(this.meta); } },
+    ];
+    if (canFullscreen()) rows.push({ id: 'full', label: 'Full screen', on: isFullscreen(), flip: toggleFullscreen });
+    const owned: [SkillId, number][] = [...m.weapons, ...m.passives];
+    const w = Math.min(580, v.w - 60), rowH = 70;
+    const h = 150 + (owned.length ? 84 : 0) + 110 + rows.length * rowH + 90;
+    const r: Rect = { x: cx - w / 2, y: Math.max(v.safe.t + 70, v.h / 2 - h / 2 + 20), w, h };
     fancyPanel(ctx, r);
-    outlinedText(ctx, 'PAUSED', v.w / 2, r.y + 70, 52, '#f6ead0', '#a8501a', 'center');
-    if (this.ui.button('resume', { x: r.x + 50, y: r.y + 130, w: w - 100, h: 86 }, { label: 'RESUME', tone: 'gold' }, ctx)) this.resume();
-    const hw = (w - 100 - 20) / 2;
-    if (this.ui.button('snd', { x: r.x + 50, y: r.y + 246, w: hw, h: 64 }, { label: this.meta.sound ? 'SOUND ON' : 'SOUND OFF', tone: 'stone', size: 24 }, ctx)) {
-      this.meta.sound = !this.meta.sound; this.audio.sound = this.meta.sound; saveMeta(this.meta);
+    ribbon(ctx, cx, r.y - 36, Math.min(380, w - 80), 'PAUSED', 'green');
+    const SOFT = '#7a5f45';
+    const rule = (y: number) => { ctx.strokeStyle = 'rgba(90,70,54,.3)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(r.x + 50, y); ctx.lineTo(r.x + w - 50, y + 1); ctx.stroke(); };
+
+    // where the run stands, as one quiet line + the skills in hand
+    let y = r.y + 82;
+    const next = m.T.bossAt[m.bossesSpawned];
+    const where = `${fmtTime(m.time)} survived  ·  Level ${m.level}  ·  ${next !== undefined ? 'next boss ' + fmtTime(next) : 'zone clear ' + fmtTime(m.T.runLength)}`;
+    ctx.font = `italic 600 ${fitSize(ctx, where, 22, w - 70)}px "Alegreya", Georgia, serif`;
+    ctx.fillStyle = SOFT; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(where, cx, y);
+    y += 34;
+    if (owned.length) {
+      const S = 56, gap = 12, tw = owned.length * S + (owned.length - 1) * gap;
+      owned.forEach(([id], i) => ctx.drawImage(this.sprites.icon(id, SKILLS[id].color).img, cx - tw / 2 + i * (S + gap), y, S, S));
+      y += 84;
     }
-    if (this.ui.button('mus', { x: r.x + 70 + hw, y: r.y + 246, w: hw, h: 64 }, { label: this.meta.music ? 'MUSIC ON' : 'MUSIC OFF', tone: 'stone', size: 24 }, ctx)) {
-      this.meta.music = !this.meta.music; this.audio.setMusic(this.meta.music); saveMeta(this.meta);
+
+    // one primary action
+    if (this.ui.button('resume', { x: r.x + 50, y, w: w - 100, h: 86 }, { label: 'RESUME', tone: 'gold' }, ctx)) this.resume();
+    y += 86 + 30;
+
+    // settings as rows with switches (not a stack of equal buttons)
+    rule(y);
+    for (const row of rows) {
+      const rr: Rect = { x: r.x + 50, y, w: w - 100, h: rowH };
+      text(ctx, row.label, rr.x + 6, y + rowH / 2, 26, INK, 'left', 700);
+      this.toggleSwitch(ctx, rr.x + rr.w - 84, y + rowH / 2 - 20, row.on);
+      this.ui.claimIfOver('row' + row.id, rr);
+      const p = this.input.p;
+      if (p.justUp && inside(rr, p.x, p.y) && inside(rr, p.downX, p.downY)) { row.flip(); this.audio.play('tap'); }
+      y += rowH; rule(y);
     }
-    // destructive action: quiet text link, not a button twin
-    const qr: Rect = { x: v.w / 2 - 110, y: r.y + h - 90, w: 220, h: 50 };
-    text(ctx, 'Quit run', v.w / 2, qr.y + 25, 24, '#a8501a', 'center', 700);
+
+    // destructive action: quiet text link, never a button twin
+    const qr: Rect = { x: cx - 110, y: y + 14, w: 220, h: 54 };
+    text(ctx, 'Quit run', cx, qr.y + 27, 22, '#9a3a22', 'center', 700);
     this.ui.claimIfOver('quit', qr);
     if (this.input.p.justUp && inside(qr, this.input.p.x, this.input.p.y) && inside(qr, this.input.p.downX, this.input.p.downY)) {
       this.m!.status = 'dead';
@@ -1478,6 +1533,18 @@ export class Game {
       this.paused = false;
     }
     this.ui.swallow();
+  }
+
+  /** Hand-inked switch: muted green track when on, parchment when off, knob slides. */
+  private toggleSwitch(ctx: Ctx, x: number, y: number, on: boolean): void {
+    const w = 84, h = 40;
+    ctx.fillStyle = INK; rrect(ctx, x - 3, y - 3, w + 6, h + 6, (h + 6) / 2); ctx.fill();
+    ctx.fillStyle = on ? '#6f8f3a' : '#cdbb94'; rrect(ctx, x, y, w, h, h / 2); ctx.fill();
+    ctx.fillStyle = 'rgba(0,0,0,.18)'; rrect(ctx, x + 4, y + h * 0.55, w - 8, h * 0.35, h * 0.2); ctx.fill();
+    const kx = on ? x + w - h / 2 : x + h / 2, ky = y + h / 2;
+    ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(kx, ky, h / 2 + 1, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#f3e6cc'; ctx.beginPath(); ctx.arc(kx, ky, h / 2 - 3, 0, Math.PI * 2); ctx.fill();
+    text(ctx, on ? 'ON' : 'OFF', on ? x + 24 : x + w - 26, ky + 1, 15, on ? '#f3e6cc' : '#6a5440', 'center', 700);
   }
 
   private drawEdgeArrows(ctx: Ctx, m: Model): void {
@@ -1751,6 +1818,27 @@ export class Game {
       sndClick = p.justUp && inside(sr, p.x, p.y) && inside(sr, p.downX, p.downY);
     } else sndClick = this.ui.iconButton('menusnd', sr, ctx, () => this.speaker(ctx, sr, meta.sound));
     if (sndClick) { meta.sound = !meta.sound; this.audio.sound = meta.sound; saveMeta(meta); }
+    if (canFullscreen()) this.fullscreenButton(ctx, 'menufull', { x: sr.x - 64 - 14, y: sr.y, w: 64, h: 64 });
+  }
+
+  /** Painted wooden plate (same family as pause/sound); F also toggles it on desktop. */
+  private fullscreenButton(ctx: Ctx, id: string, r: Rect): void {
+    const img = this.sprites.image('hud-full');
+    this.ui.claimIfOver(id, r);
+    const p = this.input.p;
+    const pressed = p.down && inside(r, p.x, p.y) && inside(r, p.downX, p.downY);
+    ctx.save();
+    if (pressed) { ctx.translate(r.x + r.w / 2, r.y + r.h / 2); ctx.scale(0.94, 0.94); ctx.translate(-r.x - r.w / 2, -r.y - r.h / 2); }
+    if (img) ctx.drawImage(img, r.x, r.y, r.w, r.h);
+    else {
+      ctx.strokeStyle = '#f3e6cc'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+      for (const [sx, sy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+        const cx = r.x + r.w / 2 + sx * 14, cy = r.y + r.h / 2 + sy * 14;
+        ctx.beginPath(); ctx.moveTo(cx, cy - sy * 9); ctx.lineTo(cx, cy); ctx.lineTo(cx - sx * 9, cy); ctx.stroke();
+      }
+    }
+    ctx.restore();
+    if (p.justUp && inside(r, p.x, p.y) && inside(r, p.downX, p.downY)) toggleFullscreen();
   }
 
   private speaker(ctx: Ctx, r: Rect, on: boolean): void {
@@ -1764,50 +1852,94 @@ export class Game {
 
   // ================================================================ camp
   private drawCamp(ctx: Ctx): void {
-    const v = this.v;
-    const meta = this.meta;
+    const v = this.v, meta = this.meta, s = v.safe;
     ctx.fillStyle = this.groundFor(meta.zone);
     ctx.fillRect(0, 0, v.w, v.h);
     this.ui.scrim(ctx, v.w, v.h);
-    const w = Math.min(760, v.w - 40);
-    const rowH = 96;
-    const h = 150 + CAMP_IDS.length * rowH + 40;
-    const r: Rect = { x: v.w / 2 - w / 2, y: Math.max(v.safe.t + 40, v.h / 2 - h / 2), w, h };
-    fancyPanel(ctx, r);
-    outlinedText(ctx, 'CAMP', r.x + 40, r.y + 62, 50, '#f6ead0', '#a8501a', 'left');
-    const pr: Rect = { x: r.x + w - 230, y: r.y + 34, w: 180, h: 54 };
-    goldPill(ctx, pr);
-    this.blit(ctx, this.sprites.pickup('coin'), pr.x + 34, pr.y + 40, 1.2, 1, 1, 0, 0);
-    outlinedText(ctx, String(meta.coins), pr.x + 60, pr.y + 28, 30, '#f6ead0', '#a8661a', 'left');
+    const land = v.w > 1300;
+    const INKS = '#3a2a1e', SOFT = '#7a5f45', OCHRE = '#9a6a2a';
 
+    // landscape: Pip waits by the panel, so the camp feels like a place and not a form
+    const heroW = land ? Math.min(460, v.w * 0.27) : 0;
+    if (land && this.hero.ready) {
+      const hx = s.l + heroW / 2 + 30, hy = v.h * 0.72;
+      ctx.fillStyle = 'rgba(20,14,8,.35)'; ctx.beginPath(); ctx.ellipse(hx, hy, 110, 26, 0, 0, Math.PI * 2); ctx.fill();
+      this.hero.update(1 / 60, false);
+      this.hero.draw(ctx, hx, hy, 330, 1, false, 0, 1);
+      outlinedText(ctx, 'Upgrades last', hx, hy + 70, 26, '#f3d79a', INK, 'center');
+      outlinedText(ctx, 'for every run', hx, hy + 102, 26, '#f3d79a', INK, 'center');
+    }
+
+    const cols = land ? 2 : 1, rowsN = Math.ceil(CAMP_IDS.length / cols);
+    const cellH = land ? 168 : 136;
+    const w = land ? Math.min(1080, v.w - heroW - 100) : Math.min(680, v.w - 40);
+    const h = 150 + rowsN * cellH + 30;
+    const px = land ? s.l + heroW + 50 + (v.w - s.l - s.r - heroW - 50 - w) / 2 : v.w / 2 - w / 2;
+    const r: Rect = { x: px, y: Math.max(s.t + 70, (v.h - h - 110) / 2 + 30), w, h };
+    fancyPanel(ctx, r);
+    ribbon(ctx, r.x + w / 2, r.y - 36, Math.min(360, w - 80), 'CAMP', 'green');
+
+    // purse: painted coin + ink number, top right of the paper (no pill)
+    const coinImg = this.sprites.image('hud-coin');
+    ctx.font = `800 40px "Alegreya SC", "Alegreya", Georgia, serif`;
+    const cw = ctx.measureText(String(meta.coins)).width;
+    if (coinImg) ctx.drawImage(coinImg, r.x + w - 56 - cw - 54, r.y + 58, 46, 46);
+    ctx.fillStyle = '#7a4e12'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText(String(meta.coins), r.x + w - 50, r.y + 83);
+    if (!land) {
+      ctx.font = `italic 600 22px "Alegreya", Georgia, serif`; ctx.fillStyle = SOFT; ctx.textAlign = 'left';
+      ctx.fillText('Upgrades last for every run', r.x + 50, r.y + 83);
+    } else text(ctx, 'YOUR COINS', r.x + w - 50 - cw - 64, r.y + 83, 16, OCHRE, 'right', 700);
+
+    const gx = r.x + 40, gy = r.y + 130, gw = (w - 80) / cols;
+    ctx.strokeStyle = 'rgba(90,70,54,.3)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(gx + w - 80, gy + 1); ctx.stroke();
     CAMP_IDS.forEach((id, i) => {
-      const y = r.y + 120 + i * rowH;
-      const c = CAMP[id];
-      const lv = meta.camp[id];
+      const col = i % cols, row = Math.floor(i / cols);
+      const x = gx + col * gw, y = gy + row * cellH;
+      const c = CAMP[id], lv = meta.camp[id], max = lv >= CAMP_MAX;
       const ic = CAMP_ICON[id];
-      const icon = this.sprites.icon(ic, ic === 'gold' ? '#f0c060' : SKILLS[ic].color);
-      ctx.drawImage(icon.img, r.x + 36, y + 8, 70, 70);
-      text(ctx, c.name, r.x + 124, y + 28, 28, INK, 'left', 700);
-      text(ctx, c.text, r.x + 124, y + 62, 20, '#7a5a3a', 'left', 600);
-      for (let p = 0; p < CAMP_MAX; p++) {
-        ctx.fillStyle = INK; rrect(ctx, r.x + 330 + p * 26 - 2, y + 54, 24, 16, 6); ctx.fill();
-        ctx.fillStyle = p < lv ? '#f0a020' : '#d8c8a0'; rrect(ctx, r.x + 330 + p * 26, y + 56, 20, 12, 5); ctx.fill();
+      const isz = land ? 84 : 76;
+      ctx.drawImage(this.sprites.icon(ic, ic === 'gold' ? '#f0c060' : SKILLS[ic].color).img, x + 14, y + cellH / 2 - isz / 2, isz, isz);
+      const tx = x + 14 + isz + 22;
+      text(ctx, c.name, tx, y + cellH / 2 - 40, 30, INKS, 'left', 700);
+      // level as inked diamonds (same language as the level-up cards)
+      for (let k = 0; k < CAMP_MAX; k++) {
+        const dx = tx + 8 + k * 20, dy = y + cellH / 2 - 6, d = 7;
+        ctx.beginPath(); ctx.moveTo(dx, dy - d - 1.5); ctx.lineTo(dx + d + 1.5, dy); ctx.lineTo(dx, dy + d + 1.5); ctx.lineTo(dx - d - 1.5, dy); ctx.closePath();
+        ctx.fillStyle = INK; ctx.fill();
+        ctx.beginPath(); ctx.moveTo(dx, dy - d + 1); ctx.lineTo(dx + d - 1, dy); ctx.lineTo(dx, dy + d - 1); ctx.lineTo(dx - d + 1, dy); ctx.closePath();
+        ctx.fillStyle = k < lv ? '#e8b04a' : '#e2d3b0'; ctx.fill();
       }
-      const br: Rect = { x: r.x + w - 210, y: y + 12, w: 170, h: 64 };
-      if (lv >= CAMP_MAX) text(ctx, 'MAX', br.x + br.w / 2, br.y + 32, 28, '#3f8e2e', 'center', 700);
+      // what it gives now, and what the next level adds
+      const now = lv > 0 ? campEffect(id, lv) : 'Not trained yet';
+      const room = x + gw - 14 - 150 - 14 - tx;
+      text(ctx, now, tx, y + cellH / 2 + 28, fitSize(ctx, now, 21, room), lv > 0 ? INKS : SOFT, 'left', 600);
+      if (!max) text(ctx, 'Next: ' + campEffect(id, lv + 1), tx, y + cellH / 2 + 56, fitSize(ctx, 'Next: ' + campEffect(id, lv + 1), 19, room), '#4a7a2e', 'left', 700);
+      // price: a small plank; gold only when you can buy it now
+      const br: Rect = { x: x + gw - 14 - 150, y: y + cellH / 2 - 32, w: 150, h: 64 };
+      if (max) text(ctx, 'MASTERED', br.x + br.w / 2, br.y + 32, 20, OCHRE, 'center', 700);
       else {
-        const cost = campCost(id, lv);
-        if (this.ui.button('buy' + id, br, { label: String(cost), tone: 'gold', size: 28, disabled: meta.coins < cost }, ctx)) {
+        const cost = campCost(id, lv), can = meta.coins >= cost;
+        if (this.ui.button('buy' + id, br, { label: String(cost), tone: can ? 'gold' : 'stone', size: 28, disabled: !can }, ctx)) {
           if (buyCamp(meta, id)) { saveMeta(meta); this.audio.play('unlock'); }
         }
       }
-      if (i < CAMP_IDS.length - 1) { ctx.fillStyle = 'rgba(168,112,42,.25)'; ctx.fillRect(r.x + 36, y + rowH - 4, w - 72, 2); }
+      if (row < rowsN - 1) { ctx.strokeStyle = 'rgba(90,70,54,.22)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x + 10, y + cellH); ctx.lineTo(x + gw - 10, y + cellH); ctx.stroke(); }
     });
+    if (land) { ctx.strokeStyle = 'rgba(90,70,54,.22)'; ctx.beginPath(); ctx.moveTo(gx + gw, gy + 20); ctx.lineTo(gx + gw, gy + rowsN * cellH - 20); ctx.stroke(); }
 
     const bw = 280;
-    if (this.ui.button('back', { x: v.w / 2 - bw / 2, y: Math.min(v.h - v.safe.b - 100, r.y + h + 24), w: bw, h: 80 }, { label: 'BACK', tone: 'stone' }, ctx)) {
+    if (this.ui.button('back', { x: r.x + w / 2 - bw / 2, y: Math.min(v.h - s.b - 96, r.y + h + 22), w: bw, h: 80 }, { label: 'BACK', tone: 'stone' }, ctx)) {
       this.screen = 'menu';
     }
     this.ui.swallow();
   }
 }
+
+/** Camp upgrade effect at a level, written like its card text ("+16% damage", "-2 damage taken"). */
+function campEffect(id: CampId, lv: number): string {
+  const c = CAMP[id];
+  const n = c.step < 1 ? Math.round(c.step * lv * 100) : c.step * lv;
+  return c.text.replace(/\d+/, String(n));
+}
+

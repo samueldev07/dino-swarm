@@ -1,0 +1,102 @@
+{
+ "shots": [
+  {
+   "id": "m-gnome",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (they are approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture and grimy smudges, worn and poor look, big head, small body, short legs, small hands, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, saturation low. Creature: a PEAT GNOME of the ember marsh: a squat little gnome wearing a lumpy cap made of dark brown peat moss whose rim smoulders with a faint orange ember glow and one thin wisp of grey smoke, sooty face, muddy leather boots, tiny fists. Same size and stance as the mushroom gnome reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "m-bat",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (they are approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture and grimy smudges, worn and poor look, big head, small body, short legs, small hands, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, saturation low. Creature: an EMBER MOTH: a big ragged moth flying, dusty charcoal-grey wings with a few faint ember-orange eye spots, fuzzy ash-brown body, feathery antennae, round white eyes. Same size as the cave bat reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-bat.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "m-orc",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (they are approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture and grimy smudges, worn and poor look, big head, small body, short legs, small hands, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, saturation low. Creature: a BOG ORC SHIELDBEARER: a stocky orc with grey-green skin caked in cracked dried mud, holding a big round shield woven from reeds and bound with rusty iron bands in front, a heavy knotted club, ragged loincloth. Same size and stance as the orc reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-orc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "m-boarorc",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (they are approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture and grimy smudges, worn and poor look, big head, small body, short legs, small hands, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, saturation low. Creature: a TOAD RIDER: a small scrawny goblin riding a big warty olive-brown marsh toad, the goblin holds a long reed spear forward, rope reins, the toad mid-hop. Same size and stance as the boar rider reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-boarorc.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "m-goblin",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (they are approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture and grimy smudges, worn and poor look, big head, small body, short legs, small hands, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, saturation low. Creature: a LANTERN GOBLIN: a thin goblin with sallow yellow-green skin and a pointed hood of sackcloth, holding up a small rusty iron lantern with a flickering orange marsh flame inside. Same size and stance as the torch goblin reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-goblin.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "m-troll",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (they are approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture and grimy smudges, worn and poor look, big head, small body, short legs, small hands, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, saturation low. Creature: a MUD TROLL: a huge hunched troll made of dark swamp mud and tangled reeds, lily pads and moss on its shoulders, mud dripping, dragging a rotten waterlogged log. Same size and stance as the forest troll reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  },
+  {
+   "id": "m-ogre",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "Draw ONE NEW creature in EXACTLY the art style of the reference images (they are approved characters of the same game - use them ONLY for style, scale and rendering, never copy their design): 2D hand-drawn dark folk fairy-tale cartoon, thick smooth rounded black-brown ink outline with uneven brush-pen width, very few interior lines, flat muted earthy base colours with ONE soft blurry darker shading tone, fine grain texture and grimy smudges, worn and poor look, big head, small body, short legs, small hands, round white eyes with tiny pupils, serious grumpy face (no smile, not cute chibi, not glossy, not 3D). Full body, three-quarter view facing RIGHT, seen slightly from above, plain flat pure white background, no ground, no shadow, no text. Muted palette, saturation low. Creature: THE TOAD KING (zone boss): a giant fat warty dark olive toad sitting upright, wearing a small dented rusty iron crown and a ragged muddy red cape, throat sac puffed, angry heavy-lidded eyes, gripping a rusty three-pronged fishing spear. Imposing and big, same size class as the ogre chief reference.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-ogre.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ]
+  }
+ ]
+}

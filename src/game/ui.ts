@@ -126,7 +126,9 @@ export class UI {
     const lip = pressed ? 2 : 6;
 
     ctx.save();
-    if (disabled) ctx.filter = 'grayscale(.85) brightness(.9)';
+    // No ctx.filter here: a canvas filter re-rasterises every draw call and stalled the frame each time
+    // the level-up cards opened (their buttons start disabled). A plain fade reads the same.
+    if (disabled) ctx.globalAlpha *= 0.55;
     const plank = opts.tone === 'gold' || opts.tone === 'green' ? (pressed ? 'ui-btn-primary-pressed' : 'ui-btn-primary')
       : opts.tone === 'blue' ? 'ui-btn-ad' : 'ui-btn-quiet';
     if (kit(plank)) {

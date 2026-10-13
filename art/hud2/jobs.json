@@ -1,0 +1,32 @@
+{
+ "shots": [
+  {
+   "id": "hud-full",
+   "prompt": "ONE small game HUD icon, centred, front view, in the hand-drawn style of the reference images (thick uneven dark ink outline, flat muted colours, one soft shadow), bold simple shape readable at 28 pixels. Background: ONE flat pure magenta #FF00FF everywhere. No text. Icon: exactly the same small round dark wooden disc with an iron rim and rivets as the first reference (same size, same wood, same rim), but instead of the pause bars: four thick cream L-shaped corner brackets pointing outward to the four corners (the universal 'enter full screen' symbol).",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/hud/hud-pause.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "hud-unfull",
+   "prompt": "ONE small game HUD icon, centred, front view, in the hand-drawn style of the reference images (thick uneven dark ink outline, flat muted colours, one soft shadow), bold simple shape readable at 28 pixels. Background: ONE flat pure magenta #FF00FF everywhere. No text. Icon: exactly the same small round dark wooden disc with an iron rim and rivets as the first reference (same size, same wood, same rim), but instead of the pause bars: four thick cream L-shaped corner brackets pointing inward toward the centre (the universal 'exit full screen' symbol).",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/hud/hud-pause.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  }
+ ]
+}
