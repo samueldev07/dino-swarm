@@ -221,7 +221,8 @@ export class Game {
     const m = this.m;
     if (this.screen !== 'run' || !m) { this.fx.update(dt); return; }
 
-    this.cam.z = Math.max(0.7, Math.min(1.6, Math.sqrt((this.v.w * this.v.h) / (1200 * 700))));
+    // Closer camera (owner 13/10): characters read bigger and art flaws show less.
+    this.cam.z = 1.25 * Math.max(0.7, Math.min(1.6, Math.sqrt((this.v.w * this.v.h) / (1200 * 700))));
     m.viewHalf = { w: this.v.w / 2 / this.cam.z, h: this.v.h / 2 / this.cam.z };
     // ---- input -> move vector
     let kx = 0, ky = 0;

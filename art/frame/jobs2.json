@@ -1,0 +1,38 @@
+{
+ "shots": [
+  {
+   "id": "frame-c",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "A SPARSE FOREGROUND FRAME overlay for a top-down 2D game screen, 16:9. Draw it EXACTLY in the style of the reference images: thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slightly grimy moss texture, simple shapes, NOT detailed, NOT painterly. Only a FEW elements, all hugging the very edges and corners, everything else empty: one fern bunch in the bottom-left corner, one mossy rock in the bottom-right corner, a single root curling down from the top-left corner. Nothing else. Keep the elements small (none reaches more than 15% into the screen from its edge). EVERYTHING that is not one of those elements - the whole centre and the empty parts of the edges - must be ONE flat pure bright green #00FF00 (chroma key), no shading, no texture, no shadow on it. No characters, no text, no UI.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-stump-large.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "frame-d",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "prompt": "A SPARSE FOREGROUND FRAME overlay for a top-down 2D game screen, 16:9. Draw it EXACTLY in the style of the reference images: thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slightly grimy moss texture, simple shapes, NOT detailed, NOT painterly. Only a FEW elements, all hugging the very edges and corners, everything else empty: a small mossy rock and a grass tuft in the bottom-left corner, a fern leaf peeking in from the right edge near the bottom, two tiny mushrooms at the bottom edge, a hanging root in the top-right corner. Nothing else. Keep the elements small (none reaches more than 15% into the screen from its edge). EVERYTHING that is not one of those elements - the whole centre and the empty parts of the edges - must be ONE flat pure bright green #00FF00 (chroma key), no shading, no texture, no shadow on it. No characters, no text, no UI.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-stump-large.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  }
+ ]
+}
