@@ -212,7 +212,7 @@ export class Game {
     const o = m.offers[i];
     if (m.choose(i)) {
       this.audio.play('claim');
-      if (o) this.fx.ring(m.px, m.py, SKILLS[o.id as SkillId]?.color ?? '#ffe28a', 22, 70);
+      if (o) this.fx.ring(m.px, m.py, SKILLS[o.id as SkillId]?.color ?? '#f3d79a', 22, 70);
       if (m.offers) this.offersAt = this.time;
     }
   }
@@ -360,7 +360,7 @@ export class Game {
     this.missionsDirty = progressMissions(this.meta.missions.filter(mission => !this.completedIds.has(mission.id)), m, e, bossTier) || this.missionsDirty;
     switch (e.t) {
       case 'hit':
-        if (e.crit || e.boss) this.fx.floater(e.x, e.y, String(e.dmg), e.crit ? '#ffd24a' : '#fff', e.crit ? 30 : 22);
+        if (e.crit || e.boss) this.fx.floater(e.x, e.y, String(e.dmg), e.crit ? '#f0c060' : '#fff', e.crit ? 30 : 22);
         if (e.crit) a.play('crit');
         else a.play('hit');
         if (e.boss) this.fx.burst(e.x, e.y + 20, '#fff2c0', 4, 160);
@@ -369,11 +369,11 @@ export class Game {
         // every kill vanishes in a puff of black smoke (no squash); bigger monsters, bigger puff
         if (this.firstRun && !this.taughtAmber) {
           this.taughtAmber = true; this.amberT = 3;
-          this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
+          this.showBanner('Collect amber to LEVEL UP!', '', '#f0c060');
         }
         const s = this.sprites.enemy(e.kind, m.zone);
         this.dying.push({ s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s), t: 0, flip: 1 });
-        this.fx.burst(e.x, e.y - 14, e.kind === 'boss' ? '#ffd24a' : '#e8dcc0', e.kind === 'boss' ? 40 : 6, e.kind === 'boss' ? 420 : 170);
+        this.fx.burst(e.x, e.y - 14, e.kind === 'boss' ? '#f0c060' : '#e8dcc0', e.kind === 'boss' ? 40 : 6, e.kind === 'boss' ? 420 : 170);
         if (this.time - this.lastKillSound > 0.06) { a.play('kill'); this.lastKillSound = this.time; }
         if (e.kind === 'brute') this.fx.shake(0.5, 0.25);
         break;
@@ -385,31 +385,31 @@ export class Game {
         a.play('hurt');
         break;
       case 'gem': a.play('select'); break;
-      case 'coin': a.play('buy'); this.fx.floater(e.x, e.y - 20, `+${e.n}`, '#ffd24a', 22); break;
+      case 'coin': a.play('buy'); this.fx.floater(e.x, e.y - 20, `+${e.n}`, '#f0c060', 22); break;
       case 'heal': a.play('lucky'); this.fx.floater(m.px, m.py - 70, `+${e.n}`, '#7bdc5a', 28); break;
-      case 'magnet': a.play('ready'); this.showBanner('AMBER MAGNET!', 'All amber flies to you', '#ffd24a'); break;
+      case 'magnet': a.play('ready'); this.showBanner('AMBER MAGNET!', 'All amber flies to you', '#f0c060'); break;
       case 'chest': {
         a.play('chest');
-        this.fx.ring(m.px, m.py, '#ffd24a', 30, 90);
+        this.fx.ring(m.px, m.py, '#f0c060', 30, 90);
         const o = e.offer;
         const name = o.id === 'heal' ? 'Healing' : o.id === 'gold' ? 'Gold' : SKILLS[o.id].name;
-        this.showBanner('TREASURE!', o.level > 0 ? `${name} → LV ${o.level}` : name, '#ffd24a');
+        this.showBanner('TREASURE!', o.level > 0 ? `${name} → LV ${o.level}` : name, '#f0c060');
         break;
       }
-      case 'level': a.play('unlock'); this.fx.ring(m.px, m.py, '#ffe28a', 24, 80); break;
+      case 'level': a.play('unlock'); this.fx.ring(m.px, m.py, '#f3d79a', 24, 80); break;
       case 'evolve': {
         a.play('super');
         this.evolveT = 1.3;
         this.fx.ring(m.px, m.py, '#fff2a0', 36, 120);
-        this.fx.burst(m.px, m.py - 40, '#ffd24a', 40, 380);
+        this.fx.burst(m.px, m.py - 40, '#f0c060', 40, 380);
         this.fx.shake(0.8, 0.4);
         const sp = SPECIES[m.species];
-        this.showBanner('EVOLVED!', sp.forms[e.form], '#ffd24a');
+        this.showBanner('EVOLVED!', sp.forms[e.form], '#f0c060');
         break;
       }
       case 'weaponEvolve':
-        a.play('super'); this.fx.burst(m.px, m.py - 40, '#ffd24a', 40, 380);
-        this.fx.shake(0.8, 0.4); this.showBanner('EVOLVED!', e.name, '#ffd24a'); break;
+        a.play('super'); this.fx.burst(m.px, m.py - 40, '#f0c060', 40, 380);
+        this.fx.shake(0.8, 0.4); this.showBanner('EVOLVED!', e.name, '#f0c060'); break;
       case 'fire':
         if (e.w === 'stomp') { a.play('thud'); this.playFx('slam', m.px, m.py + 6, m.wl('stomp').area * 1.15, 21); }
         else if (e.w === 'roar') { a.play('combo'); this.playFx('horn', m.px, m.py - 40, m.wl('roar').area * 1.3, 25); }
@@ -432,7 +432,7 @@ export class Game {
       case 'wave':
         if (e.kind === 'ring') this.showBanner('SURROUNDED!', 'Break out of the ring', '#ff9a3c');
         else if (e.kind === 'stream') this.showBanner('A SWARM IS COMING!', '', '#ff9a3c');
-        else this.showBanner('A BRUTE APPEARS', 'It drops a treasure chest', '#ffd24a');
+        else this.showBanner('A BRUTE APPEARS', 'It drops a treasure chest', '#f0c060');
         break;
       case 'win': a.play('win'); break;
       case 'dead': a.play('ko'); this.fx.shake(1, 0.5); break;
@@ -489,7 +489,7 @@ export class Game {
     else if (this.result) this.drawResult(ctx, m);
     else if (this.busy) this.ui.scrim(ctx, v.w, v.h);
 
-    if (this.time < this.toastUntil) outlinedText(ctx, 'No ad available right now', v.w / 2, v.safe.t + 230, fitSize(ctx, 'No ad available right now', 28, v.w - 60), '#fff', INK, 'center');
+    if (this.time < this.toastUntil) outlinedText(ctx, 'No ad available right now', v.w / 2, v.safe.t + 230, fitSize(ctx, 'No ad available right now', 28, v.w - 60), '#f6ead0', INK, 'center');
     // Joystick starts on any press no button claimed.
     const p = this.input.p;
     if (p.justDown && !this.ui.claimed && !m.offers && !this.paused && !this.result && !this.busy && !this.poki.adRunning) {
@@ -509,6 +509,7 @@ export class Game {
    * then stretched over the view with one plain drawImage. The old per-frame 'soft-light'
    * composite + full-screen gradients made the GPU re-shade every pixel twice a frame.
    */
+  private heroPool: HTMLCanvasElement | null = null;
   private hurtLayer: { w: number; h: number; c: HTMLCanvasElement } | null = null;
   private lightLayer: { w: number; h: number; c: HTMLCanvasElement } | null = null;
   private drawLight(ctx: Ctx, _m: Model): void {
@@ -525,7 +526,7 @@ export class Game {
       x.fillStyle = warm; x.fillRect(0, 0, W, H);
       const vig = x.createRadialGradient(W / 2, H / 2, R * 0.28, W / 2, H / 2, R * 0.72);
       vig.addColorStop(0, 'rgba(10,18,8,0)');
-      vig.addColorStop(1, 'rgba(10,18,8,0.55)');
+      vig.addColorStop(1, 'rgba(10,18,8,0.32)');
       x.fillStyle = vig; x.fillRect(0, 0, W, H);
       this.lightLayer = { w: v.w, h: v.h, c };
     }
@@ -599,7 +600,7 @@ export class Game {
     for (const g of m.gems) {
       if (!vis(g.x, g.y)) continue;
       const bob = g.flying ? 0 : Math.sin(this.time * 4 + g.x * 0.05) * 2;
-      this.drawXp(ctx, g.x, g.y + bob - 12, g.value >= 10 ? 17 : g.value >= 3 ? 14 : 12, g.x * 0.37 + g.y * 0.11);
+      this.drawAmber(ctx, g.x, g.y + bob - 12, g.value >= 10 ? 32 : g.value >= 3 ? 26 : 21, g.x * 0.37 + g.y * 0.11);
     }
     for (const pk of m.pickups) {
       if (!vis(pk.x, pk.y)) continue;
@@ -610,13 +611,14 @@ export class Game {
         ctx.beginPath(); ctx.ellipse(pk.x, pk.y, 46, 18, 0, 0, Math.PI * 2); ctx.fill();
         inkEllipse(ctx, pk.x, pk.y, 48, 19, 3, 3, 'rgba(120,80,20,.8)');
       }
+      if (pk.kind === 'coin') { this.drawXp(ctx, pk.x, pk.y + bob - 14, 16, pk.x * 0.3); continue; }  // gold = spinning gold coin
       this.blit(ctx, s, pk.x, pk.y + bob, 1, 1, 1, 0, 0);
     }
 
     if (this.amberT > 0 && m.gems.length) {
       const gem = m.gems.reduce((a, b) => Math.hypot(a.x - m.px, a.y - m.py) < Math.hypot(b.x - m.px, b.y - m.py) ? a : b);
       const rr = 24 + Math.sin(this.time * 7) * 5;
-      inkEllipse(ctx, gem.x, gem.y, rr, rr * 0.8, 5, 3, '#ffe28a');
+      inkEllipse(ctx, gem.x, gem.y, rr, rr * 0.8, 5, 3, '#f3d79a');
     }
     // shadows, one path
     ctx.fillStyle = 'rgba(30,20,10,.2)';
@@ -628,6 +630,21 @@ export class Game {
       ctx.ellipse(e.x, e.y + fly, e.r, e.r * 0.34, 0, 0, Math.PI * 2);
     }
     ctx.fill();
+    // Hero light shaft: a soft, blurred beam from above + a faint glow on the ground, baked once.
+    if (!this.heroPool) {
+      const c = document.createElement('canvas'); c.width = 160; c.height = 320;
+      const x = c.getContext('2d')!;
+      x.filter = 'blur(10px)';
+      const beam = x.createLinearGradient(0, 0, 0, 300);
+      beam.addColorStop(0, 'rgba(255,236,190,0)'); beam.addColorStop(0.55, 'rgba(255,236,190,0.14)'); beam.addColorStop(1, 'rgba(255,230,170,0.26)');
+      x.fillStyle = beam;
+      x.beginPath(); x.moveTo(62, 10); x.lineTo(98, 10); x.lineTo(126, 285); x.lineTo(34, 285); x.closePath(); x.fill();
+      const pool = x.createRadialGradient(80, 285, 0, 80, 285, 70);
+      pool.addColorStop(0, 'rgba(255,230,170,0.35)'); pool.addColorStop(1, 'rgba(255,230,170,0)');
+      x.fillStyle = pool; x.beginPath(); x.ellipse(80, 285, 70, 22, 0, 0, Math.PI * 2); x.fill();
+      this.heroPool = c;
+    }
+    ctx.drawImage(this.heroPool!, m.px - 80, m.py - 290, 160, 320);
     // Hero: one clear ground shadow under the feet, sized to the art (not the hitbox).
     ctx.fillStyle = 'rgba(25,18,10,.32)';
     ctx.beginPath(); ctx.ellipse(m.px, m.py - 2, 30, 9, 0, 0, Math.PI * 2); ctx.fill();
@@ -742,7 +759,7 @@ export class Game {
       this.blit(ctx, s, x, y, sc, sx, sy, e.mode === 2 ? 0 : Math.sin(walk) * 0.05, flash, e.facing);
     }
     if (e.stun > 0) {
-      ctx.fillStyle = '#ffe28a'; ctx.strokeStyle = INK; ctx.lineWidth = 2;
+      ctx.fillStyle = '#f3d79a'; ctx.strokeStyle = INK; ctx.lineWidth = 2;
       for (let i = 0; i < 3; i++) {
         const a = this.time * 5 + i * 2.1;
         const px = e.x + Math.cos(a) * e.r * 0.8, py = e.y - e.r * 2.3 + Math.sin(a) * 4;
@@ -800,7 +817,7 @@ export class Game {
         }
         ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 1.35 + 2.5, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#ff6a2c'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 1.35, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#ffd24a'; ctx.beginPath(); ctx.arc(p.x - 2, p.y - 2, p.r * 0.75, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#f0c060'; ctx.beginPath(); ctx.arc(p.x - 2, p.y - 2, p.r * 0.75, 0, Math.PI * 2); ctx.fill();
         continue;
       }
       // enemy spores: purple = danger, pulsing, readable over every ground
@@ -872,6 +889,21 @@ export class Game {
     ctx.globalAlpha = 1;
   }
 
+  /** XP: the painted amber crystal with a soft warm glow and a twinkle - clearly not gold. */
+  private drawAmber(ctx: Ctx, x: number, y: number, h: number, seed: number): void {
+    const img = this.sprites.image('hud-amber') ?? this.sprites.image('pickup-amber-1');
+    const tw = 0.5 + 0.5 * Math.sin(this.time * 2.6 + seed);
+    ctx.fillStyle = `rgba(255,170,60,${0.16 + 0.1 * tw})`;
+    ctx.beginPath(); ctx.ellipse(x, y, h * 0.75, h * 0.6, 0, 0, Math.PI * 2); ctx.fill();
+    if (img) { const w = (h * img.naturalWidth) / img.naturalHeight; ctx.drawImage(img, x - w / 2, y - h / 2, w, h); }
+    if (tw > 0.86) {
+      const L = h * 0.45 * ((tw - 0.86) / 0.14);
+      ctx.strokeStyle = 'rgba(255,250,225,.95)'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x + h * 0.2 - L, y - h * 0.3); ctx.lineTo(x + h * 0.2 + L, y - h * 0.3);
+      ctx.moveTo(x + h * 0.2, y - h * 0.3 - L); ctx.lineTo(x + h * 0.2, y - h * 0.3 + L); ctx.stroke();
+    }
+  }
+
   /**
    * XP drop as a chunky spinning gold coin (Subway-Surfers-like): big enough to read, ink
    * outline like the art, a bright rim, a stamped centre, a sliding shine and a twinkle.
@@ -887,7 +919,7 @@ export class Game {
     ctx.fillStyle = 'rgba(255,200,80,.18)';
     ctx.beginPath(); ctx.ellipse(0, 0, r * 1.9, r * 1.9, 0, 0, Math.PI * 2); ctx.fill();
     ctx.scale(sx, 1);
-    const coin = this.sprites.image('pickup-coin');
+    const coin = this.sprites.image('hud-coin') ?? this.sprites.image('pickup-coin');
     if (coin) {
       // the painted game coin, spun by squashing; the dark side shows while it turns away
       const d = r * 2.3;
@@ -1087,7 +1119,13 @@ export class Game {
 
     if (this.firstRun) text(ctx, 'XP', xr.x + 45, xr.y + xr.h / 2, 18, '#fff', 'left', 700);
     // pause
-    if (this.ui.iconButton('pause', pauseR, ctx, () => {
+    const pauseImg = this.sprites.image('hud-pause');
+    if (pauseImg) {
+      this.ui.claimIfOver('pause', pauseR);
+      const p = this.input.p;
+      ctx.drawImage(pauseImg, pauseR.x, pauseR.y, pauseR.w, pauseR.h);
+      if (p.justUp && inside(pauseR, p.x, p.y) && inside(pauseR, p.downX, p.downY)) this.pause();
+    } else if (this.ui.iconButton('pause', pauseR, ctx, () => {
       ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 3;
       for (const dx of [-9, 5]) { rrect(ctx, pauseR.x + 32 + dx, pauseR.y + 18, 9, 28, 3); ctx.fill(); ctx.stroke(); }
     })) this.pause();
@@ -1096,15 +1134,16 @@ export class Game {
     const ty = top + 78;
     const remain = Math.max(0, m.T.runLength - m.time);
     const late = remain < 60;
-    outlinedText(ctx, fmtTime(m.time), v.w / 2, ty, 46, late ? '#ffd24a' : '#fff', INK, 'center');
+    outlinedText(ctx, fmtTime(m.time), v.w / 2, ty, 46, late ? '#f0c060' : '#fff', INK, 'center');
 
     // kills + coins (right column, under pause)
     const ry = top + 98;
-    this.skull(ctx, right - 150, ry);
-    outlinedText(ctx, String(m.kills), right - 130, ry, 26, '#fff', INK, 'left');
-    const coin = this.sprites.pickup('coin');
-    this.blit(ctx, coin, right - 150, ry + 52, 1, 1, 1, 0, 0);
-    outlinedText(ctx, String(m.coins), right - 130, ry + 40, 26, '#ffd24a', INK, 'left');
+    const skull = this.sprites.image('hud-skull'), hcoin = this.sprites.image('hud-coin');
+    if (skull) ctx.drawImage(skull, right - 168, ry - 16, 34, 32); else this.skull(ctx, right - 150, ry);
+    outlinedText(ctx, String(m.kills), right - 126, ry, 28, '#f6ead0', INK, 'left');
+    if (hcoin) ctx.drawImage(hcoin, right - 167, ry + 24, 32, 32);
+    else this.blit(ctx, this.sprites.pickup('coin'), right - 150, ry + 52, 1, 1, 1, 0, 0);
+    outlinedText(ctx, String(m.coins), right - 126, ry + 40, 28, '#f0c060', INK, 'left');
 
     // owned skills (left column)
     let ix = left, iy = top + 66;
@@ -1118,7 +1157,7 @@ export class Game {
       for (let p = 0; p < MAX_LEVEL; p++) {
         const px = x + S / 2 - (MAX_LEVEL * 10) / 2 + p * 10;
         ctx.fillStyle = '#1e1610'; ctx.fillRect(px - 1, y + S + 2, 9, 8);
-        ctx.fillStyle = p < lv ? '#ffd24a' : '#5a4a3a';
+        ctx.fillStyle = p < lv ? '#f0c060' : '#5a4a3a';
         ctx.fillRect(px, y + S + 3, 7, 6);
       }
     });
@@ -1153,10 +1192,10 @@ export class Game {
     ctx.globalAlpha = this.firstRun ? Math.max(0, 1 - this.hintFade / 0.4) : 1;
     ctx.translate(v.w / 2, y);
     ctx.scale(pulse, pulse);
-    outlinedText(ctx, touch ? 'Drag anywhere to move' : 'WASD / Arrow keys to move', 0, 0, 42, '#fff', INK, 'center');
+    outlinedText(ctx, touch ? 'Drag anywhere to move' : 'WASD / Arrow keys to move', 0, 0, 42, '#f6ead0', INK, 'center');
     ctx.restore();
     ctx.save(); ctx.globalAlpha = this.firstRun ? Math.max(0, 1 - this.hintFade / 0.4) : 1;
-    outlinedText(ctx, 'You attack automatically. Survive 10 minutes!', v.w / 2, y + 52, 24, '#ffe28a', INK, 'center');
+    outlinedText(ctx, 'You attack automatically. Survive 10 minutes!', v.w / 2, y + 52, 24, '#f3d79a', INK, 'center');
     ctx.restore();
   }
 
@@ -1173,7 +1212,7 @@ export class Game {
     ctx.scale(sc, sc);
     const size = fitSize(ctx, b.text, 52, v.w - 60);
     outlinedText(ctx, b.text, 0, 0, size, b.color, INK, 'center');
-    if (b.sub) outlinedText(ctx, b.sub, 0, size * 0.85, 24, '#fff', INK, 'center');
+    if (b.sub) outlinedText(ctx, b.sub, 0, size * 0.85, 24, '#f6ead0', INK, 'center');
     ctx.restore();
   }
 
@@ -1209,8 +1248,8 @@ export class Game {
     const land = v.w / v.h > 1.1;
     const ready = this.time - this.offersAt > 0.35;
     const appear = Math.min(1, (this.time - this.offersAt) / 0.25);
-    outlinedText(ctx, 'LEVEL UP!', v.w / 2, v.safe.t + (land ? 120 : 170), 60, '#ffd24a', INK, 'center');
-    outlinedText(ctx, 'Choose one', v.w / 2, v.safe.t + (land ? 172 : 226), 26, '#fff', INK, 'center');
+    outlinedText(ctx, 'LEVEL UP!', v.w / 2, v.safe.t + (land ? 120 : 170), 60, '#f0c060', INK, 'center');
+    outlinedText(ctx, 'Choose one', v.w / 2, v.safe.t + (land ? 172 : 226), 26, '#f6ead0', INK, 'center');
 
     const n = offers.length;
     const rects: Rect[] = [];
@@ -1232,8 +1271,8 @@ export class Game {
     if (this.input.p.justUp) this.pressedCard = '';
     const bottom = Math.max(...rects.map(r => r.y + r.h)) + 28;
     const bh = Math.max(82, 44 / v.scale), bw = Math.min(260, (v.w - 100) / 2);
-    if (m.rerolls > 0 && this.quietButton(ctx, 'reroll', { x: v.w / 2 - bw - 12, y: bottom, w: bw, h: bh }, 'REROLL (' + m.rerolls + ')', !ready, '#ffe28a')) this.rerollOffers();
-    if (m.banishes > 0 && this.quietButton(ctx, 'banish', { x: v.w / 2 + 12, y: bottom, w: bw, h: bh }, (this.banishing ? 'CANCEL' : 'BANISH') + ' (' + m.banishes + ')', !ready, '#ffe28a')) this.banishing = !this.banishing;
+    if (m.rerolls > 0 && this.quietButton(ctx, 'reroll', { x: v.w / 2 - bw - 12, y: bottom, w: bw, h: bh }, 'REROLL (' + m.rerolls + ')', !ready, '#f3d79a')) this.rerollOffers();
+    if (m.banishes > 0 && this.quietButton(ctx, 'banish', { x: v.w / 2 + 12, y: bottom, w: bw, h: bh }, (this.banishing ? 'CANCEL' : 'BANISH') + ' (' + m.banishes + ')', !ready, '#f3d79a')) this.banishing = !this.banishing;
     this.ui.swallow();
   }
 
@@ -1245,7 +1284,7 @@ export class Game {
     const clicked = ready && p.justUp && over && this.pressedCard === id;
 
     const def = o.id === 'heal' ? { name: 'Roast Meat', color: '#e8504a', text: ['Heal 40 health.'] }
-      : o.id === 'gold' ? { name: 'Gold Pile', color: '#ffd24a', text: ['+20 coins.'] }
+      : o.id === 'gold' ? { name: 'Gold Pile', color: '#f0c060', text: ['+20 coins.'] }
       : SKILLS[o.id];
     const desc = o.level > 0 ? def.text[o.level - 1] : def.text[0];
     const isNew = o.level === 1;
@@ -1275,7 +1314,7 @@ export class Game {
     ctx.font = fontFor(ns); ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillStyle = INK;
     ctx.fillText(def.name, tx, y);
     y += 40;
-    if (isNew) outlinedText(ctx, 'NEW!', tx, y, 24, '#ffd24a', INK, align);
+    if (isNew) outlinedText(ctx, 'NEW!', tx, y, 24, '#f0c060', INK, align);
     else if (o.level > 0) {
       const pipW = 22, gap = 6, total = MAX_LEVEL * pipW + (MAX_LEVEL - 1) * gap;
       const x0 = land ? tx - total / 2 : tx;
@@ -1326,7 +1365,7 @@ export class Game {
     const w = Math.min(520, v.w - 60), h = 440;
     const r: Rect = { x: v.w / 2 - w / 2, y: v.h / 2 - h / 2, w, h };
     fancyPanel(ctx, r);
-    outlinedText(ctx, 'PAUSED', v.w / 2, r.y + 70, 52, '#fff', '#a8501a', 'center');
+    outlinedText(ctx, 'PAUSED', v.w / 2, r.y + 70, 52, '#f6ead0', '#a8501a', 'center');
     if (this.ui.button('resume', { x: r.x + 50, y: r.y + 130, w: w - 100, h: 86 }, { label: 'RESUME', tone: 'gold' }, ctx)) this.resume();
     const hw = (w - 100 - 20) / 2;
     if (this.ui.button('snd', { x: r.x + 50, y: r.y + 246, w: hw, h: 64 }, { label: this.meta.sound ? 'SOUND ON' : 'SOUND OFF', tone: 'stone', size: 24 }, ctx)) {
@@ -1365,7 +1404,7 @@ export class Game {
     const left = v.safe.l + inset, right = v.w - v.safe.r - inset;
     const targets = [
       ...m.enemies.filter(e => !e.dead && (e.def.kind === 'boss' || e.def.kind === 'brute')).map(e => ({ x: e.x, y: e.y, color: e.def.kind === 'boss' ? '#ff625a' : '#ff9a3c' })),
-      ...m.pickups.filter(p => p.kind === 'chest').map(p => ({ x: p.x, y: p.y, color: '#ffd24a' })),
+      ...m.pickups.filter(p => p.kind === 'chest').map(p => ({ x: p.x, y: p.y, color: '#f0c060' })),
     ];
     const used: [number, number][] = [];
     for (const target of targets) {
@@ -1410,15 +1449,15 @@ export class Game {
     [{ label: 'SURVIVED', value: fmtTime(m.time) }, { label: 'LEVEL', value: String(m.level) }, { label: 'DEFEATED', value: String(m.kills) }].forEach((col, i) => {
       const x = r.x + w * (i + 0.5) / 3;
       text(ctx, col.label, x, r.y + 143, 20, '#a8702a', 'center', 700);
-      outlinedText(ctx, col.value, x, r.y + 183, 43, '#fff', INK, 'center');
+      outlinedText(ctx, col.value, x, r.y + 183, 43, '#f6ead0', INK, 'center');
     });
-    if (this.newBest && !won) outlinedText(ctx, 'NEW BEST TIME!', cx, r.y + 230, 25, '#ffd24a', INK, 'center');
+    if (this.newBest && !won) outlinedText(ctx, 'NEW BEST TIME!', cx, r.y + 230, 25, '#f0c060', INK, 'center');
     else if (won && m.zone + 1 < ZONES.length) text(ctx, ZONES[m.zone + 1].name + ' unlocked!', cx, r.y + 230, 24, '#3f8e2e', 'center');
     const pr: Rect = { x: r.x + 40, y: r.y + 262, w: (w - 100) * 0.55, h: 64 };
     goldPill(ctx, pr);
     this.blit(ctx, this.sprites.pickup('coin'), pr.x + 34, pr.y + 44, 1.2, 1, 1, 0, 0);
     const amount = '+' + this.banked * (this.doubled ? 2 : 1);
-    outlinedText(ctx, amount, pr.x + 65, pr.y + 33, fitSize(ctx, amount, 35, pr.w - 85), '#fff', '#a8661a', 'left');
+    outlinedText(ctx, amount, pr.x + 65, pr.y + 33, fitSize(ctx, amount, 35, pr.w - 85), '#f6ead0', '#a8661a', 'left');
     const dr: Rect = { x: pr.x + pr.w + 20, y: pr.y - 10, w: w - 80 - pr.w - 20, h: Math.max(84, 44 / v.scale) };
     if (!this.doubled) {
       this.clapper(ctx, dr.x + 18, dr.y + dr.h / 2, 23);
@@ -1514,9 +1553,9 @@ export class Game {
       this.hero.draw(ctx, cx, dy + 10, 230, 1, false, 0, 1);
     } else this.blit(ctx, dino, cx, dy + Math.sin(this.time * 2.4) * 3, 2.1, 1, 1, 0, 0);
     ctx.restore();
-    outlinedText(ctx, sp.name.toUpperCase(), cx, dy + 50, 40, '#fff', INK, 'center');
+    outlinedText(ctx, sp.name.toUpperCase(), cx, dy + 50, 40, '#f6ead0', INK, 'center');
     const blurb = unlocked ? sp.blurb : `Clear ${ZONES[sp.unlockZone].name} to unlock`;
-    outlinedText(ctx, blurb, cx, dy + 92, fitSize(ctx, blurb, 24, v.w - 80), unlocked ? '#ffe28a' : '#ffb0a0', INK, 'center');
+    outlinedText(ctx, blurb, cx, dy + 92, fitSize(ctx, blurb, 24, v.w - 80), unlocked ? '#f3d79a' : '#ffb0a0', INK, 'center');
     const ar = 74;
     // Only one hero for now: the picker shows up once a second one is unlocked.
     const pickable = ids.filter((id) => speciesUnlocked(meta, id)).length > 1;
@@ -1533,8 +1572,8 @@ export class Game {
     // zone picker
     const zy = dy + 140;
     const zname = ZONES[meta.zone].name;
-    outlinedText(ctx, zname, cx, zy + 30, 30, '#fff', INK, 'center');
-    text(ctx, meta.best[meta.zone] ? `Best ${fmtTime(meta.best[meta.zone])}` : 'ZONE', cx, zy - 2, 18, '#ffe28a', 'center', 700);
+    outlinedText(ctx, zname, cx, zy + 30, 30, '#f6ead0', INK, 'center');
+    text(ctx, meta.best[meta.zone] ? `Best ${fmtTime(meta.best[meta.zone])}` : 'ZONE', cx, zy - 2, 18, '#f3d79a', 'center', 700);
     for (const dir of [-1, 1]) {
       const nz = meta.zone + dir;
       const ok = nz >= 0 && nz < ZONES.length && zoneUnlocked(meta, nz);
@@ -1556,21 +1595,28 @@ export class Game {
     const mx = land ? s.l + 40 : cx - Math.min(640, v.w - 80) / 2;
     const my = land ? v.h * 0.4 : by + 245;
     const mw = land ? Math.min(420, cx - 330) : Math.min(640, v.w - 80);
-    text(ctx, 'MISSIONS', mx, my, 24, '#ffe28a', 'left', 700);
+    text(ctx, 'MISSIONS', mx, my, 24, '#f3d79a', 'left', 700);
     meta.missions.forEach((mission, i) => {
       const y = my + 45 + i * 82;
       const label = missionLabel(mission);
-      outlinedText(ctx, label, mx, y, fitSize(ctx, label, 24, mw), '#fff', INK, 'left');
-      text(ctx, `${mission.progress}/${mission.target}   +${mission.reward} coins`, mx, y + 28, 20, '#ffe28a');
+      outlinedText(ctx, label, mx, y, fitSize(ctx, label, 24, mw), '#f6ead0', INK, 'left');
+      text(ctx, `${mission.progress}/${mission.target}   +${mission.reward} coins`, mx, y + 28, 20, '#f3d79a');
       ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(mx, y + 49, mw, 3);
-      ctx.fillStyle = '#ffd24a'; ctx.fillRect(mx, y + 49, mw * Math.min(1, mission.progress / mission.target), 3);
+      ctx.fillStyle = '#f0c060'; ctx.fillRect(mx, y + 49, mw * Math.min(1, mission.progress / mission.target), 3);
     });
 
     // sound toggle (top-right)
     const sr: Rect = { x: v.w - s.r - 16 - 64, y: s.t + 14, w: 64, h: 64 };
-    if (this.ui.iconButton('menusnd', sr, ctx, () => this.speaker(ctx, sr, meta.sound))) {
-      meta.sound = !meta.sound; this.audio.sound = meta.sound; saveMeta(meta);
-    }
+    const sndImg = this.sprites.image('hud-sound');
+    let sndClick = false;
+    if (sndImg) {
+      this.ui.claimIfOver('menusnd', sr);
+      const p = this.input.p;
+      ctx.save(); if (!meta.sound) ctx.globalAlpha = 0.45; ctx.drawImage(sndImg, sr.x, sr.y, sr.w, sr.h); ctx.restore();
+      if (!meta.sound) { ctx.strokeStyle = '#c8442e'; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(sr.x + 12, sr.y + 12); ctx.lineTo(sr.x + sr.w - 12, sr.y + sr.h - 12); ctx.stroke(); }
+      sndClick = p.justUp && inside(sr, p.x, p.y) && inside(sr, p.downX, p.downY);
+    } else sndClick = this.ui.iconButton('menusnd', sr, ctx, () => this.speaker(ctx, sr, meta.sound));
+    if (sndClick) { meta.sound = !meta.sound; this.audio.sound = meta.sound; saveMeta(meta); }
   }
 
   private speaker(ctx: Ctx, r: Rect, on: boolean): void {
@@ -1594,18 +1640,18 @@ export class Game {
     const h = 150 + CAMP_IDS.length * rowH + 40;
     const r: Rect = { x: v.w / 2 - w / 2, y: Math.max(v.safe.t + 40, v.h / 2 - h / 2), w, h };
     fancyPanel(ctx, r);
-    outlinedText(ctx, 'CAMP', r.x + 40, r.y + 62, 50, '#fff', '#a8501a', 'left');
+    outlinedText(ctx, 'CAMP', r.x + 40, r.y + 62, 50, '#f6ead0', '#a8501a', 'left');
     const pr: Rect = { x: r.x + w - 230, y: r.y + 34, w: 180, h: 54 };
     goldPill(ctx, pr);
     this.blit(ctx, this.sprites.pickup('coin'), pr.x + 34, pr.y + 40, 1.2, 1, 1, 0, 0);
-    outlinedText(ctx, String(meta.coins), pr.x + 60, pr.y + 28, 30, '#fff', '#a8661a', 'left');
+    outlinedText(ctx, String(meta.coins), pr.x + 60, pr.y + 28, 30, '#f6ead0', '#a8661a', 'left');
 
     CAMP_IDS.forEach((id, i) => {
       const y = r.y + 120 + i * rowH;
       const c = CAMP[id];
       const lv = meta.camp[id];
       const ic = CAMP_ICON[id];
-      const icon = this.sprites.icon(ic, ic === 'gold' ? '#ffd24a' : SKILLS[ic].color);
+      const icon = this.sprites.icon(ic, ic === 'gold' ? '#f0c060' : SKILLS[ic].color);
       ctx.drawImage(icon.img, r.x + 36, y + 8, 70, 70);
       text(ctx, c.name, r.x + 124, y + 28, 28, INK, 'left', 700);
       text(ctx, c.text, r.x + 124, y + 62, 20, '#7a5a3a', 'left', 600);

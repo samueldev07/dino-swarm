@@ -14,15 +14,6 @@ const LAYERS: {
   spin?: boolean;
 }[] = [
   {
-    // Fallen leaves, cut from the ground painting itself and scattered (the tile is leafless so
-    // its seams stay invisible; loose leaves never repeat on the tile grid).
-    cell: 170,
-    chance: 0.45,
-    salt: 31,
-    spin: true,
-    items: [["leaf-0", 30], ["leaf-1", 34], ["leaf-2", 28], ["leaf-3", 32], ["leaf-4", 26], ["leaf-5", 28]],
-  },
-  {
     // Sparse: owner found the second decor batch ugly and too dense (13/10).
     cell: 700,
     chance: 0.3,

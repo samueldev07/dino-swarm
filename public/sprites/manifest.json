@@ -58,11 +58,10 @@
   "proj-lid": "proj-lid.webp",
   "proj-rock": "proj-rock.webp",
   "proj-meteor": "proj-meteor.webp",
-  "leaf-0": "leaf-0.webp",
-  "leaf-1": "leaf-1.webp",
-  "leaf-2": "leaf-2.webp",
-  "leaf-3": "leaf-3.webp",
-  "leaf-4": "leaf-4.webp",
-  "leaf-5": "leaf-5.webp"
+  "hud-skull": "hud-skull.webp",
+  "hud-coin": "hud-coin.webp",
+  "hud-pause": "hud-pause.webp",
+  "hud-sound": "hud-sound.webp",
+  "hud-amber": "hud-amber.webp"
  }
 }
