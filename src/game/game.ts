@@ -58,6 +58,12 @@ export class Game {
   private time = 0;
 
   private dying: Dying[] = [];
+  /** Painted one-shot impacts: pop in, overshoot, fade; never a static stamp. */
+  private impacts: { key: string; x: number; y: number; size: number; t: number; life: number; rot: number; spin: number }[] = [];
+  private addImpact(key: string, x: number, y: number, size: number, life = 0.35): void {
+    if (this.impacts.length > 40) this.impacts.shift();
+    this.impacts.push({ key, x, y, size, t: 0, life, rot: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 3 });
+  }
   private banner: Banner | null = null;
   private offersAt = 0;
   private hurtT = 0;
@@ -279,6 +285,10 @@ export class Game {
     const fdt = m.hold > 0 ? dt * 0.35 : dt;
     this.fx.update(fdt);
     this.hero.update(fdt, Math.hypot(m.mx, m.my) > 0.1 && m.status === 'play');
+    for (let i = this.impacts.length - 1; i >= 0; i--) {
+      this.impacts[i].t += fdt;
+      if (this.impacts[i].t >= this.impacts[i].life) this.impacts.splice(i, 1);
+    }
     for (let i = this.dying.length - 1; i >= 0; i--) {
       this.dying[i].t += dt;
       if (this.dying[i].t > 0.22) this.dying.splice(i, 1);
@@ -363,7 +373,12 @@ export class Game {
         else if (e.w === 'roar') a.play('combo');
         else if (e.w === 'bite') { a.play('cast'); this.hero.attack(); }
         break;
+      case 'splash':
+        this.addImpact('fx-fire', e.x, e.y - 20, 90, 0.32);
+        this.fx.burst(e.x, e.y - 20, '#ffb04a', 5, 160);
+        break;
       case 'meteor':
+        this.addImpact('fx-slam', e.x, e.y, e.r * 1.3, 0.3);
         a.play('thud');
         this.fx.shake(0.35, 0.18);
         this.fx.burst(e.x, e.y, '#ff9a3c', 14, 300);
@@ -494,7 +509,20 @@ export class Game {
     for (const t of m.thorns) {
       if (!vis(t.x, t.y, 60)) continue;
       ctx.globalAlpha = Math.min(0.9, t.life * 1.5);
-      if (bramble) { const d = t.r * 2.3; ctx.drawImage(bramble, t.x - d / 2, t.y - d / 2, d, d); continue; }
+      if (bramble) {
+        const grow = Math.min(1, (2.6 - t.life) * 6), shrink = Math.min(1, t.life * 2.5);
+        const seed = Math.abs(Math.floor(t.x * 7 + t.y * 13));
+        for (let j = 0; j < 3; j++) {
+          const a = ((seed >> (j * 3)) & 7) / 8 * Math.PI * 2, dist = j ? t.r * 0.45 : 0;
+          const d = t.r * (j ? 1.1 : 1.4) * grow * shrink;
+          ctx.save();
+          ctx.translate(t.x + Math.cos(a) * dist, t.y + Math.sin(a) * dist * 0.7);
+          ctx.rotate(a + Math.sin(this.time * 2 + j) * 0.08);
+          ctx.drawImage(bramble, -d / 2, -d / 2, d, d);
+          ctx.restore();
+        }
+        continue;
+      }
       const s = (t.r * 1.7) / thorn.w;
       ctx.drawImage(thorn.img, t.x - thorn.w * s / 2, t.y - thorn.h * s / 2, thorn.w * s, thorn.h * s);
     }
@@ -584,13 +612,22 @@ export class Game {
     this.drawProjectiles(ctx, m);
     this.drawSlashes(ctx, m);
     this.drawWaves(ctx, m);
+    this.drawImpacts(ctx);
 
     // falling meteors
     const rock = this.sprites.image('proj-rock');
     for (const mt of m.meteors) {
       const k = 1 - mt.t / METEOR_DELAY;
       const x = mt.x - 260 * (1 - k), y = mt.y - 620 * (1 - k);
-      if (rock) { const d = 70 + mt.r * 0.3; ctx.drawImage(rock, x - d / 2, y - d * 0.8, d, d * (rock.naturalHeight / rock.naturalWidth)); continue; }
+      if (rock) {
+        ctx.fillStyle = `rgba(20,15,10,${0.15 + 0.3 * k})`;
+        ctx.beginPath(); ctx.ellipse(mt.x, mt.y, mt.r * (0.3 + 0.5 * k), mt.r * (0.15 + 0.25 * k), 0, 0, Math.PI * 2); ctx.fill();
+        const d = 64 + mt.r * 0.3;
+        ctx.save(); ctx.translate(x, y - d * 0.3); ctx.rotate(k * 3);
+        ctx.drawImage(rock, -d / 2, -d / 2, d, d * (rock.naturalHeight / rock.naturalWidth));
+        ctx.restore();
+        continue;
+      }
       ctx.strokeStyle = 'rgba(255,170,60,.55)'; ctx.lineWidth = 16;
       ctx.beginPath(); ctx.moveTo(x - 60, y - 140); ctx.lineTo(x, y); ctx.stroke();
       ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
@@ -744,12 +781,14 @@ export class Game {
     if (jab) {
       for (const s of m.slashes) {
         const k = s.age / s.life;
+        const out = k < 0.35 ? k / 0.35 : 1;                 // thrust out fast
+        const fade = k < 0.35 ? 1 : 1 - (k - 0.35) / 0.65;    // then thin and fade
         ctx.save();
-        ctx.translate(s.x, s.y - 30);
+        ctx.translate(s.x, s.y - 34);
         ctx.rotate(s.angle);
-        ctx.globalAlpha = 1 - k * k;
-        const len = s.r * (0.7 + 0.5 * Math.min(1, k * 4)), h = (len * jab.naturalHeight) / jab.naturalWidth;
-        ctx.drawImage(jab, 10, -h / 2, len, h);
+        ctx.globalAlpha = fade;
+        const len = s.r * (0.35 + 0.75 * out), h = ((len * jab.naturalHeight) / jab.naturalWidth) * (0.6 + 0.4 * fade);
+        ctx.drawImage(jab, 18 + s.r * 0.15 * out, -h / 2, len, h);
         ctx.restore();
       }
       ctx.globalAlpha = 1;
@@ -781,6 +820,23 @@ export class Game {
     ctx.globalAlpha = 1;
   }
 
+  private drawImpacts(ctx: Ctx): void {
+    for (const p of this.impacts) {
+      const img = this.sprites.image(p.key);
+      if (!img) continue;
+      const k = p.t / p.life;
+      const pop = k < 0.25 ? 0.5 + 0.75 * (k / 0.25) : 1.25 - 0.15 * ((k - 0.25) / 0.75);
+      const d = p.size * pop;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot + p.spin * k);
+      ctx.globalAlpha = k < 0.5 ? 1 : 1 - (k - 0.5) / 0.5;
+      ctx.drawImage(img, -d / 2, -d / 2, d, d);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+  }
+
   private drawWaves(ctx: Ctx, m: Model): void {
     for (const w of m.waves) {
       const k = w.age / w.life;
@@ -788,8 +844,15 @@ export class Game {
       ctx.globalAlpha = 1 - k;
       const paint = this.sprites.image(w.kind === 'stomp' ? 'fx-slam' : 'fx-horn');
       if (paint) {
-        const d = r * 2.1;
-        ctx.drawImage(paint, w.x - d / 2, w.y - d * 0.45, d, d * 0.9);
+        const e = 1 - Math.pow(1 - k, 3);
+        const d = w.r * 2.1 * (0.35 + 0.75 * e);
+        ctx.save();
+        ctx.translate(w.x, w.y);
+        ctx.rotate((w.kind === 'stomp' ? 0.15 : 0.5) * e);
+        ctx.scale(1, 0.85);
+        ctx.globalAlpha = (1 - k) * (w.kind === 'stomp' ? 0.95 : 0.75);
+        ctx.drawImage(paint, -d / 2, -d / 2, d, d);
+        ctx.restore();
         continue;
       }
       if (w.kind === 'stomp') {

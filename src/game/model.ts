@@ -89,6 +89,7 @@ export type GameEvent =
   | { t: 'evolve'; form: number }
   | { t: 'fire'; w: WeaponId }
   | { t: 'meteor'; x: number; y: number; r: number }
+  | { t: 'splash'; x: number; y: number }
   | { t: 'boss'; n: number }
   | { t: 'bossDead'; x: number; y: number; tier: number }
   | { t: 'wave'; kind: 'ring' | 'stream' | 'brute' }
@@ -827,6 +828,7 @@ export class Model {
           if ((e.x - p.x) ** 2 + (e.y - p.y) ** 2 > (e.r + p.r) ** 2) return;
           const sp = Math.hypot(p.vx, p.vy) || 1;
           this.hitEnemy(e, p.damage, p.vx / sp, p.vy / sp, p.kind === 'spit' ? KNOCK.spit : KNOCK.boomerang);
+          if (p.kind === 'spit') this.events.push({ t: 'splash', x: e.x, y: e.y });
           p.hits.set(e.id, p.kind === 'bone' ? p.age + 0.45 : Infinity);
           if (p.kind === 'spit' && p.pierce-- <= 0) p.life = 0;
         });
