@@ -1,0 +1,44 @@
+{
+ "shots": [
+  {
+   "id": "hero-tex-1",
+   "prompt": "Edit the FIRST reference image: keep the same hero (rusty pot helmet, ginger hair, freckles, serious frown, big head and short body, pitchfork, pose, colours). Change two things only: (1) FACE SHAPE like reference images 2 and 4: a longer, narrower oval face with a more defined jaw and less puffy cheeks (not a chubby baby face), big wide-set round eyes with small dark pupils, a tiny line for the nose, a short straight line for the mouth with a slight frown; keep him young but tougher. (2) TEXTURE like reference images 2 and 3: skin with fine grainy noise and soft blotchy shading; clothes with dirty vertical grime streaks, darker rough patches, worn faded areas and ragged torn hem edges; everything slightly gritty, like a hand-painted indie 2D game. Keep the thick uneven hand-inked outline. Do NOT copy the reference character's design. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-ref-1.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-9.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-10.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-11.png"
+    }
+   ]
+  },
+  {
+   "id": "hero-tex-2",
+   "prompt": "Edit the FIRST reference image: keep the same hero (rusty pot helmet, ginger hair, freckles, serious frown, big head and short body, pitchfork, pose, colours). Change two things only: (1) FACE SHAPE like reference images 2 and 4: a longer, narrower oval face with a more defined jaw and less puffy cheeks (not a chubby baby face), big wide-set round eyes with small dark pupils, a tiny line for the nose, a short straight line for the mouth with a slight frown; keep him young but tougher. (2) TEXTURE like reference images 2 and 3: skin with fine grainy noise and soft blotchy shading; clothes with dirty vertical grime streaks, darker rough patches, worn faded areas and ragged torn hem edges; everything slightly gritty, like a hand-painted indie 2D game. Keep the thick uneven hand-inked outline. Do NOT copy the reference character's design. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-ref-1.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-9.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-10.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-11.png"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,32 @@
+{
+ "shots": [
+  {
+   "id": "hero-a-flat",
+   "prompt": "Redraw the character in the FIRST reference image - keep its exact design, outfit, pose and proportions - but COLOUR and RENDER it exactly like the SECOND reference image (use the second image ONLY for rendering technique, never copy that character): flat simple base colours; shading is ONE soft, blurry, airbrush-like darker tone that fades gently (darker toward the bottom of clothes, soft pink blush on the cheeks); NO hatching, NO visible brush strokes, NO crayon texture, NO extra highlights; very FEW interior lines (only essential folds and fingers); a thick, smooth, rounded black-brown outline around the whole silhouette; big round white eyes with small black dot pupils; a little subtle grimy smudging on cloth; muted, dusty, brownish-grey palette (desaturated). Simple and clean like a hand-drawn indie 2D game sprite. Full body, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-a.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char2.png"
+    }
+   ]
+  },
+  {
+   "id": "gnome-flat",
+   "prompt": "Redraw the character in the FIRST reference image - keep its exact design, outfit, pose and proportions - but COLOUR and RENDER it exactly like the SECOND reference image (use the second image ONLY for rendering technique, never copy that character): flat simple base colours; shading is ONE soft, blurry, airbrush-like darker tone that fades gently (darker toward the bottom of clothes, soft pink blush on the cheeks); NO hatching, NO visible brush strokes, NO crayon texture, NO extra highlights; very FEW interior lines (only essential folds and fingers); a thick, smooth, rounded black-brown outline around the whole silhouette; big round white eyes with small black dot pupils; a little subtle grimy smudging on cloth; muted, dusty, brownish-grey palette (desaturated). Simple and clean like a hand-drawn indie 2D game sprite. Full body, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char2.png"
+    }
+   ]
+  }
+ ]
+}

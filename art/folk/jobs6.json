@@ -1,0 +1,32 @@
+{
+ "shots": [
+  {
+   "id": "hero-ref-1",
+   "prompt": "Redraw the hero in the FIRST reference image - keep his identity: rusty iron cooking-pot helmet, messy ginger hair, freckles, serious battle face (furrowed brows, determined stare, mouth pressed into a frown), patched tunic with a rope belt, boots, pitchfork. Change his BODY PROPORTIONS to match the SECOND reference image exactly: a very big head (almost half of the total height), a small short body, short stubby legs, small hands held close to the body, compact chibi-like silhouette. Change the COLOURS to the SECOND reference image's palette: muted, dusty, desaturated browns and greys, faded olive-grey tunic, dirty worn cloth with frayed edges and grime smudges, the pot dull and rusty - he looks poor and hard-worn. Pale skin with a soft pink blush. Rendering like the second reference: thick uneven hand-inked black-brown outline, flat colours with one soft blurry shadow tone, few interior lines. Do NOT copy the second reference's character design (no headscarf, no long blonde hair). Full body, three-quarter view facing RIGHT, holding the pitchfork ready to fight, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-final-1.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char2.png"
+    }
+   ]
+  },
+  {
+   "id": "hero-ref-2",
+   "prompt": "Redraw the hero in the FIRST reference image - keep his identity: rusty iron cooking-pot helmet, messy ginger hair, freckles, serious battle face (furrowed brows, determined stare, mouth pressed into a frown), patched tunic with a rope belt, boots, pitchfork. Change his BODY PROPORTIONS to match the SECOND reference image exactly: a very big head (almost half of the total height), a small short body, short stubby legs, small hands held close to the body, compact chibi-like silhouette. Change the COLOURS to the SECOND reference image's palette: muted, dusty, desaturated browns and greys, faded olive-grey tunic, dirty worn cloth with frayed edges and grime smudges, the pot dull and rusty - he looks poor and hard-worn. Pale skin with a soft pink blush. Rendering like the second reference: thick uneven hand-inked black-brown outline, flat colours with one soft blurry shadow tone, few interior lines. Do NOT copy the second reference's character design (no headscarf, no long blonde hair). Full body, three-quarter view facing RIGHT, holding the pitchfork ready to fight, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-final-1.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char2.png"
+    }
+   ]
+  }
+ ]
+}

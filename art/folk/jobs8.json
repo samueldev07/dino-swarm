@@ -1,0 +1,44 @@
+{
+ "shots": [
+  {
+   "id": "hero-edit-1",
+   "prompt": "Edit the FIRST reference image. Keep EVERYTHING the same - same character, same pose, same pitchfork, same colours, same proportions, and especially the SAME EXPRESSION: furrowed angry brows, fierce focused stare, frowning mouth. Change only: (1) FACE SHAPE slightly toward reference images 2 and 4: a bit longer and narrower face with a more defined jaw and less puffy cheeks (less baby-like), keeping the same eyes, brows and frown. (2) TEXTURE like reference images 2 and 3: fine grainy noise and soft blotchy shading on the skin; dirty vertical grime streaks, darker rough patches, faded worn areas and frayed hem edges on the tunic; slightly gritty rusty pot. Keep the thick uneven hand-inked outline. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-base.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-9.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-10.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-11.png"
+    }
+   ]
+  },
+  {
+   "id": "hero-edit-2",
+   "prompt": "Edit the FIRST reference image. Keep EVERYTHING the same - same character, same pose, same pitchfork, same colours, same proportions, and especially the SAME EXPRESSION: furrowed angry brows, fierce focused stare, frowning mouth. Change only: (1) FACE SHAPE slightly toward reference images 2 and 4: a bit longer and narrower face with a more defined jaw and less puffy cheeks (less baby-like), keeping the same eyes, brows and frown. (2) TEXTURE like reference images 2 and 3: fine grainy noise and soft blotchy shading on the skin; dirty vertical grime streaks, darker rough patches, faded worn areas and frayed hem edges on the tunic; slightly gritty rusty pot. Keep the thick uneven hand-inked outline. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-base.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-9.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-10.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-crop-11.png"
+    }
+   ]
+  }
+ ]
+}

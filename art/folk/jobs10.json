@@ -1,0 +1,26 @@
+{
+ "shots": [
+  {
+   "id": "hero-swap-3",
+   "prompt": "Edit this image. Keep EXACTLY the same drawing: same pose, same slightly hunched posture with the head forward, same body and head proportions, same oval face shape, same angry frowning eyes and mouth, same hands and pitchfork, same muted dusty palette, same grimy texture, same thick uneven ink outline, same size and position. Change ONLY: the headscarf becomes a dented rusty iron cooking pot worn upside-down as a helmet (with a small side handle); the long blonde hair becomes short messy ginger hair sticking out under the pot, plus a few freckles on the cheeks; the cloak becomes a ragged faded grey-green tunic with a couple of patches and a rope belt. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-pose-base.png"
+    }
+   ]
+  },
+  {
+   "id": "hero-swap-4",
+   "prompt": "Edit this image. Keep EXACTLY the same drawing: same pose, same slightly hunched posture with the head forward, same body and head proportions, same oval face shape, same angry frowning eyes and mouth, same hands and pitchfork, same muted dusty palette, same grimy texture, same thick uneven ink outline, same size and position. Change ONLY: the headscarf becomes a dented rusty iron cooking pot worn upside-down as a helmet (with a small side handle); the long blonde hair becomes short messy ginger hair sticking out under the pot, plus a few freckles on the cheeks; the cloak becomes a ragged faded grey-green tunic with a couple of patches and a rope belt. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-pose-base.png"
+    }
+   ]
+  }
+ ]
+}

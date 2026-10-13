@@ -1,0 +1,32 @@
+{
+ "shots": [
+  {
+   "id": "hero-swap-1",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY: the pose, the posture (slightly hunched, head forward), the body and head proportions, the oval face shape, the angry frowning expression, the way the pitchfork is held, the muted dusty palette, the grimy texture, the thick uneven hand-inked outline, size and position. Change ONLY these identity details: replace the headscarf with a dented rusty iron COOKING POT worn as a helmet (like the second reference image); replace the long blonde hair with short messy ginger hair poking out under the pot, and add a few freckles; replace the brown cloak with a ragged faded grey-green tunic with patches and a rope belt (no cloak, no hood). The character is a boy. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-pose-base.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-base.png"
+    }
+   ]
+  },
+  {
+   "id": "hero-swap-2",
+   "prompt": "Edit the FIRST reference image. Keep EXACTLY: the pose, the posture (slightly hunched, head forward), the body and head proportions, the oval face shape, the angry frowning expression, the way the pitchfork is held, the muted dusty palette, the grimy texture, the thick uneven hand-inked outline, size and position. Change ONLY these identity details: replace the headscarf with a dented rusty iron COOKING POT worn as a helmet (like the second reference image); replace the long blonde hair with short messy ginger hair poking out under the pot, and add a few freckles; replace the brown cloak with a ragged faded grey-green tunic with patches and a rope belt (no cloak, no hood). The character is a boy. Plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-pose-base.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/hero-base.png"
+    }
+   ]
+  }
+ ]
+}

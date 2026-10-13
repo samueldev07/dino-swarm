@@ -1,0 +1,68 @@
+{
+ "shots": [
+  {
+   "id": "hero-a",
+   "prompt": "Match the art style of the reference images exactly (same thick uneven black-brown ink outline, flat colours with one soft shadow tone, muted earthy palette, big head and big round eyes with tiny pupils). Use the references ONLY for style - create a NEW original character. Single character game sprite, full body, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Hero: a stocky farm boy (about 10) with messy ginger hair and freckles, wearing an old iron COOKING POT as a helmet, a patched green tunic with a rope belt, brown boots, holding a long wooden pitchfork, brave grin.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/orc.jpg"
+    }
+   ]
+  },
+  {
+   "id": "hero-b",
+   "prompt": "Match the art style of the reference images exactly (same thick uneven black-brown ink outline, flat colours with one soft shadow tone, muted earthy palette, big head and big round eyes with tiny pupils). Use the references ONLY for style - create a NEW original character. Single character game sprite, full body, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Hero: a small determined farm girl with two short dark braids and a red scarf around her neck, wearing a straw hat, a blue patched smock and clogs, holding a pitchfork, fierce look.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/orc.jpg"
+    }
+   ]
+  },
+  {
+   "id": "hero-c",
+   "prompt": "Match the art style of the reference images exactly (same thick uneven black-brown ink outline, flat colours with one soft shadow tone, muted earthy palette, big head and big round eyes with tiny pupils). Use the references ONLY for style - create a NEW original character. Single character game sprite, full body, three-quarter view facing RIGHT, plain flat pure white background, no ground, no shadow, no text. Hero: a chubby young swineherd boy with curly black hair, a big brown fur-trimmed hood thrown back, an oversized leather vest over a cream shirt, a wooden spoon tucked in his belt, holding a pitchfork, cheeky smile.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/orc.jpg"
+    }
+   ]
+  },
+  {
+   "id": "ground-a",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ],
+   "prompt": "Match the art style of the reference image (hand-drawn ink cartoon, flat colours). A seamless tileable top-down GROUND texture for a game: a soft forest-clearing floor. VERY LOW contrast, calm and quiet so small characters stand out on it: one even mid-tone sage-green grass colour with only very subtle slightly lighter and darker broad patches, a handful of tiny ink grass ticks, no dirt patches, no stones, no objects, no shadows, fills the frame."
+  },
+  {
+   "id": "ground-b",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ],
+   "prompt": "Match the art style of the reference image (hand-drawn ink cartoon, flat colours). A seamless tileable top-down GROUND texture for a game: a soft forest-clearing floor. VERY LOW contrast, calm and quiet so small characters stand out on it: warm light olive-green moss with a few soft faded earth tones blended in gently (no sharp edges), a few tiny pebbles and fallen leaves, no strong patches, no objects, no shadows, fills the frame."
+  }
+ ]
+}

@@ -1,0 +1,127 @@
+{
+ "shots": [
+  {
+   "id": "hero",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Hero: a scrappy brave peasant kid (boy, about 10) in a patched brown tunic and a too-big leather cap, holding a long wooden pitchfork, determined frown.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Small enemy: a grumpy mushroom gnome - a squat little creature whose head is a red-brown spotted mushroom cap, tiny arms, beady angry eyes, stubby legs. Very small.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "bat",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Small fast enemy: a scruffy grey cave bat with ragged wings spread, big ears, tiny fangs, glowing yellow eyes.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "boarorc",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Enemy: a green-skinned orc with a shaggy topknot riding a bristly brown wild boar with tusks, the orc holds a crude spear, both charging forward.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "orc",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Tank enemy: a stocky green orc warrior with a round wooden shield and a club, crude leather armour, underbite tusks.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "goblin",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Ranged enemy: a skinny goblin with long ears holding a burning torch ready to throw, ragged hood, sly grin.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "troll",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Big enemy: a hulking mossy forest troll with a long nose, tree-bark skin, tiny eyes, holding a log club.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "ogre",
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. Single character game sprite, full body, three-quarter view facing RIGHT, seen slightly from above, standing on an invisible ground, plain flat pure white background, no ground, no shadow, no text, no frame. Boss: a huge fat ogre chieftain with a rusty iron helmet, a giant spiked club, belly, angry face, bigger and more detailed than the others.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "ground",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ],
+   "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn cartoon, thick uneven black-brown ink outline that varies in width, flat colours with one soft painted shadow tone, muted earthy palette (moss green, umber, ochre, dusty grey), slightly dark fairy-tale folk mood, big head, big round expressive eyes with tiny pupils, small body, charming and a bit grim, NOT glossy, NOT 3D, NOT anime. A seamless tileable top-down GROUND texture of a forest clearing floor in this style: mid-tone mossy grass and patches of warm brown earth, a few tiny stones and leaves, LOW contrast, evenly lit and fairly bright (not dark), flat painted look with a few ink strokes, no objects, no plants, no shadows, no border, fills the frame."
+  }
+ ]
+}

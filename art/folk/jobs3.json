@@ -1,0 +1,38 @@
+{
+ "shots": [
+  {
+   "id": "hero-a-ink",
+   "prompt": "Redraw the character in the FIRST reference image - keep its exact design, pose, proportions, colours and outfit - but render it with the LINE WORK and TEXTURE of the second and third reference images (use those ONLY for drawing technique, never copy their characters): hand-inked outlines drawn with a real brush pen - wobbly, uneven pressure, thicker on the shadow side, thin and slightly broken in places, small overshoots where lines meet; interior lines sparse and loose. Colour fills painted by hand with a dry gouache brush: visible brush strokes, uneven coverage, soft smudgy shading, subtle grainy paper texture, slightly desaturated earthy tones, a few darker scratchy hatching marks in the shadows. It must look drawn by hand, NOT clean digital vector. Full body, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-a.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  },
+  {
+   "id": "gnome-ink",
+   "prompt": "Redraw the character in the FIRST reference image - keep its exact design, pose, proportions, colours and outfit - but render it with the LINE WORK and TEXTURE of the second and third reference images (use those ONLY for drawing technique, never copy their characters): hand-inked outlines drawn with a real brush pen - wobbly, uneven pressure, thicker on the shadow side, thin and slightly broken in places, small overshoots where lines meet; interior lines sparse and loose. Colour fills painted by hand with a dry gouache brush: visible brush strokes, uneven coverage, soft smudgy shading, subtle grainy paper texture, slightly desaturated earthy tones, a few darker scratchy hatching marks in the shadows. It must look drawn by hand, NOT clean digital vector. Full body, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+    }
+   ]
+  }
+ ]
+}

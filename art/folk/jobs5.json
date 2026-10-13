@@ -1,0 +1,38 @@
+{
+ "shots": [
+  {
+   "id": "hero-final-1",
+   "prompt": "Draw the hero for our game. DESIGN from the FIRST reference image (keep exactly: rusty iron cooking-pot helmet, messy ginger hair, freckles, patched green tunic with a rope belt, brown boots, long wooden pitchfork held in both hands). EXPRESSION and ATTITUDE like the character in the SECOND reference image: a serious, focused battle face - low furrowed brows, determined narrowed gaze, mouth pressed into a tight frown - ready to fight, NOT smiling, NOT cute. Do NOT copy the second character's design (no headscarf, no long blonde hair). RENDERING exactly like the second and third reference images: hand-inked black-brown outline with natural uneven brush-pen wobble (thicker on the shadow side, slightly rough), flat muted earthy colours with one soft shadow tone, few interior lines, big round eyes with small dark pupils. Full body, three-quarter view facing RIGHT, ready stance, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-a.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "hero-final-2",
+   "prompt": "Draw the hero for our game. DESIGN from the FIRST reference image (keep exactly: rusty iron cooking-pot helmet, messy ginger hair, freckles, patched green tunic with a rope belt, brown boots, long wooden pitchfork held in both hands). EXPRESSION and ATTITUDE like the character in the SECOND reference image: a serious, focused battle face - low furrowed brows, determined narrowed gaze, mouth pressed into a tight frown - ready to fight, NOT smiling, NOT cute. Do NOT copy the second character's design (no headscarf, no long blonde hair). RENDERING exactly like the second and third reference images: hand-inked black-brown outline with natural uneven brush-pen wobble (thicker on the shadow side, slightly rough), flat muted earthy colours with one soft shadow tone, few interior lines, big round eyes with small dark pupils. Full body, three-quarter view facing RIGHT, ready stance, plain flat pure white background, no ground, no shadow, no text.",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero-a.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/hero.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/gnome.jpg"
+    }
+   ]
+  }
+ ]
+}
