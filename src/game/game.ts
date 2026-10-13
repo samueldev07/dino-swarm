@@ -251,6 +251,7 @@ export class Game {
 
     // Camera a bit higher than the base fit (owner 13/10): wider view, small art flaws read less.
     this.cam.z = 0.88 * Math.max(0.7, Math.min(1.6, Math.sqrt((this.v.w * this.v.h) / (1200 * 700))));
+    if (!Number.isFinite(this.cam.z)) this.cam.z = 1;  // zero-sized window (hidden tab, minimised)
     m.viewHalf = { w: this.v.w / 2 / this.cam.z, h: this.v.h / 2 / this.cam.z };
     // ---- input -> move vector
     let kx = 0, ky = 0;
@@ -406,7 +407,7 @@ export class Game {
       case 'fire':
         if (e.w === 'stomp') { a.play('thud'); this.playFx('slam', m.px, m.py + 6, m.wl('stomp').area * 1.15, 21); }
         else if (e.w === 'roar') { a.play('combo'); this.playFx('horn', m.px, m.py - 40, m.wl('roar').area * 1.3, 25); }
-        else if (e.w === 'bite') { a.play('cast'); this.hero.attack(); }
+        else if (e.w === 'bite') a.play('cast');
         break;
       case 'splash':
         if (!this.playFx('flask', e.x, e.y - 10, 80, 22)) this.addImpact('fx-fire', e.x, e.y - 20, 90, 0.32);
@@ -611,7 +612,7 @@ export class Game {
     ctx.fill();
     // Hero: one clear ground shadow under the feet, sized to the art (not the hitbox).
     ctx.fillStyle = 'rgba(25,18,10,.32)';
-    ctx.beginPath(); ctx.ellipse(m.px + 4, m.py + 2, 34, 11, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(m.px, m.py - 2, 30, 9, 0, 0, Math.PI * 2); ctx.fill();
 
     const egg = this.sprites.egg();
     // mallet slam dust ring lies on the ground, under the hero's feet
@@ -759,7 +760,7 @@ export class Game {
     const r: Rect = { x: m.px - w / 2, y: m.py + 20, w, h: 8 };
     ctx.fillStyle = 'rgba(30,22,14,.85)'; rrect(ctx, r.x - 3, r.y - 3, r.w + 6, r.h + 6, 5); ctx.fill();
     ctx.fillStyle = '#e8d8b8'; rrect(ctx, r.x, r.y, r.w * Math.max(this.lagHp, m.hp / m.maxHp), r.h, 3); ctx.fill();
-    ctx.fillStyle = m.hp / m.maxHp < 0.3 ? '#c8642e' : '#7aa04a';
+    ctx.fillStyle = m.hp / m.maxHp < 0.3 ? '#e8642e' : '#b4e05a';
     rrect(ctx, r.x, r.y, Math.max(3, r.w * m.hp / m.maxHp), r.h, 3); ctx.fill();
     ctx.strokeStyle = '#1e1610'; ctx.lineWidth = 2; ctx.lineJoin = 'round';
     ctx.beginPath(); ctx.moveTo(r.x - 3, r.y - 2.5); ctx.lineTo(r.x + r.w * 0.55, r.y - 3.2); ctx.lineTo(r.x + r.w + 3, r.y - 2.2);
@@ -794,7 +795,8 @@ export class Game {
 
   private drawSlashes(ctx: Ctx, m: Model): void {
     const jab = this.sprites.image('fx-jab');
-    if (jab) {
+    if (!jab) return;
+    {
       for (const s of m.slashes) {
         const k = s.age / s.life;
         const out = k < 0.35 ? k / 0.35 : 1;                 // thrust out fast
