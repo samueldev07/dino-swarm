@@ -40,6 +40,8 @@ const CAMP_ICON: Record<CampId, SkillId | 'gold'> = {
   might: 'might', vitality: 'vitality', speed: 'swift', magnet: 'magnet', greed: 'gold', armor: 'stomp',
 };
 
+const ENEMIES_R: Record<EnemyKind, number> = { grub: 19, bat: 16, beetle: 26, wolf: 26, shroom: 20, brute: 38, boss: 62 };
+
 const fmtTime = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 const ENEMY_HEIGHT: Record<EnemyKind, number> = { grub: 70, bat: 62, shroom: 92, beetle: 120, wolf: 160, brute: 215, boss: 320 };
 const ENEMY_KINDS = Object.keys(ENEMY_HEIGHT) as EnemyKind[];
@@ -68,7 +70,7 @@ export class Game {
   private shots: { clip: string; x: number; y: number; w: number; t: number; len: number }[] = [];
   private playFx(clip: string, x: number, y: number, w: number, frames: number): boolean {
     if (!this.fxClips[clip]?.ready) return false;
-    if (this.shots.length > 24) this.shots.shift();
+    if (this.shots.length > 40) this.shots.shift();
     this.shots.push({ clip, x, y, w, t: 0, len: frames / 24 });
     return true;
   }
@@ -352,7 +354,8 @@ export class Game {
         if (e.boss) this.fx.burst(e.x, e.y + 20, '#fff2c0', 4, 160);
         break;
       case 'kill': {
-        if (e.by === 'orbit') this.playFx('smoke', e.x, e.y + 4, 120, 24);
+        // every kill vanishes in a puff of black smoke (no squash); bigger monsters, bigger puff
+        this.playFx('smoke', e.x, e.y + 4, Math.min(260, ENEMIES_R[e.kind] * 6), 24);
         if (this.firstRun && !this.taughtAmber) {
           this.taughtAmber = true; this.amberT = 3;
           this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
@@ -630,7 +633,7 @@ export class Game {
     for (const d of this.dying) {
       const k = d.t / 0.22;
       ctx.globalAlpha = 1 - k;
-      this.blit(ctx, d.s, d.x, d.y, d.scale, 1 + k * 0.5, 1 - k * 0.7, 0, 0.6);
+      this.blit(ctx, d.s, d.x, d.y - k * 10, d.scale * (1 - k * 0.15), 1, 1, 0, 0.8 * (1 - k));
     }
     ctx.globalAlpha = 1;
 
