@@ -22,7 +22,7 @@ POSE = re.compile(r"^(player-(?:raptor|ankylo|ptero)-[123])(?:-(?:idle|run|bite)
 
 
 def size_for(key: str) -> int | None:
-    if key.startswith("ui-"): return None
+    if key.startswith(("ui-", "thumb-")) or key == "logo": return None
     if key.startswith(("ground-", "bg-ground-")): return 512
     if key.startswith("player-"): return 384
     if key.startswith("boss-") or key.startswith("enemy-boss-"): return 768
@@ -121,7 +121,7 @@ def ingest(src: Path, out: Path, quality: int, budget: int, previews: Path | Non
         original_size = image.size
         tile = key.startswith(("ground-", "bg-ground-"))
         if tile and image.width != image.height: raise ValueError(f"ground tile must be square: {key}")
-        preserve = key.startswith("ui-") or key in part_keys or key in rigs or key.startswith(("boss-", "enemy-boss-")) or tile
+        preserve = key.startswith(("ui-", "thumb-")) or key == "logo" or key in part_keys or key in rigs or key.startswith(("boss-", "enemy-boss-")) or tile
         if not preserve: image = image.crop(crops.get(key, image.getchannel("A").getbbox()))
         size = size_for(key)
         # Rig parts may use arbitrary names; their referenced rig owns the scale.

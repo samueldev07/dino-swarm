@@ -308,9 +308,13 @@ export class Sprites {
   constructor(readonly assets: Assets) {}
   private paintedCache = new Map<string, Sprite>();
   private rigCache = new Map<string, { source: unknown; rig: RigDefinition | undefined }>();
+  private tinted = new Map<string, { source: Sprite['img']; sprite: Sprite }>();
 
-  bossRig(zone: number): RigDefinition | undefined {
-    const key = `enemy-boss-${zone}`, source = this.assets.getRig(key);
+  bossRig(zone: number, tier = 1): RigDefinition | undefined {
+    const primary = `boss-${Math.max(1, tier)}`, legacy = `enemy-boss-${zone}`;
+    const preferred = this.assets.getRig(primary);
+    const key = preferred === undefined ? legacy : primary;
+    const source = preferred ?? this.assets.getRig(legacy);
     if (source === undefined) return undefined;
     const cached = this.rigCache.get(key);
     if (cached?.source === source) return cached.rig;
@@ -320,8 +324,8 @@ export class Sprites {
     return rig;
   }
 
-  readyBossRig(zone: number): RigDefinition | undefined {
-    const rig = this.bossRig(zone);
+  readyBossRig(zone: number, tier = 1): RigDefinition | undefined {
+    const rig = this.bossRig(zone, tier);
     return rig && rig.parts.every(p => !!this.painted(p.key)) ? rig : undefined;
   }
 
@@ -351,7 +355,7 @@ export class Sprites {
   private pick(key: string, fallback: () => Sprite): Sprite {
     const img = this.assets.get(key);
     const hit = this.cache.get(key);
-    if (img && (!hit || !(hit.img instanceof HTMLImageElement))) {
+    if (img && (!hit || hit.img !== img)) {
       const fb = hit ?? fallback();
       const s: Sprite = { ...fb, img, white: whiteOf(img) };
       this.cache.set(key, s);
@@ -368,11 +372,29 @@ export class Sprites {
     return sprite.img instanceof HTMLImageElement ? { ...sprite, h: sprite.w * sprite.img.height / sprite.img.width } : sprite;
   }
 
-  enemy(kind: EnemyKind, zone: number): Sprite {
-    return this.pick(`enemy-${kind}-${zone}`, () => {
+  enemy(kind: EnemyKind, zone: number, tier = 1): Sprite {
+    const fallback = () => {
       const [w, h, draw] = enemyDraw(kind, zone);
       return make(w, h, 0.5, 0.9, draw);
-    });
+    };
+    const legacy = `enemy-${kind}-${zone}`;
+    if (kind === 'boss') {
+      const key = `boss-${Math.max(1, tier)}`;
+      return this.assets.has(key) ? this.pick(key, () => this.pick(legacy, fallback)) : this.pick(legacy, fallback);
+    }
+    // A zone-specific delivery overrides the single-image production contract.
+    if (this.assets.get(legacy)) return this.pick(legacy, fallback);
+    const generic = this.painted(`enemy-${kind}`);
+    if (!generic) return this.pick(legacy, fallback);
+    const key = `${kind}-${zone}`, cached = this.tinted.get(key);
+    if (cached?.source === generic.img) return cached.sprite;
+    const img = document.createElement('canvas'); img.width = generic.img.width; img.height = generic.img.height;
+    const c = img.getContext('2d')!; c.drawImage(generic.img, 0, 0);
+    if (zone > 0) { c.globalCompositeOperation = 'source-atop'; c.globalAlpha = .18; c.fillStyle = zone === 1 ? '#e07635' : '#81bddc'; c.fillRect(0, 0, img.width, img.height); }
+    const base = fallback();
+    const sprite = { ...base, img, white: generic.white, h: base.w * generic.h / generic.w };
+    this.tinted.set(key, { source: generic.img, sprite });
+    return sprite;
   }
 
   gem(value: number): Sprite {

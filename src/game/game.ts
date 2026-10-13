@@ -59,6 +59,8 @@ export class Game {
 
   private playerAnim = new PlayerAnim();
   private bossRoarUntil = new Map<number, number>();
+  private drawnBosses = new Map<number, Enemy>();
+  private groundArt = new Map<number, { image: HTMLImageElement; pattern: CanvasPattern }>();
   private dying: Dying[] = [];
   private banner: Banner | null = null;
   private offersAt = 0;
@@ -131,6 +133,7 @@ export class Game {
       this.doubled = false;
       this.dying = [];
       this.playerAnim = new PlayerAnim(); this.bossRoarUntil.clear();
+      this.drawnBosses.clear();
       this.banner = null;
       this.movedFor = 0;
       this.joy.on = false;
@@ -314,8 +317,10 @@ export class Game {
           this.taughtAmber = true; this.amberT = 3;
           this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
         }
-        const s = this.sprites.enemy(e.kind, m.zone);
-        this.dying.push({ rig: e.kind === 'boss' ? this.sprites.readyBossRig(m.zone) : undefined, s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s), t: 0, flip: 1 });
+        const boss = e.kind === 'boss' ? [...this.drawnBosses.values()].find(b => b.x === e.x && b.y === e.y) : undefined;
+        const s = this.sprites.enemy(e.kind, m.zone, boss?.tier);
+        const rig = e.kind === 'boss' ? this.sprites.readyBossRig(m.zone, boss?.tier) : undefined;
+        this.dying.push({ rig, s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s), t: 0, flip: rig ? boss?.facing ?? 1 : 1 });
         this.fx.burst(e.x, e.y - 14, e.kind === 'boss' ? '#ffd24a' : '#e8dcc0', e.kind === 'boss' ? 40 : 6, e.kind === 'boss' ? 420 : 170);
         if (this.time - this.lastKillSound > 0.06) { a.play('kill'); this.lastKillSound = this.time; }
         if (e.kind === 'brute') this.fx.shake(0.5, 0.25);
@@ -451,7 +456,7 @@ export class Game {
     const L = this.cam.x - hw, R = this.cam.x + hw, T = this.cam.y - hh, B = this.cam.y + hh;
     const vis = (x: number, y: number, pad = 0) => x > L - pad && x < R + pad && y > T - pad && y < B + pad;
 
-    ctx.fillStyle = this.ground[m.zone];
+    ctx.fillStyle = this.groundFor(m.zone);
     ctx.fillRect(L, T, R - L, B - T);
 
     // thorn patches (ground layer)
@@ -578,7 +583,8 @@ export class Game {
   }
 
   private drawEnemy(ctx: Ctx, m: Model, e: Enemy): void {
-    const s = this.sprites.enemy(e.def.kind, m.zone);
+    if (e.def.kind === 'boss') this.drawnBosses.set(e.id, e);
+    const s = this.sprites.enemy(e.def.kind, m.zone, e.tier);
     const sc = this.enemyScale(e.def.kind, s) * (e.elite ? 1.3 : 1);
     if (e.elite) {
       ctx.save(); ctx.strokeStyle = '#ffd75a'; ctx.lineWidth = 2; ctx.shadowColor = '#ffd75a'; ctx.shadowBlur = 7;
@@ -590,7 +596,7 @@ export class Game {
     let sx = 1 + Math.sin(walk * 2) * 0.04, sy = 1 - Math.sin(walk * 2) * 0.04;
     if (e.mode === 1) { x += Math.sin(this.time * 70) * 3; sx = 1.12; sy = 0.88; }
     if (e.stun > 0) y += 0;
-    const rig = e.def.kind === 'boss' ? this.sprites.bossRig(m.zone) : undefined;
+    const rig = e.def.kind === 'boss' ? this.sprites.bossRig(m.zone, e.tier) : undefined;
     let rigDrawn = false;
     if (rig) {
       // The model has no roar event: a fresh ring of eight or more spores is a visual cue.
@@ -717,6 +723,16 @@ export class Game {
       }
     }
     ctx.globalAlpha = 1;
+  }
+
+  private groundFor(zone: number): CanvasPattern {
+    const image = this.sprites.assets.get(`ground-${zone}`);
+    if (!image) return this.ground[zone];
+    const cached = this.groundArt.get(zone);
+    if (cached?.image === image) return cached.pattern;
+    const pattern = this.ctx.createPattern(image, 'repeat');
+    if (!pattern) return this.ground[zone];
+    this.groundArt.set(zone, { image, pattern }); return pattern;
   }
 
   private makeGround(zone: number): CanvasPattern {
@@ -1177,7 +1193,7 @@ export class Game {
     // living backdrop: slow-scrolling ground
     ctx.save();
     ctx.translate(-((this.time * 30) % 512), -((this.time * 12) % 512));
-    ctx.fillStyle = this.ground[meta.zone];
+    ctx.fillStyle = this.groundFor(meta.zone);
     ctx.fillRect(0, 0, v.w + 1024, v.h + 1024);
     ctx.restore();
     const g = ctx.createLinearGradient(0, 0, 0, v.h);
@@ -1281,7 +1297,7 @@ export class Game {
   private drawCamp(ctx: Ctx): void {
     const v = this.v;
     const meta = this.meta;
-    ctx.fillStyle = this.ground[meta.zone];
+    ctx.fillStyle = this.groundFor(meta.zone);
     ctx.fillRect(0, 0, v.w, v.h);
     this.ui.scrim(ctx, v.w, v.h);
     const w = Math.min(760, v.w - 40);
