@@ -28,7 +28,7 @@ export const TUNING = {
   magnetDrop: 0.0025,
   meatHeal: 30,
   /** Global multipliers the director applies over time (see `director`). */
-  hpGrowth: 0.012,           // enemy HP x (1 + t * hpGrowth)
+  hpGrowth: 0.014,           // enemy HP x (1 + t * hpGrowth)
   rateBase: 2.4,             // spawns per second at t = 0
   rateGrowth: 0.019,         // + per second of run time
   rateMax: 8,
@@ -128,7 +128,7 @@ export interface SkillDef {
 }
 
 export const MAX_LEVEL = 5;
-export const MAX_WEAPONS = 4;  // of 5 offered: every run still leaves one out, so builds differ
+export const MAX_WEAPONS = 4;  // of 6 offered: every run still leaves one out, so builds differ
 
 export const WEAPONS: Record<WeaponId, WeaponLevel[]> = {
   // Tuned 2026-10-13 from the balance analyst's measured diff (.balance-lab/).
@@ -235,7 +235,7 @@ export const EVOLVED = { damage: 1.6, count: 1, area: 1.2, cooldown: 0.85 };
  * read) and War Horn (unclear) were cut 13/10 by the owner: five weapons, each with one clear job. Their data stays so
  * old code paths and tests still compile.
  */
-export const RETIRED_WEAPONS: WeaponId[] = ['boomerang', 'thorns', 'roar'];
+export const RETIRED_WEAPONS: WeaponId[] = ['boomerang', 'roar'];
 export const WEAPON_IDS = (Object.keys(WEAPONS) as WeaponId[]).filter((w) => !RETIRED_WEAPONS.includes(w));
 export const PASSIVE_IDS = Object.keys(PASSIVE_STEP) as PassiveId[];
 export const isWeapon = (id: SkillId): id is WeaponId => id in WEAPONS;

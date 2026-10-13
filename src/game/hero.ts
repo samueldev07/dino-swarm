@@ -109,7 +109,7 @@ export class Hero {
     if (glow) {
       // subtle: a thin warm halo hugging the silhouette
       const k = w / fr.sw!, pad = 10 * k;
-      ctx.globalAlpha = alpha * 0.32;
+      ctx.globalAlpha = alpha * 0.5;
       ctx.drawImage(glow, -fr.cx * s - pad, -fr.foot * s - pad, w + pad * 2, h + pad * 2);
       ctx.globalAlpha = alpha;
     }

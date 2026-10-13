@@ -565,14 +565,17 @@ export class Game {
 
     // thorn patches (ground layer)
     const thorn = this.sprites.thorn();
-    const bramble = this.sprites.image('fx-thorn');
+    const bramble = this.spikeSprite();
     for (const t of m.thorns) {
       if (!vis(t.x, t.y, 60)) continue;
       ctx.globalAlpha = Math.min(0.9, t.life * 1.5);
       if (bramble) {
         // One small bramble tuft per patch: grows in, shrinks out. Simple enough to read at a glance.
-        const d = t.r * 1.6 * Math.min(1, (2.6 - t.life) * 6) * Math.min(1, t.life * 2.5);
-        ctx.drawImage(bramble, t.x - d / 2, t.y - d / 2, d, d);
+        // spikes burst UP out of the ground (grow from the base, overshoot), then sink back
+        const age = 2.6 - t.life, up = age < 0.18 ? age / 0.18 : 1, pop = age < 0.18 ? 1 : age < 0.3 ? 1.12 - (age - 0.18) : 1;
+        const sink = Math.min(1, t.life * 3);
+        const w = t.r * 1.5, h = (w * bramble.height) / bramble.width * up * pop * sink;
+        ctx.drawImage(bramble, t.x - w / 2, t.y - h + t.r * 0.25, w, h);
         continue;
       }
       const s = (t.r * 1.7) / thorn.w;
@@ -966,6 +969,33 @@ export class Game {
       }
     }
     ctx.globalAlpha = 1;
+  }
+
+  /** Simple bramble spikes: three inked triangles on a small dirt mound, baked once. */
+  private spikeCanvas: HTMLCanvasElement | null = null;
+  private spikeSprite(): HTMLCanvasElement {
+    if (this.spikeCanvas) return this.spikeCanvas;
+    const c = document.createElement('canvas'); c.width = 120; c.height = 100;
+    const x = c.getContext('2d')!;
+    x.lineJoin = 'round'; x.lineCap = 'round';
+    const ink = '#2a1d16';
+    // dirt mound
+    x.beginPath(); x.ellipse(60, 84, 46, 12, 0, 0, Math.PI * 2);
+    x.fillStyle = '#7a5a3e'; x.fill(); x.lineWidth = 4; x.strokeStyle = ink; x.stroke();
+    // three spikes: [base x, half width, height, lean]
+    const spikes: [number, number, number, number][] = [[38, 11, 52, -6], [62, 14, 74, 2], [86, 11, 48, 7]];
+    for (const [bx, hw, h, lean] of spikes) {
+      const tipX = bx + lean, tipY = 84 - h;
+      x.beginPath(); x.moveTo(bx - hw, 84); x.lineTo(tipX, tipY); x.lineTo(bx + hw, 84); x.closePath();
+      x.fillStyle = '#5f7a3a'; x.fill();
+      // one hard shadow tone on the right half
+      x.beginPath(); x.moveTo(tipX, tipY); x.lineTo(bx + hw, 84); x.lineTo(bx + 1, 84); x.closePath();
+      x.fillStyle = '#44592a'; x.fill();
+      x.beginPath(); x.moveTo(bx - hw, 84); x.lineTo(tipX, tipY); x.lineTo(bx + hw, 84);
+      x.lineWidth = 3.5; x.strokeStyle = ink; x.stroke();
+    }
+    this.spikeCanvas = c;
+    return c;
   }
 
   private drawImpacts(ctx: Ctx): void {
