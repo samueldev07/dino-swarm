@@ -7,9 +7,10 @@
  * sources (edited poses, video-cut frames) line up without moving the feet.
  * Until the art has loaded, `ready` is false and the game draws its old player.
  */
+import { loadAtlas, type Texture } from './perf/frames';
 type Ctx = CanvasRenderingContext2D;
 
-interface Frame { f: string; cx: number; foot: number; k: number; img?: HTMLImageElement; white?: HTMLCanvasElement }
+interface Frame extends Partial<Texture> { f: string; cx: number; foot: number; k: number }
 interface HeroData { fps: Record<string, number>; clips: Record<string, Frame[]> }
 
 export class Hero {
@@ -29,16 +30,12 @@ export class Hero {
       const res = await fetch(this.base + 'hero.json', { cache: 'no-cache' });
       if (!res.ok) return;
       const d = (await res.json()) as HeroData;
-      for (const clip of Object.values(d.clips)) {
-        for (const fr of clip) {
-          this.total++;
-          const img = new Image();
-          img.onload = () => { this.loaded++; };
-          img.src = this.base + fr.f;
-          fr.img = img;
-        }
-      }
       this.data = d;
+      const frames = Object.values(d.clips).flat();
+      this.total = frames.length;
+      const textures = await loadAtlas(frames.map(fr => this.base + fr.f));
+      frames.forEach((fr, i) => Object.assign(fr, textures[i]));
+      this.loaded = textures.length;
     } catch { /* no hero art: keep the old player */ }
   }
 
@@ -87,7 +84,7 @@ export class Hero {
   /** Draw with the feet at (x, y); `height` in world units; flip = -1 faces left. */
   draw(ctx: Ctx, x: number, y: number, height: number, flip: number, moving: boolean, flash: number, alpha: number): void {
     const fr = this.frame(moving);
-    if (!fr?.img) return;
+    if (!fr?.width || !fr.height || fr.tx === undefined || fr.ty === undefined || !fr.raster || !fr.white) return;
     const s = height * fr.k;
     // Few-frame clips need a code bob to read as running; video-cut clips already move.
     const fewFrames = (this.data?.clips.run?.length ?? 0) <= 2;
@@ -97,24 +94,12 @@ export class Hero {
     ctx.globalAlpha = alpha;
     ctx.translate(x, y - bob);
     ctx.scale(flip * (1 - breathe * 0.5), 1 + breathe);
-    const w = fr.img.naturalWidth * s, h = fr.img.naturalHeight * s;
-    ctx.drawImage(fr.img, -fr.cx * s, -fr.foot * s, w, h);
+    const w = fr.width * s, h = fr.height * s;
+    ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.width, fr.height, -fr.cx * s, -fr.foot * s, w, h);
     if (flash > 0) {
-      if (!fr.white) fr.white = whiteOf(fr.img);
       ctx.globalAlpha = alpha * Math.min(1, flash);
-      ctx.drawImage(fr.white, -fr.cx * s, -fr.foot * s, w, h);
+      ctx.drawImage(fr.white, fr.tx, fr.ty, fr.width, fr.height, -fr.cx * s, -fr.foot * s, w, h);
     }
     ctx.restore();
   }
-}
-
-function whiteOf(img: HTMLImageElement): HTMLCanvasElement {
-  const c = document.createElement('canvas');
-  c.width = img.naturalWidth; c.height = img.naturalHeight;
-  const x = c.getContext('2d')!;
-  x.drawImage(img, 0, 0);
-  x.globalCompositeOperation = 'source-in';
-  x.fillStyle = '#fff';
-  x.fillRect(0, 0, c.width, c.height);
-  return c;
 }
