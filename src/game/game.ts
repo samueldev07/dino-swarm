@@ -221,8 +221,8 @@ export class Game {
     const m = this.m;
     if (this.screen !== 'run' || !m) { this.fx.update(dt); return; }
 
-    // Closer camera (owner 13/10): characters read bigger and art flaws show less.
-    this.cam.z = 1.25 * Math.max(0.7, Math.min(1.6, Math.sqrt((this.v.w * this.v.h) / (1200 * 700))));
+    // Camera a bit higher than the base fit (owner 13/10): wider view, small art flaws read less.
+    this.cam.z = 0.88 * Math.max(0.7, Math.min(1.6, Math.sqrt((this.v.w * this.v.h) / (1200 * 700))));
     m.viewHalf = { w: this.v.w / 2 / this.cam.z, h: this.v.h / 2 / this.cam.z };
     // ---- input -> move vector
     let kx = 0, ky = 0;
@@ -573,7 +573,11 @@ export class Game {
 
     // orbiting eggs
     const egg = this.sprites.egg();
-    for (const o of m.orbitPositions()) this.blit(ctx, egg, o.x, o.y + 10, 1.1, 1, 1, this.time * 6, 0);
+    const goose = this.sprites.image('proj-egg');
+    for (const o of m.orbitPositions()) {
+      if (goose) { const a = Math.atan2(o.y - m.py, o.x - m.px) + Math.PI / 2; ctx.save(); ctx.translate(o.x, o.y); ctx.rotate(a); ctx.drawImage(goose, -36, -36, 72, 72); ctx.restore(); }
+      else this.blit(ctx, egg, o.x, o.y + 10, 1.1, 1, 1, this.time * 6, 0);
+    }
 
     this.drawProjectiles(ctx, m);
     this.drawSlashes(ctx, m);
@@ -709,6 +713,8 @@ export class Game {
     const bone = this.sprites.bone();
     for (const p of m.projs) {
       if (p.kind === 'bone') { this.blit(ctx, bone, p.x, p.y, 1.1, 1, 1, p.age * 16, 0); continue; }
+      const flask = p.kind === 'spit' ? this.sprites.image('proj-flask') : undefined;
+      if (flask) { ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.age * 14); ctx.drawImage(flask, -22, -22, 44, 44); ctx.restore(); continue; }
       if (p.kind === 'spit') {
         const sp = Math.hypot(p.vx, p.vy) || 1;
         const ux = p.vx / sp, uy = p.vy / sp;
@@ -999,9 +1005,9 @@ export class Game {
     const n = offers.length;
     const rects: Rect[] = [];
     if (land) {
-      const cw = Math.min(330, (v.w - 100) / n - 24), ch = 400;
-      const total = n * cw + (n - 1) * 28;
-      for (let i = 0; i < n; i++) rects.push({ x: v.w / 2 - total / 2 + i * (cw + 28), y: v.h / 2 - ch / 2 + 50, w: cw, h: ch });
+      const ch = Math.min(520, v.h - v.safe.t - 330), cw = Math.min(ch * 0.72, (v.w - 100) / n - 32);
+      const total = n * cw + (n - 1) * 36;
+      for (let i = 0; i < n; i++) rects.push({ x: v.w / 2 - total / 2 + i * (cw + 36), y: v.safe.t + 210, w: cw, h: ch });
     } else {
       const cw = Math.min(640, v.w - 60), ch = 190;
       const total = n * ch + (n - 1) * 22;
@@ -1047,14 +1053,14 @@ export class Game {
     }
 
     const icon = this.sprites.icon(o.id, def.color);
-    const isz = land ? 110 : 120;
-    const ix = land ? r.w / 2 - isz / 2 : 22, iy = land ? 34 : r.h / 2 - isz / 2;
+    const isz = land ? Math.min(150, r.w * 0.52) : 132;
+    const ix = land ? r.w / 2 - isz / 2 : 26, iy = land ? 44 : r.h / 2 - isz / 2;
     ctx.drawImage(icon.img, ix, iy, isz, isz);
 
     const tx = land ? r.w / 2 : ix + isz + 24;
     const align: CanvasTextAlign = land ? 'center' : 'left';
     const tw = land ? r.w - 36 : r.w - tx - 20;
-    let y = land ? iy + isz + 46 : 48;
+    let y = land ? iy + isz + 52 : 52;
     const ns = fitSize(ctx, def.name, 34, tw);
     ctx.font = fontFor(ns); ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillStyle = INK;
     ctx.fillText(def.name, tx, y);
@@ -1185,7 +1191,7 @@ export class Game {
     const r: Rect = { x: cx - w / 2, y: Math.max(v.safe.t + 55, (v.h - h) / 2 + 20), w, h };
     this.ui.scrim(ctx, v.w, v.h); fancyPanel(ctx, r);
     ribbon(ctx, cx, r.y - 34, Math.min(490, w - 60), won ? 'ZONE CLEAR!' : 'KNOCKED OUT', won ? 'green' : 'red');
-    const names: Record<EnemyKind | 'spore', string> = { grub: 'Grub', bat: 'Bat', beetle: 'Beetle', wolf: 'Wolf', shroom: 'Shroom', brute: 'Brute', boss: 'Boss', spore: 'a spore' };
+    const names: Record<EnemyKind | 'spore', string> = { grub: 'a Mushroom Gnome', bat: 'a Cave Bat', beetle: 'an Orc Shieldbearer', wolf: 'a Boar Rider', shroom: 'a Torch Goblin', brute: 'a Forest Troll', boss: 'the Ogre Chief', spore: 'a burning torch' };
     const cause = m.lastHitBy;
     const heading = won ? 'You survived the swarm!' : cause ? 'Knocked out by ' + names[cause] : 'Run ended';
     text(ctx, heading, cx, r.y + 55, fitSize(ctx, heading, 28, w - 50), INK, 'center', 700);
@@ -1270,13 +1276,16 @@ export class Game {
     const cx = v.w / 2;
     // title (logo-style: thick outline + drop)
     const ty = s.t + (land ? 110 : 170);
-    ctx.save();
-    ctx.translate(cx, ty);
-    ctx.rotate(-0.03);
-    outlinedText(ctx, 'DINO SWARM', 0, 8, 92, '#7a3b1a', INK, 'center');
-    outlinedText(ctx, 'DINO SWARM', 0, 0, 92, '#ffb02e', INK, 'center');
-    outlinedText(ctx, 'SURVIVORS', 0, 74, 46, '#fff', INK, 'center');
-    ctx.restore();
+    const logo = this.sprites.image('logo-plate');
+    if (logo) {
+      const lw = Math.min(land ? 560 : 640, v.w - 60), lh = (lw * logo.naturalHeight) / logo.naturalWidth;
+      const sway = Math.sin(this.time * 1.3) * 0.012;
+      ctx.save(); ctx.translate(cx, s.t + 6); ctx.rotate(sway);
+      ctx.drawImage(logo, -lw / 2, 0, lw, lh);
+      ctx.restore();
+    } else {
+      outlinedText(ctx, 'PITCHFORK & POT', cx, ty, 80, '#f3e6cc', INK, 'center');
+    }
 
     // species picker
     const ids = SPECIES_IDS;
@@ -1284,7 +1293,7 @@ export class Game {
     if (this.menuSpecies !== cur) this.menuSpecies = cur;
     const sp = SPECIES[meta.species];
     const unlocked = speciesUnlocked(meta, sp.id);
-    const dy = land ? v.h * 0.47 : v.h * 0.42;
+    const dy = land ? v.h * 0.55 : v.h * 0.47;
     const dino = this.sprites.dino(sp.id, 0);
     ctx.fillStyle = 'rgba(30,20,10,.25)';
     ctx.beginPath(); ctx.ellipse(cx, dy + 10, 90, 22, 0, 0, Math.PI * 2); ctx.fill();
@@ -1299,7 +1308,9 @@ export class Game {
     const blurb = unlocked ? sp.blurb : `Clear ${ZONES[sp.unlockZone].name} to unlock`;
     outlinedText(ctx, blurb, cx, dy + 92, fitSize(ctx, blurb, 24, v.w - 80), unlocked ? '#ffe28a' : '#ffb0a0', INK, 'center');
     const ar = 74;
-    for (const dir of [-1, 1]) {
+    // Only one hero for now: the picker shows up once a second one is unlocked.
+    const pickable = ids.filter((id) => speciesUnlocked(meta, id)).length > 1;
+    for (const dir of pickable ? [-1, 1] : []) {
       const r: Rect = { x: cx + dir * 230 - ar / 2, y: dy - 120, w: ar, h: ar };
       if (this.ui.button('sp' + dir, r, { label: dir < 0 ? '<' : '>', tone: 'stone', size: 40 }, ctx)) {
         const next = ids[(cur + dir + ids.length) % ids.length];

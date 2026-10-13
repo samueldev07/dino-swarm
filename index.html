@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-<title>Dino Swarm Survivors – Survivor Action Game</title>
-<meta name="description" content="Move, dodge and evolve your dino against endless monster waves. Play Dino Swarm Survivors free in your browser on desktop, Chromebook and mobile." />
-<meta name="theme-color" content="#2a1d16" />
-<link rel="canonical" href="%VITE_SITE_ORIGIN%/dino-swarm-survivors/" />
+<title>Pitchfork & Pot – Survive the Swarm</title>
+<meta name="description" content="A stubborn farm boy with a pot for a helmet holds off endless swarms of gnomes, orcs and trolls. Play Pitchfork & Pot free in your browser on desktop and mobile." />
+<meta name="theme-color" content="#22201a" />
+<link rel="canonical" href="%VITE_SITE_ORIGIN%/pitchfork-and-pot/" />
 <script src="https://game-cdn.poki.com/scripts/v2/poki-sdk.js"></script>
 <link rel="icon" type="image/svg+xml" href="icon.svg" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Dino Swarm Survivors – Survivor Action Game" />
-<meta property="og:description" content="Move, dodge and evolve your dino against endless monster waves." />
-<meta property="og:url" content="%VITE_SITE_ORIGIN%/dino-swarm-survivors/" />
+<meta property="og:title" content="Pitchfork & Pot – Survive the Swarm" />
+<meta property="og:description" content="A farm boy with a pot helmet against endless forest swarms." />
+<meta property="og:url" content="%VITE_SITE_ORIGIN%/pitchfork-and-pot/" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     width: 100%; height: 100%; overflow: hidden;
-    background: #2a1d16; color: #ffe9a8;
+    background: #22201a; color: #ffe9a8;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     -webkit-user-select: none; user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -30,7 +30,7 @@
   #boot {
     position: fixed; inset: 0; z-index: 10;
     display: grid; place-content: center; justify-items: center; gap: 18px; padding: 24px;
-    background: radial-gradient(ellipse at 50% 35%, #7a4c26 0%, #2a1d16 70%);
+    background: radial-gradient(ellipse at 50% 35%, #7a4c26 0%, #22201a 70%);
     transition: opacity .4s;
   }
   #boot.gone { opacity: 0; pointer-events: none; }
@@ -44,11 +44,11 @@
 </style>
 </head>
 <body>
-  <h1 class="sr">Dino Swarm Survivors – Survivor Action Game</h1>
-  <canvas id="stage" aria-label="Dino Swarm Survivors game"></canvas>
+  <h1 class="sr">Pitchfork & Pot – Survive the Swarm</h1>
+  <canvas id="stage" aria-label="Pitchfork & Pot game"></canvas>
   <div id="boot">
-    <h2 style="font:900 44px system-ui;color:#ffb02e;text-shadow:0 4px 0 #2a1d16">DINO SWARM</h2>
-    <p>Move, dodge and evolve your dino against endless monster waves.</p>
+    <img src="sprites/logo-plate.webp" alt="Pitchfork &amp; Pot" style="width:min(80vw,520px);height:auto" />
+    <p>A farm boy with a pot helmet against endless forest swarms.</p>
     <div class="bar"><i></i></div>
   </div>
   <script type="module" src="/src/main.ts"></script>

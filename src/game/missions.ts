@@ -1,6 +1,11 @@
 import { ZONES, type EnemyKind } from './config';
 import type { GameEvent, Model } from './model';
 
+const ENEMY_PLURAL: Partial<Record<EnemyKind, string>> = {
+  grub: 'mushroom gnomes', bat: 'cave bats', wolf: 'boar riders', beetle: 'orc shieldbearers',
+  shroom: 'torch goblins', brute: 'forest trolls', boss: 'ogre chiefs',
+};
+
 export interface Mission {
   id: number;
   kind: 'kill' | 'form' | 'survive' | 'boss' | 'level';
@@ -41,7 +46,7 @@ export function loadMissions(value: unknown): Mission[] {
 
 export function missionLabel(m: Mission): string {
   switch (m.kind) {
-    case 'kill': return `Defeat ${m.target} ${m.enemy === 'wolf' ? 'wolves' : m.enemy + 's'}`;
+    case 'kill': return `Defeat ${m.target} ${ENEMY_PLURAL[m.enemy!] ?? m.enemy + 's'}`;
     case 'form': return `Reach evolution form ${m.target + 1}`;
     case 'survive': return `Survive ${m.target / 60} min in ${ZONES[m.zone!].name}`;
     case 'boss': return `Defeat boss #${m.target}`;

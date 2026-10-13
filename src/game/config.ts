@@ -32,7 +32,7 @@ export const TUNING = {
   rateBase: 2.4,             // spawns per second at t = 0
   rateGrowth: 0.016,         // + per second of run time
   rateMax: 8,
-  earlySpawnDist: 700,       // the first minute spawns closer: action within ~5 s
+  earlySpawnDist: 820,       // the first minute spawns closer: action within ~5 s
   earlyUntil: 60,
   openingRing: 12,           // grubs placed around the player when the run starts
   crowdCap: 200,             // above this many alive: half spawn rate, more elites instead
@@ -190,28 +190,28 @@ export const PASSIVE_STEP: Record<PassiveId, number> = {
 };
 
 export const SKILLS: Record<SkillId, SkillDef> = {
-  bite:      { id: 'bite', name: 'Bite Slash', color: '#ff9a3c',
-               text: ['Slash the space in front of you.', 'More damage, wider bite.', 'Also bites behind you.', 'Big damage boost.', 'Fast, huge chomps.'] },
-  spit:      { id: 'spit', name: 'Fire Spit', color: '#ff5a2c',
-               text: ['Spits fire at the nearest enemy.', '+1 fireball.', 'Fireballs pierce further.', '+1 fireball.', '+1 fireball, hotter fire.'] },
-  boomerang: { id: 'boomerang', name: 'Bone Boomerang', color: '#f3e2bf',
-               text: ['A bone flies out and comes back.', 'More damage, longer flight.', '+1 bone.', 'More damage.', '+1 bone, faster throws.'] },
-  orbit:     { id: 'orbit', name: 'Spinning Eggs', color: '#ffd75a',
-               text: ['Two eggs circle around you.', '+1 egg.', 'Wider, stronger circle.', '+1 egg.', '+1 egg, maximum spin.'] },
-  stomp:     { id: 'stomp', name: 'Quake Stomp', color: '#c98a4a',
-               text: ['Stomp the ground around you.', 'Bigger quake.', 'Stronger, more often.', 'Bigger quake.', 'Huge, rapid stomps.'] },
-  meteor:    { id: 'meteor', name: 'Meteor Call', color: '#ff7a2c',
-               text: ['A meteor hits a nearby enemy.', '+1 meteor.', 'Bigger blasts.', '+1 meteor.', '+1 meteor, more damage.'] },
-  thorns:    { id: 'thorns', name: 'Thorn Trail', color: '#7bc04a',
-               text: ['Leave thorns where you walk.', 'Thicker thorns.', 'Sharper thorns.', 'Thicker thorns.', 'A deadly thorn carpet.'] },
-  roar:      { id: 'roar', name: 'Mighty Roar', color: '#ffe28a',
-               text: ['Roar to push enemies back and stun them.', 'Wider roar.', 'Louder, more often.', 'Wider roar.', 'Earth-shaking roar.'] },
-  vitality:  { id: 'vitality', name: 'Thick Hide', color: '#e8504a', text: ['+20 max health.', '+20 max health.', '+20 max health.', '+20 max health.', '+20 max health.'] },
-  swift:     { id: 'swift', name: 'Swift Legs', color: '#6ec2ff', text: ['Move 8% faster.', 'Move 8% faster.', 'Move 8% faster.', 'Move 8% faster.', 'Move 8% faster.'] },
-  might:     { id: 'might', name: 'Sharp Claws', color: '#ff8a6b', text: ['+12% damage.', '+12% damage.', '+12% damage.', '+12% damage.', '+12% damage.'] },
-  haste:     { id: 'haste', name: 'Wild Instinct', color: '#c88aff', text: ['Skills recharge 7% faster.', 'Skills recharge 7% faster.', 'Skills recharge 7% faster.', 'Skills recharge 7% faster.', 'Skills recharge 7% faster.'] },
-  magnet:    { id: 'magnet', name: 'Amber Sense', color: '#ffb02e', text: ['Pick up amber from further away.', 'Even further.', 'Even further.', 'Even further.', 'Even further.'] },
-  regen:     { id: 'regen', name: 'Fast Healing', color: '#7bdc5a', text: ['Slowly heal over time.', 'Heal faster.', 'Heal faster.', 'Heal faster.', 'Heal faster.'] },
+  bite:      { id: 'bite', name: 'Pitchfork Jab', color: '#c98a4a',
+               text: ['Jab the space in front of you.', 'More damage, longer reach.', 'Also jabs behind you.', 'Big damage boost.', 'Fast, wide jabs.'] },
+  spit:      { id: 'spit', name: 'Fire Flask', color: '#d8642e',
+               text: ['Throw a burning flask at the nearest enemy.', '+1 flask.', 'Flames pierce further.', '+1 flask.', '+1 flask, hotter fire.'] },
+  boomerang: { id: 'boomerang', name: 'Sickle Toss', color: '#b8b2a4',
+               text: ['A sickle spins out and comes back.', 'More damage, longer flight.', '+1 sickle.', 'More damage.', '+1 sickle, faster throws.'] },
+  orbit:     { id: 'orbit', name: 'Angry Geese', color: '#e8e0cc',
+               text: ['Two angry geese circle around you.', '+1 goose.', 'Wider, angrier circle.', '+1 goose.', '+1 goose, maximum honk.'] },
+  stomp:     { id: 'stomp', name: 'Mallet Slam', color: '#9a7a52',
+               text: ['Slam the ground around you.', 'Bigger shockwave.', 'Stronger, more often.', 'Bigger shockwave.', 'Huge, rapid slams.'] },
+  meteor:    { id: 'meteor', name: 'Rockfall', color: '#8a8478',
+               text: ['A rock crashes down on a nearby enemy.', '+1 rock.', 'Bigger impacts.', '+1 rock.', '+1 rock, more damage.'] },
+  thorns:    { id: 'thorns', name: 'Bramble Trail', color: '#7a8a4a',
+               text: ['Leave brambles where you walk.', 'Thicker brambles.', 'Sharper thorns.', 'Thicker brambles.', 'A deadly bramble carpet.'] },
+  roar:      { id: 'roar', name: 'War Horn', color: '#d8b26a',
+               text: ['Blow the horn to push enemies back and stun them.', 'Wider blast.', 'Louder, more often.', 'Wider blast.', 'Earth-shaking blast.'] },
+  vitality:  { id: 'vitality', name: 'Hearty Stew', color: '#e8504a', text: ['+20 max health.', '+20 max health.', '+20 max health.', '+20 max health.', '+20 max health.'] },
+  swift:     { id: 'swift', name: 'Old Boots', color: '#6ec2ff', text: ['Move 8% faster.', 'Move 8% faster.', 'Move 8% faster.', 'Move 8% faster.', 'Move 8% faster.'] },
+  might:     { id: 'might', name: 'Whetstone', color: '#ff8a6b', text: ['+12% damage.', '+12% damage.', '+12% damage.', '+12% damage.', '+12% damage.'] },
+  haste:     { id: 'haste', name: 'Hourglass', color: '#c88aff', text: ['Skills recharge 7% faster.', 'Skills recharge 7% faster.', 'Skills recharge 7% faster.', 'Skills recharge 7% faster.', 'Skills recharge 7% faster.'] },
+  magnet:    { id: 'magnet', name: 'Lodestone', color: '#ffb02e', text: ['Pick up amber from further away.', 'Even further.', 'Even further.', 'Even further.', 'Even further.'] },
+  regen:     { id: 'regen', name: 'Healing Herbs', color: '#7bdc5a', text: ['Slowly heal over time.', 'Heal faster.', 'Heal faster.', 'Heal faster.', 'Heal faster.'] },
 };
 
 /**
@@ -219,14 +219,14 @@ export const SKILLS: Record<SkillId, SkillDef> = {
  * turns the next treasure chest into an evolution.
  */
 export const EVOLUTIONS: Record<WeaponId, { passive: PassiveId; name: string }> = {
-  bite:      { passive: 'might',    name: 'Rex Jaws' },
-  spit:      { passive: 'haste',    name: 'Inferno Breath' },
-  boomerang: { passive: 'swift',    name: 'Bone Storm' },
-  orbit:     { passive: 'vitality', name: 'Egg Fortress' },
-  stomp:     { passive: 'regen',    name: 'Aftershock' },
-  meteor:    { passive: 'magnet',   name: 'Extinction' },
-  thorns:    { passive: 'regen',    name: 'Bramble Sea' },
-  roar:      { passive: 'might',    name: 'Primal Roar' },
+  bite:      { passive: 'might',    name: 'Iron Trident' },
+  spit:      { passive: 'haste',    name: 'Dragon Flask' },
+  boomerang: { passive: 'swift',    name: 'Reaper Storm' },
+  orbit:     { passive: 'vitality', name: 'Goose Guard' },
+  stomp:     { passive: 'regen',    name: 'Earthbreaker' },
+  meteor:    { passive: 'magnet',   name: 'Landslide' },
+  thorns:    { passive: 'regen',    name: 'Thornwood' },
+  roar:      { passive: 'might',    name: 'Thunder Horn' },
 };
 export const EVOLVED = { damage: 1.6, count: 1, area: 1.2, cooldown: 0.85 };
 
@@ -251,19 +251,19 @@ export interface Species {
 }
 
 export const SPECIES: Record<SpeciesId, Species> = {
-  raptor: { id: 'raptor', name: 'Raptor', forms: ['Raptor', 'Razor Raptor', 'Rex'], start: 'bite',
-            hp: 100, speed: 1, might: 1, blurb: 'Quick and fierce. Starts with Bite Slash.', unlockZone: -1 },
+  raptor: { id: 'raptor', name: 'Pip', forms: ['Pip', 'Pip the Bold', 'Pip the Fearless'], start: 'bite',
+            hp: 100, speed: 1, might: 1, blurb: 'A stubborn farm boy with a pot for a helmet.', unlockZone: -1 },
   ankylo: { id: 'ankylo', name: 'Ankylo', forms: ['Ankylo', 'Spike Ankylo', 'Fortress'], start: 'stomp',
-            hp: 140, speed: 0.9, might: 1.05, blurb: 'Tough and slow. Starts with Quake Stomp.', unlockZone: 0 },
+            hp: 140, speed: 0.9, might: 1.05, blurb: 'Tough and slow.', unlockZone: 99 },
   ptero:  { id: 'ptero', name: 'Ptero', forms: ['Ptero', 'Storm Ptero', 'Sky King'], start: 'spit',
-            hp: 95, speed: 1.15, might: 1.15, blurb: 'Fast but fragile. Starts with Fire Spit.', unlockZone: 1 },
+            hp: 95, speed: 1.15, might: 1.15, blurb: 'Fast but fragile.', unlockZone: 99 },
 };
 export const SPECIES_IDS = Object.keys(SPECIES) as SpeciesId[];
 
 export const ZONES = [
-  { name: 'Fern Jungle',   enemyHp: 1,   enemyDmg: 1,   coinMult: 1 },
-  { name: 'Lava Fields',   enemyHp: 1.5, enemyDmg: 1.25, coinMult: 1.5 },
-  { name: 'Frost Peaks',   enemyHp: 2.0, enemyDmg: 1.45, coinMult: 2 },
+  { name: 'Mossy Hollow',   enemyHp: 1,   enemyDmg: 1,   coinMult: 1 },
+  { name: 'Ember Marsh',   enemyHp: 1.5, enemyDmg: 1.25, coinMult: 1.5 },
+  { name: 'Frostfang Hills',   enemyHp: 2.0, enemyDmg: 1.45, coinMult: 2 },
 ];
 
 export type CampId = 'might' | 'vitality' | 'speed' | 'magnet' | 'greed' | 'armor';

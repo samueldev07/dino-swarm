@@ -1,0 +1,15 @@
+{
+ "shots": [
+  {
+   "id": "pickup-amber-1",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single small glowing amber crystal shard (warm yellow-orange, like a gem), centred, drawn with a thick uneven dark hand-inked outline and flat colours. NO characters, NO people, only the crystal. Background: ONE flat pure magenta #FF00FF everywhere. No text.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/icons/pickup-amber-2.jpg"
+    }
+   ]
+  }
+ ]
+}
