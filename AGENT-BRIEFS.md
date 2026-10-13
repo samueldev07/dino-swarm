@@ -201,3 +201,45 @@ Verify: npm run build passes; node --experimental-strip-types --no-warnings tool
 Report in handoff/codex-perf.md: before/after frame times (avg and 95th percentile) at 390x844 with 4x CPU throttle,
 what you changed (file:line), and anything you could not fix.
 ```
+
+# Vòng 4: Codex gộp ảnh động thành atlas + tải theo 2 đợt (14/10/2026)
+Nhánh mới nhất là **`folk-version`** (không phải `main`). Trên PC thứ hai:
+`git fetch && git checkout folk-version && git pull && git checkout -b codex/atlas`, rồi dán đoạn dưới đây vào Codex:
+
+```
+FIRST read AGENTS.md and obey it (branch codex/atlas made from folk-version, never push to main or folk-version,
+hand-off file handoff/codex-atlas.md). The game is "Pitchfork & Pot" (folk fairy-tale survivor for Poki).
+Read playtest/audit-ui-balance-perf-loading.md part 4 (loading audit) for context; Claude already fixed: canvas pixel
+budget, deferred Poki SDK script, prod caching of json, HUD/tap-area issues.
+
+GOAL: faster first load on a slow phone network, WITHOUT changing how anything looks or plays.
+
+TASK A - pre-packed animation atlases (biggest win: ~290 requests -> ~80)
+ - Today every animation is many loose WebP frames: public/anim/<name>/NN.webp + clip.json, and public/hero/grok-1/*.webp
+   + hero.json. At runtime src/game/perf/frames.ts loads them one by one and packs them into an atlas canvas.
+ - Write tools/pack-atlas.mjs (node; you may add sharp as a devDependency) that packs each folder into ONE atlas
+   public/anim/<name>/atlas.webp (+ the frame rects added to clip.json / hero.json), same pixels, WebP quality >= 88,
+   max atlas side 4096. Run it from "npm run build" (prebuild) so new animations are packed automatically.
+ - Change frames.ts / clips.ts / hero.ts to load the atlas when present and fall back to loose frames when not
+   (the dev pipeline keeps writing loose frames). Keep the anchors (cx, foot, k), the white hit-flash masks and the hero
+   glow EXACTLY as they are now.
+ - Proof: screenshots before/after at 1280x720 and 390x844 of the menu, a run at 3:00 with the boss, and a Zone 2 run
+   (in the console of a dev build: __ds.game.meta.zone = 1, then PLAY) - they must look identical. Report request
+   count and total KB before/after (DevTools Network, "Disable cache", Fast 4G).
+
+TASK B - two-phase loading
+ - Phase 1 (before the boot screen hides and poki.loadingFinished()): fonts, UI kit, HUD icons, ground-<zone>, hero,
+   and the first-minute enemies of the chosen zone (grub, bat) + the jab effect. Everything else loads right after,
+   in the background, in the order enemies appear (wolf, beetle, brute, shroom, boss, then effects).
+ - Nothing may pop in as a code-drawn placeholder during the first minute on Fast 4G.
+ - The hero glow in src/game/hero.ts builds 36 blurred canvases at load: build them lazily (first time a frame is
+   drawn) or in idle time, so the first frames do not hitch.
+
+FILES YOU MAY EDIT: src/game/perf/**, src/game/clips.ts, src/game/hero.ts, src/engine/assets.ts, src/main.ts,
+package.json (scripts, devDependencies), new tools/pack-atlas.mjs, and the NEW atlas files under public/anim/** and
+public/hero/** (generated, same pixels).
+DO NOT EDIT: src/game/model.ts, src/game/config.ts, src/game/game.ts (ask in "Requests for Claude" if you need a hook
+there), tools/test-model.ts, tools/balance-sim.ts, art/**, and never change image content.
+Verify: npm run build passes; node --experimental-strip-types --no-warnings tools/test-model.ts says "all passed".
+Push codex/atlas and write handoff/codex-atlas.md (what changed file:line, before/after numbers, screenshots, open issues).
+```
