@@ -59,10 +59,16 @@ Ghép tất cả vào `art/style-test/compare.png`. Chủ game chọn xong mới
 - [ ] Nhân vật quay **sang phải** (game tự lật ảnh khi đi sang trái).
 - [ ] Xuất WebP, cạnh dài 256 px (quái thường) / 384 px (người chơi, trùm), mỗi file dưới 40 KB.
 
-## 6. Chuyển động (không cần vẽ nhiều khung hình)
-Mỗi nhân vật chỉ cần **một ảnh**. Code tạo chuyển động: nhún co giãn khi đi, nghiêng theo hướng chạy,
-nháy trắng khi trúng đòn, bẹp rồi tan khi chết. AI vẽ nhiều khung liên tiếp rất khó khớp nhau,
-nên cách này vừa đẹp vừa tiết kiệm. Riêng người chơi có thể thêm ảnh thứ hai "há miệng cắn".
+## 6. Chuyển động (chủ game duyệt 13/10/2026)
+| Nhóm | Phương án | Ảnh cần vẽ |
+|---|---|---|
+| Quái thường, vật phẩm | **A**: 1 ảnh, code tạo chuyển động (nhún, co giãn, nghiêng, nháy trắng, bẹp khi chết) | 1 ảnh mỗi con |
+| Khủng long người chơi | **B**: 3 tư thế + code (code chuyển giữa các tư thế và thêm nhún) | `idle`, `run` (chân duỗi dài, thân chúi về trước), `bite` (há miệng rộng) cho mỗi dạng tiến hóa |
+| Trùm | **C**: ghép mảnh kiểu con rối, code xoay từng mảnh | ảnh đầy đủ + các mảnh tách riêng: thân, đầu, hàm dưới, tay trước, chân trước, chân sau |
+| Từng khung hình từ video | **D**: chỉ dùng nếu B không đạt | — |
+
+Mọi tư thế của cùng một nhân vật phải **cùng khung ảnh, cùng tỉ lệ, cùng vị trí chân chạm đất**,
+để khi đổi tư thế nhân vật không bị nhảy chỗ.
 
 ## 7. Danh sách ảnh cần làm (sau khi chủ game duyệt)
 | Nhóm | Số lượng | Ghi chú |
