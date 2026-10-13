@@ -467,7 +467,7 @@ export class Game {
     // Size ladder by on-screen HEIGHT (world units) against the hero (~130): small fry clearly
     // smaller than the hero, tanks about his size, troll and ogre loom over him. Painted art is
     // tall or wide depending on the creature, so height (not width) keeps the ladder honest.
-    const H = { grub: 70, bat: 62, shroom: 92, beetle: 120, wolf: 118, brute: 215, boss: 320 }[kind];
+    const H = { grub: 70, bat: 62, shroom: 92, beetle: 120, wolf: 160, brute: 215, boss: 320 }[kind];
     return H / s.h;
   }
 

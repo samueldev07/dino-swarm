@@ -70,7 +70,7 @@ export const ENEMIES: Record<EnemyKind, EnemyDef> = {
   grub:   { kind: 'grub',   hp: 9,    speed: 72,  radius: 18, damage: 5,  xp: 1,  mass: 1 },
   bat:    { kind: 'bat',    hp: 6,    speed: 128, radius: 15, damage: 4,  xp: 1,  mass: 0.7, flutter: true },
   beetle: { kind: 'beetle', hp: 46,   speed: 58,  radius: 25, damage: 12, xp: 3,  mass: 2.5 },
-  wolf:   { kind: 'wolf',   hp: 24,   speed: 96,  radius: 20, damage: 10, xp: 2,  mass: 1.2, dash: true },
+  wolf:   { kind: 'wolf',   hp: 24,   speed: 96,  radius: 26, damage: 10, xp: 2,  mass: 1.2, dash: true },
   shroom: { kind: 'shroom', hp: 20,   speed: 60,  radius: 19, damage: 8,  xp: 2,  mass: 1.2, ranged: true },
   brute:  { kind: 'brute',  hp: 260,  speed: 70,  radius: 38, damage: 18, xp: 12, mass: 6 },
   boss:   { kind: 'boss',   hp: 3600, speed: 82,  radius: 62, damage: 26, xp: 60, mass: 40 },
