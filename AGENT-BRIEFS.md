@@ -102,3 +102,66 @@ worth copying into Dino Swarm (concrete, with numbers).
 ## Sau khi hai bên xong
 Đưa cho Claude đường dẫn hai báo cáo: `playtest/REPORT.md`, `playtest/COMPETITORS.md`,
 và phần báo cáo cuối của Codex. Claude sẽ ghép phần việc của Codex, chạy lại test và bot, rồi gộp mọi góp ý.
+
+---
+
+# Vòng 2: Codex làm "đường ray" cho phần hình (13/10/2026)
+Mục tiêu: khi Antigravity giao ảnh, chỉ cần thả file vào là game dùng được ngay, không phải sửa code.
+Mọi thứ phải có **đường lùi**: thiếu ảnh nào thì game vẫn vẽ hình tạm như hiện nay.
+Trên PC thứ hai: `git checkout main && git pull && git checkout -b codex/art-runtime`, rồi dán đoạn dưới đây vào Codex:
+
+```
+FIRST read AGENTS.md and obey it. Branch: codex/art-runtime (never push to main). When done: commit,
+`git push -u origin codex/art-runtime`, write handoff/codex-art-runtime.md (changes with file:line, how verified,
+not done, Requests for Claude).
+Read: ART-DIRECTION.md (sections 2, 5, 6, 7 — the art style, the checklist and the APPROVED animation plan:
+enemies = A single image + code motion; player = B three poses + code; bosses = C cut-out rig),
+src/game/sprites.ts, src/engine/assets.ts, src/game/game.ts (drawPlayer, drawEnemy, blit), src/game/ui.ts,
+tools/prep_sprites.py, docs/ui-rules.md.
+
+FILES YOU MAY EDIT/CREATE: tools/art-ingest/** (new), src/game/anim.ts (new), src/game/rig.ts (new),
+src/game/sprites.ts, src/game/ui.ts, src/engine/assets.ts, src/game/game.ts (drawing code only),
+tools/rig-viewer/** (new, dev-only page). DO NOT EDIT: src/game/model.ts, src/game/config.ts, tools/test-model.ts,
+tools/balance-sim.ts, art/** and public/sprites/** (Antigravity owns those), playtest/**.
+
+TASK 1 — Art ingest tool (Python 3 + Pillow, tools/art-ingest/ingest.py):
+  input: a folder of approved PNGs from Antigravity (default art/final/); output: public/sprites/*.webp +
+  public/sprites/manifest.json. Per file: trim transparent margins (but keep ONE shared canvas for all poses of
+  the same character so feet stay aligned — group by key prefix, e.g. player-raptor-1-*), resize to the size
+  table below, export WebP (quality ~88, alpha), and VALIDATE: soft-edge alpha present (count semi-transparent
+  pixels > 0), dark fringe check (mean luminance of edge pixels), not empty, faces right (warn only).
+  Size table (longest side px): player 384, enemy 256, boss full 768 / boss parts at the same scale, pickup 96,
+  skill icon 128, ui pieces native, ground tile 512 (must stay seamless: verify by tiling 2x2 and checking seams).
+  Print a report: per-file size, warnings, and the TOTAL shipped size (budget: 3 MB for all sprites; fail if over).
+  Write the manifest in the existing format {"files": {...}} plus optional {"slices": {key: [l,t,r,b]}} and
+  {"rigs": {key: "rig-file.json"}}.
+
+TASK 2 — Pose animation for the player (src/game/anim.ts + game.ts drawPlayer), plan B:
+  sprite keys player-<species>-<form 1..3>-<idle|run|bite>. Fallbacks in this order: the pose image, then
+  player-<species>-<form>, then the procedural sprite. Behaviour: still → idle with gentle breathing; moving →
+  alternate idle/run at a step rate tied to speed (~6–8 Hz) with bob + squash + lean; on the model's
+  {t:'fire', w:'bite'} event show the bite pose for 0.14 s (and for any evolved bite). All poses share the
+  same anchor (feet), so switching never makes the dino jump. Keep the white hit flash and invulnerability blink.
+
+TASK 3 — Cut-out rig for bosses (src/game/rig.ts + game.ts drawEnemy for kind 'boss'), plan C:
+  rig JSON format (document it at the top of rig.ts): canvas size; parts [{name, key (sprite key), pivot [x,y]
+  in canvas px, parent, z}], where every part image is exported on the FULL boss canvas at its correct position
+  (so artists never need offsets). Code-driven clips: idle (breathe, small head bob), walk (leg swing, body bob),
+  windup (lean back, jaw opens) when e.mode===1, charge (lean forward, jaw open) when e.mode===2, roar when it
+  fires its spore ring, hit flash, death (topple + fade). Fallback: the full boss image, then the procedural boss.
+  Build a dev-only viewer tools/rig-viewer/index.html (reachable at http://localhost:5182/tools/rig-viewer/ in
+  `npm run dev`, NOT part of the production build) that loads a rig JSON, shows every clip, and lets you drag
+  pivots and copy the corrected JSON. Make a TEST rig by splitting the current procedural boss into parts in code
+  so the system is proven before real art exists.
+
+TASK 4 — 9-slice UI kit with fallback (ui.ts):
+  sprite keys ui-panel, ui-card, ui-btn-gold, ui-btn-blue, ui-btn-stone, ui-ribbon-green, ui-ribbon-red,
+  ui-medallion, ui-bar-frame; slice insets come from manifest "slices". When a key exists, button()/panel()/
+  fancyPanel()/ribbon()/card drawing use the image (9-slice, edges stretched, corners fixed, pressed state =
+  scale .96 + darken); when it does not, keep today's procedural drawing exactly. Text stays code-drawn.
+
+Verify: `npm run build` and `node --experimental-strip-types --no-warnings tools/test-model.ts` pass; with NO new
+art the game must look exactly like main (compare screenshots 1280x720 and 390x844); with your test rig and a few
+temporary test images (keep them OUT of public/sprites — load them from a test folder in the viewer/harness) every
+fallback path works. Report the shipped size before/after.
+```
