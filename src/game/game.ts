@@ -400,7 +400,6 @@ export class Game {
     const m = this.m!;
     const v = this.v;
     this.drawWorld(ctx, m);
-    this.drawForeground(ctx);
     this.drawLight(ctx, m);
 
     // red vignette at low HP / on hits
@@ -603,8 +602,8 @@ export class Game {
    */
   private drawProps(ctx: Ctx, L: number, R: number, T: number, B: number): void {
     const layers: { cell: number; chance: number; salt: number; items: [string, number][] }[] = [
-      { cell: 520, chance: 0.6, salt: 11, items: [['deco-dirt-patch', 300], ['deco-dirt-path', 360], ['deco-stones', 150], ['deco-flowers', 110], ['deco-leaves', 140]] },
-      { cell: 340, chance: 0.55, salt: 97, items: [['deco-fern', 120], ['deco-grass', 90], ['deco-rock-small', 90],
+      { cell: 620, chance: 0.4, salt: 11, items: [['deco-dirt-patch', 300], ['deco-dirt-path', 360], ['deco-stones', 150], ['deco-flowers', 110], ['deco-leaves', 140]] },
+      { cell: 460, chance: 0.4, salt: 97, items: [['deco-fern', 120], ['deco-grass', 90], ['deco-rock-small', 90],
         ['deco-log', 150], ['deco-roots', 130], ['deco-bones', 110], ['prop-stump-large', 150], ['prop-mossy-rock', 100]] },
     ];
     for (const ly of layers) {
@@ -626,16 +625,6 @@ export class Game {
         }
       }
     }
-  }
-
-  /** Fixed foreground frame (ferns, rock, roots at the screen edges), drawn over the world, under the HUD. */
-  private drawForeground(ctx: Ctx): void {
-    const img = this.sprites.image('fg-frame');
-    if (!img) return;
-    const v = this.v;
-    const s = Math.max(v.w / img.naturalWidth, v.h / img.naturalHeight);
-    const w = img.naturalWidth * s, h = img.naturalHeight * s;
-    ctx.drawImage(img, (v.w - w) / 2, (v.h - h) / 2, w, h);
   }
 
   /** Draw a sprite with its ground anchor at (x, y). */
