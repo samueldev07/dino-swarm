@@ -1,0 +1,46 @@
+{
+  "shots": [
+    {
+      "id": "ui-hand-back-1",
+      "prompt": "Match the art style of the first reference image exactly: chunky thick dark-brown outlines, soft cel shading, polished mobile-game finish. Use that reference ONLY for style - do not copy its scene, layout, characters or text. Draw only this single subject: Cartoon tutorial pointer hand for a mobile game, a chubby white cartoon glove, seen from the BACK of the hand (palm facing away from the viewer, toward the screen), the index finger extended and pointing diagonally UP and to the LEFT at about 45 degrees as if tapping a phone screen, the other three fingers curled under, the thumb tucked along the side, the wrist and a short light-blue cuff at the BOTTOM-RIGHT, light grey-blue shading, thick dark brown outline all around, soft cel shading, centered, plain flat white background, no arm, no shadow, no text",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/style-ref.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/raw/ui-hand.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ui-hand-back-2",
+      "prompt": "Match the art style of the first reference image exactly: chunky thick dark-brown outlines, soft cel shading, polished mobile-game finish. Use that reference ONLY for style - do not copy its scene, layout, characters or text. Draw only this single subject: Cartoon tutorial pointer hand for a mobile game, a chubby white cartoon glove, seen from the BACK of the hand (palm facing away from the viewer, toward the screen), the index finger extended and pointing diagonally UP and to the LEFT at about 45 degrees as if tapping a phone screen, the other three fingers curled under, the thumb tucked along the side, the wrist and a short light-blue cuff at the BOTTOM-RIGHT, light grey-blue shading, thick dark brown outline all around, soft cel shading, centered, plain flat white background, no arm, no shadow, no text",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/style-ref.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/raw/ui-hand.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ui-hand-back-3",
+      "prompt": "Match the art style of the first reference image exactly: chunky thick dark-brown outlines, soft cel shading, polished mobile-game finish. Use that reference ONLY for style - do not copy its scene, layout, characters or text. Draw only this single subject: Cartoon tutorial pointer hand for a mobile game, a chubby white cartoon glove, seen from the BACK of the hand (palm facing away from the viewer, toward the screen), the index finger extended and pointing diagonally UP and to the LEFT at about 45 degrees as if tapping a phone screen, the other three fingers curled under, the thumb tucked along the side, the wrist and a short light-blue cuff at the BOTTOM-RIGHT, light grey-blue shading, thick dark brown outline all around, soft cel shading, centered, plain flat white background, no arm, no shadow, no text, simple clean shapes, slightly flatter shading",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/style-ref.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/raw/ui-hand.jpg"
+        }
+      ]
+    }
+  ]
+}

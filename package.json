@@ -1,0 +1,21 @@
+{
+  "name": "dino-swarm",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "devDependencies": {
+    "@fontsource/lilita-one": "^5.3.0",
+    "@fontsource/titan-one": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "@fontsource/fredoka": "^5.3.0"
+  }
+}

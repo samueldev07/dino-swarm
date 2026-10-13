@@ -1,0 +1,7 @@
+{
+  "name": "dino-swarm-playtest",
+  "type": "module",
+  "dependencies": {
+    "puppeteer-core": "^25.13.0"
+  }
+}
