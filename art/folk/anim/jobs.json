@@ -1,0 +1,24 @@
+{
+ "shots": [
+  {
+   "id": "hero-run",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-hero.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the boy in the image: same pot helmet, ginger hair, freckles, serious frowning face, ragged grey-green tunic, boots, pitchfork, same thick hand-inked outline and muted colours. Camera completely static, no zoom, no pan; he stays in the centre at the same size the whole time. Plain flat pure white background, no ground, no shadow, no other objects, no text. He runs IN PLACE toward the right (like on a treadmill) in a smooth repeating run cycle: legs striding, body leaning slightly forward, holding the pitchfork forward in both hands, determined face."
+  },
+  {
+   "id": "hero-attack",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-hero.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the boy in the image: same pot helmet, ginger hair, freckles, serious frowning face, ragged grey-green tunic, boots, pitchfork, same thick hand-inked outline and muted colours. Camera completely static, no zoom, no pan; he stays in the centre at the same size the whole time. Plain flat pure white background, no ground, no shadow, no other objects, no text. From his ready stance he repeatedly attacks to the right: pulls the pitchfork back, then THRUSTS it forward hard with a step, then sweeps it in a short arc, and returns to the ready stance. Fast, snappy cartoon timing, serious battle face."
+  }
+ ]
+}

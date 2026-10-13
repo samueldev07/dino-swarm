@@ -19,7 +19,7 @@ import { Clip } from './clips';
 import { PropScatter } from './perf/props';
 import { Fx } from './fx';
 import { UI, type Rect, inside, fancyPanel, ribbon, goldPill, outlinedText, fitSize, text, bar, nine, kitImage } from './ui';
-import { INK, fontFor, rrect } from './draw';
+import { INK, fontFor, rrect, inkEllipse } from './draw';
 import { type Meta, loadMeta, saveMeta, speciesUnlocked, zoneUnlocked, buyCamp } from './meta';
 
 import { progressMissions, claimMissions, missionLabel, type Mission } from './missions';
@@ -64,6 +64,14 @@ export class Game {
   private dying: Dying[] = [];
   /** Painted one-shot impacts: pop in, overshoot, fade; never a static stamp. */
   private meteorClip = new Clip('anim/meteor/');
+  private fxClips: Record<string, Clip> = { flask: new Clip('anim/flask/'), slam: new Clip('anim/slam/', 240), horn: new Clip('anim/horn/', 240), smoke: new Clip('anim/smoke/', 140) };
+  private shots: { clip: string; x: number; y: number; w: number; t: number; len: number }[] = [];
+  private playFx(clip: string, x: number, y: number, w: number, frames: number): boolean {
+    if (!this.fxClips[clip]?.ready) return false;
+    if (this.shots.length > 24) this.shots.shift();
+    this.shots.push({ clip, x, y, w, t: 0, len: frames / 24 });
+    return true;
+  }
   private blasts: { x: number; y: number; r: number; t: number }[] = [];
   private impacts: { key: string; x: number; y: number; size: number; t: number; life: number; rot: number; spin: number }[] = [];
   private addImpact(key: string, x: number, y: number, size: number, life = 0.35): void {
@@ -104,8 +112,8 @@ export class Game {
   private hero = new Hero('hero/grok-1/');
   /** Video-cut loops for painted enemies (test: grub crawl, raptor run). Missing ones draw the still sprite. */
   private clips: Partial<Record<EnemyKind, Clip>> = {
-    grub: new Clip('anim/gnome/'), bat: new Clip('anim/bat/'), wolf: new Clip('anim/boarorc/'), beetle: new Clip('anim/orc/'),
-    shroom: new Clip('anim/goblin/'), brute: new Clip('anim/troll/'), boss: new Clip('anim/ogre/'),
+    grub: new Clip('anim/gnome/', 150), bat: new Clip('anim/bat/', 140), wolf: new Clip('anim/boarorc/', 220), beetle: new Clip('anim/orc/', 180),
+    shroom: new Clip('anim/goblin/', 170), brute: new Clip('anim/troll/', 300), boss: new Clip('anim/ogre/', 400),
   };
 
   constructor(
@@ -300,6 +308,10 @@ export class Game {
       this.blasts[i].t += fdt;
       if (this.blasts[i].t >= 25 / 24) this.blasts.splice(i, 1);
     }
+    for (let i = this.shots.length - 1; i >= 0; i--) {
+      this.shots[i].t += fdt;
+      if (this.shots[i].t >= this.shots[i].len) this.shots.splice(i, 1);
+    }
     for (let i = this.impacts.length - 1; i >= 0; i--) {
       this.impacts[i].t += fdt;
       if (this.impacts[i].t >= this.impacts[i].life) this.impacts.splice(i, 1);
@@ -340,6 +352,7 @@ export class Game {
         if (e.boss) this.fx.burst(e.x, e.y + 20, '#fff2c0', 4, 160);
         break;
       case 'kill': {
+        if (e.by === 'orbit') this.playFx('smoke', e.x, e.y + 4, 120, 24);
         if (this.firstRun && !this.taughtAmber) {
           this.taughtAmber = true; this.amberT = 3;
           this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
@@ -384,12 +397,12 @@ export class Game {
         a.play('super'); this.fx.burst(m.px, m.py - 40, '#ffd24a', 40, 380);
         this.fx.shake(0.8, 0.4); this.showBanner('EVOLVED!', e.name, '#ffd24a'); break;
       case 'fire':
-        if (e.w === 'stomp') { a.play('thud'); this.fx.burst(m.px, m.py, '#c8a070', 10, 260); }
-        else if (e.w === 'roar') a.play('combo');
+        if (e.w === 'stomp') { a.play('thud'); this.playFx('slam', m.px, m.py + 6, m.wl('stomp').area * 1.15, 21); }
+        else if (e.w === 'roar') { a.play('combo'); this.playFx('horn', m.px, m.py - 40, m.wl('roar').area * 1.3, 25); }
         else if (e.w === 'bite') { a.play('cast'); this.hero.attack(); }
         break;
       case 'splash':
-        this.addImpact('fx-fire', e.x, e.y - 20, 90, 0.32);
+        if (!this.playFx('flask', e.x, e.y - 10, 80, 22)) this.addImpact('fx-fire', e.x, e.y - 20, 90, 0.32);
         this.fx.burst(e.x, e.y - 20, '#ffb04a', 5, 160);
         break;
       case 'meteor':
@@ -529,17 +542,9 @@ export class Game {
       if (!vis(t.x, t.y, 60)) continue;
       ctx.globalAlpha = Math.min(0.9, t.life * 1.5);
       if (bramble) {
-        const grow = Math.min(1, (2.6 - t.life) * 6), shrink = Math.min(1, t.life * 2.5);
-        const seed = Math.abs(Math.floor(t.x * 7 + t.y * 13));
-        for (let j = 0; j < 3; j++) {
-          const a = ((seed >> (j * 3)) & 7) / 8 * Math.PI * 2, dist = j ? t.r * 0.45 : 0;
-          const d = t.r * (j ? 1.1 : 1.4) * grow * shrink;
-          ctx.save();
-          ctx.translate(t.x + Math.cos(a) * dist, t.y + Math.sin(a) * dist * 0.7);
-          ctx.rotate(a + Math.sin(this.time * 2 + j) * 0.08);
-          ctx.drawImage(bramble, -d / 2, -d / 2, d, d);
-          ctx.restore();
-        }
+        // One small bramble tuft per patch: grows in, shrinks out. Simple enough to read at a glance.
+        const d = t.r * 1.6 * Math.min(1, (2.6 - t.life) * 6) * Math.min(1, t.life * 2.5);
+        ctx.drawImage(bramble, t.x - d / 2, t.y - d / 2, d, d);
         continue;
       }
       const s = (t.r * 1.7) / thorn.w;
@@ -551,9 +556,8 @@ export class Game {
     for (const mt of m.meteors) {
       const k = 1 - mt.t / METEOR_DELAY;
       ctx.fillStyle = `rgba(255,80,40,${0.12 + k * 0.18})`;
-      ctx.beginPath(); ctx.arc(mt.x, mt.y, mt.r * k, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = 'rgba(200,40,20,.7)'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.ellipse(mt.x, mt.y, mt.r, mt.r * 0.9, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(mt.x, mt.y, mt.r * k, mt.r * 0.75 * k, 0, 0, Math.PI * 2); ctx.fill();
+      inkEllipse(ctx, mt.x, mt.y, mt.r, mt.r * 0.75, Math.floor(mt.x + mt.y), 4, 'rgba(120,30,20,.85)');
     }
     for (const e of m.enemies) {
       if (e.def.kind === 'boss' && e.mode === 1) {
@@ -568,9 +572,8 @@ export class Game {
     // gems & pickups
     for (const g of m.gems) {
       if (!vis(g.x, g.y)) continue;
-      const s = this.sprites.gem(g.value);
-      const bob = g.flying ? 0 : Math.sin(this.time * 4 + g.x * 0.05) * 2.5;
-      this.blit(ctx, s, g.x, g.y + bob, 1, 1, 1, 0, 0);
+      const bob = g.flying ? 0 : Math.sin(this.time * 4 + g.x * 0.05) * 2;
+      this.drawXp(ctx, g.x, g.y + bob - 12, g.value >= 10 ? 17 : g.value >= 3 ? 14 : 12, g.x * 0.37 + g.y * 0.11);
     }
     for (const pk of m.pickups) {
       if (!vis(pk.x, pk.y)) continue;
@@ -579,14 +582,15 @@ export class Game {
       if (pk.kind === 'chest') {
         ctx.fillStyle = `rgba(255,220,80,${0.25 + Math.sin(this.time * 5) * 0.1})`;
         ctx.beginPath(); ctx.ellipse(pk.x, pk.y, 46, 18, 0, 0, Math.PI * 2); ctx.fill();
+        inkEllipse(ctx, pk.x, pk.y, 48, 19, 3, 3, 'rgba(120,80,20,.8)');
       }
       this.blit(ctx, s, pk.x, pk.y + bob, 1, 1, 1, 0, 0);
     }
 
     if (this.amberT > 0 && m.gems.length) {
       const gem = m.gems.reduce((a, b) => Math.hypot(a.x - m.px, a.y - m.py) < Math.hypot(b.x - m.px, b.y - m.py) ? a : b);
-      ctx.strokeStyle = '#ffe28a'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(gem.x, gem.y, 24 + Math.sin(this.time * 7) * 5, 0, Math.PI * 2); ctx.stroke();
+      const rr = 24 + Math.sin(this.time * 7) * 5;
+      inkEllipse(ctx, gem.x, gem.y, rr, rr * 0.8, 5, 3, '#ffe28a');
     }
     // shadows, one path
     ctx.fillStyle = 'rgba(30,20,10,.2)';
@@ -597,10 +601,18 @@ export class Game {
       ctx.moveTo(e.x + e.r, e.y + fly);
       ctx.ellipse(e.x, e.y + fly, e.r, e.r * 0.34, 0, 0, Math.PI * 2);
     }
-    const pr = m.playerRadius;
-    ctx.moveTo(m.px + pr * 1.3, m.py);
-    ctx.ellipse(m.px, m.py, pr * 1.3, pr * 0.42, 0, 0, Math.PI * 2);
     ctx.fill();
+    // Hero: one clear ground shadow under the feet, sized to the art (not the hitbox).
+    ctx.fillStyle = 'rgba(25,18,10,.32)';
+    ctx.beginPath(); ctx.ellipse(m.px + 4, m.py + 2, 34, 11, 0, 0, Math.PI * 2); ctx.fill();
+
+    const egg = this.sprites.egg();
+    // spinning pot lids ride low, under every body (they never cover the hero's face)
+    const goose = this.sprites.image('proj-lid');
+    for (const o of m.orbitPositions()) {
+      if (goose) { const a = Math.atan2(o.y - m.py, o.x - m.px) + Math.PI / 2; ctx.save(); ctx.translate(o.x, o.y); ctx.rotate(a + this.time * 9); ctx.drawImage(goose, -27, -27, 54, 54); ctx.restore(); }
+      else this.blit(ctx, egg, o.x, o.y + 10, 1.1, 1, 1, this.time * 6, 0);
+    }
 
     // y-sorted bodies
     const list = this.visibleEnemies;
@@ -623,12 +635,6 @@ export class Game {
     ctx.globalAlpha = 1;
 
     // orbiting eggs
-    const egg = this.sprites.egg();
-    const goose = this.sprites.image('proj-lid');
-    for (const o of m.orbitPositions()) {
-      if (goose) { const a = Math.atan2(o.y - m.py, o.x - m.px) + Math.PI / 2; ctx.save(); ctx.translate(o.x, o.y); ctx.rotate(a + this.time * 9); ctx.drawImage(goose, -30, -30, 60, 60); ctx.restore(); }
-      else this.blit(ctx, egg, o.x, o.y + 10, 1.1, 1, 1, this.time * 6, 0);
-    }
 
     this.drawProjectiles(ctx, m);
     this.drawSlashes(ctx, m);
@@ -689,7 +695,7 @@ export class Game {
     const s = this.enemySprites[e.def.kind];
     const sc = this.enemyScale(e.def.kind, s) * (e.elite ? 1.3 : 1);
     if (e.elite) {
-      ctx.save(); ctx.strokeStyle = '#ffd75a'; ctx.lineWidth = 2; ctx.shadowColor = '#ffd75a'; ctx.shadowBlur = 7;
+      ctx.save(); ctx.strokeStyle = '#ffd75a'; ctx.lineWidth = 2; 
       ctx.beginPath(); ctx.ellipse(e.x, e.y - e.r, e.r * 1.5, e.r * 1.65, 0, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
     }
     const walk = e.stun > 0 ? 0 : e.age * (e.def.flutter ? 18 : 11);
@@ -740,12 +746,15 @@ export class Game {
       ctx.globalAlpha = 1;
     }
     // HP bar under the feet (green: never shares a hue with enemy bars)
-    const w = 64;
-    const r: Rect = { x: m.px - w / 2, y: m.py + 14, w, h: 9 };
-    ctx.fillStyle = INK; rrect(ctx, r.x - 2, r.y - 2, r.w + 4, r.h + 4, 6); ctx.fill();
-    ctx.fillStyle = '#ffffff'; rrect(ctx, r.x, r.y, r.w * this.lagHp, r.h, 4); ctx.fill();
-    ctx.fillStyle = m.hp / m.maxHp < 0.3 ? '#ff8a3a' : '#5ad04a';
-    rrect(ctx, r.x, r.y, Math.max(4, r.w * m.hp / m.maxHp), r.h, 4); ctx.fill();
+    const w = 70;
+    const r: Rect = { x: m.px - w / 2, y: m.py + 20, w, h: 8 };
+    ctx.fillStyle = 'rgba(30,22,14,.85)'; rrect(ctx, r.x - 3, r.y - 3, r.w + 6, r.h + 6, 5); ctx.fill();
+    ctx.fillStyle = '#e8d8b8'; rrect(ctx, r.x, r.y, r.w * Math.max(this.lagHp, m.hp / m.maxHp), r.h, 3); ctx.fill();
+    ctx.fillStyle = m.hp / m.maxHp < 0.3 ? '#c8642e' : '#7aa04a';
+    rrect(ctx, r.x, r.y, Math.max(3, r.w * m.hp / m.maxHp), r.h, 3); ctx.fill();
+    ctx.strokeStyle = '#1e1610'; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(r.x - 3, r.y - 2.5); ctx.lineTo(r.x + r.w * 0.55, r.y - 3.2); ctx.lineTo(r.x + r.w + 3, r.y - 2.2);
+    ctx.lineTo(r.x + r.w + 3.5, r.y + r.h + 2.5); ctx.lineTo(r.x + r.w * 0.4, r.y + r.h + 3.2); ctx.lineTo(r.x - 3.2, r.y + r.h + 2.4); ctx.closePath(); ctx.stroke();
   }
 
   private drawProjectiles(ctx: Ctx, m: Model): void {
@@ -818,8 +827,56 @@ export class Game {
     ctx.globalAlpha = 1;
   }
 
+  /**
+   * XP drop as a chunky spinning gold coin (Subway-Surfers-like): big enough to read, ink
+   * outline like the art, a bright rim, a stamped centre, a sliding shine and a twinkle.
+   * Spin = horizontal squash by |cos|, offset per coin so the field shimmers.
+   */
+  private drawXp(ctx: Ctx, x: number, y: number, r: number, seed: number): void {
+    const ph = this.time * 1.8 + seed;
+    // gentle turn, never edge-on: reads as a round coin, still alive
+    const sx = 0.62 + 0.38 * Math.abs(Math.cos(ph));
+    const edge = Math.cos(ph) < 0;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.fillStyle = 'rgba(255,200,80,.18)';
+    ctx.beginPath(); ctx.ellipse(0, 0, r * 1.9, r * 1.9, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.scale(sx, 1);
+    const coin = this.sprites.image('pickup-coin');
+    if (coin) {
+      // the painted game coin, spun by squashing; the dark side shows while it turns away
+      const d = r * 2.3;
+      ctx.drawImage(coin, -d / 2, -d / 2, d, d);
+      ctx.restore();
+      const tw2 = 0.5 + 0.5 * Math.sin(this.time * 2.3 + seed * 1.7);
+      if (tw2 > 0.88) {
+        const L = r * 1.3 * ((tw2 - 0.88) / 0.12);
+        ctx.strokeStyle = 'rgba(255,250,225,.95)'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x + r * 0.6 - L, y - r * 0.7); ctx.lineTo(x + r * 0.6 + L, y - r * 0.7);
+        ctx.moveTo(x + r * 0.6, y - r * 0.7 - L); ctx.lineTo(x + r * 0.6, y - r * 0.7 + L); ctx.stroke();
+      }
+      return;
+    }
+    ctx.fillStyle = '#2a1d16'; ctx.beginPath(); ctx.arc(0, 0, r + 2.2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = edge ? '#c4791e' : '#e8a52a'; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = edge ? '#e8a52a' : '#ffd45a'; ctx.beginPath(); ctx.arc(0, 0, r * 0.74, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(160,90,20,.9)'; ctx.lineWidth = Math.max(1.5, r * 0.14);
+    ctx.beginPath(); ctx.moveTo(-r * 0.25, -r * 0.35); ctx.lineTo(-r * 0.25, r * 0.35); ctx.moveTo(r * 0.2, -r * 0.35); ctx.lineTo(r * 0.2, r * 0.35); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,250,225,.85)';
+    ctx.beginPath(); ctx.ellipse(-r * 0.35, -r * 0.4, r * 0.22, r * 0.12, -0.6, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    const tw = 0.5 + 0.5 * Math.sin(this.time * 2.3 + seed * 1.7);
+    if (tw > 0.88) {
+      const L = r * 1.3 * ((tw - 0.88) / 0.12);
+      ctx.strokeStyle = 'rgba(255,250,225,.95)'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x + r * 0.6 - L, y - r * 0.7); ctx.lineTo(x + r * 0.6 + L, y - r * 0.7);
+      ctx.moveTo(x + r * 0.6, y - r * 0.7 - L); ctx.lineTo(x + r * 0.6, y - r * 0.7 + L); ctx.stroke();
+    }
+  }
+
   private drawImpacts(ctx: Ctx): void {
     for (const b of this.blasts) this.meteorClip.draw(ctx, b.x, b.y + b.r * 0.25, b.r * 1.9, b.t, 1, 0);
+    for (const f of this.shots) this.fxClips[f.clip].draw(ctx, f.x, f.y, f.w, f.t, 1, 0);
     for (const p of this.impacts) {
       const img = this.sprites.image(p.key);
       if (!img) continue;
@@ -841,6 +898,7 @@ export class Game {
       const k = w.age / w.life;
       const r = w.r * (0.2 + 0.8 * Math.sqrt(k));
       ctx.globalAlpha = 1 - k;
+      if (w.kind !== 'revive' && this.fxClips[w.kind === 'stomp' ? 'slam' : 'horn'].ready) continue;
       const paint = this.sprites.image(w.kind === 'stomp' ? 'fx-slam' : 'fx-horn');
       if (paint) {
         const e = 1 - Math.pow(1 - k, 3);

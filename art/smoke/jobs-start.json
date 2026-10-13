@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "smoke-start",
+   "aspect": "9:16",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/meteor/meteor-start.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ],
+   "prompt": "Game effect start frame in the same hand-drawn ink style as the references (thick uneven dark outline, flat colours): a small tight ball of dark charcoal-grey smoke with a few tiny orange sparks at the centre of the image, just starting to puff out. Everything else is ONE flat pure bright green #00FF00 (chroma key). No ground, no text."
+  }
+ ]
+}

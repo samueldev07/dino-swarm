@@ -128,7 +128,7 @@ export interface SkillDef {
 }
 
 export const MAX_LEVEL = 5;
-export const MAX_WEAPONS = 6;
+export const MAX_WEAPONS = 4;  // of 5 offered: every run still leaves one out, so builds differ
 
 export const WEAPONS: Record<WeaponId, WeaponLevel[]> = {
   // Tuned 2026-10-13 from the balance analyst's measured diff (.balance-lab/).
@@ -230,7 +230,13 @@ export const EVOLUTIONS: Record<WeaponId, { passive: PassiveId; name: string }> 
 };
 export const EVOLVED = { damage: 1.6, count: 1, area: 1.2, cooldown: 0.85 };
 
-export const WEAPON_IDS = Object.keys(WEAPONS) as WeaponId[];
+/**
+ * Weapons offered in a run. Sickle Toss (too close to the pot lids) and Bramble Trail (hard to
+ * read) and War Horn (unclear) were cut 13/10 by the owner: five weapons, each with one clear job. Their data stays so
+ * old code paths and tests still compile.
+ */
+export const RETIRED_WEAPONS: WeaponId[] = ['boomerang', 'thorns', 'roar'];
+export const WEAPON_IDS = (Object.keys(WEAPONS) as WeaponId[]).filter((w) => !RETIRED_WEAPONS.includes(w));
 export const PASSIVE_IDS = Object.keys(PASSIVE_STEP) as PassiveId[];
 export const isWeapon = (id: SkillId): id is WeaponId => id in WEAPONS;
 

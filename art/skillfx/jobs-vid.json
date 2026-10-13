@@ -1,0 +1,34 @@
+{
+ "shots": [
+  {
+   "id": "flask-vid",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/skillfx/flask-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-drawn game effect animation. The burning flask flies down to the centre and SHATTERS: clay shards fly out and a round splash of orange fire bursts up and spreads, flames flicker for a moment then die out into a little smoke that fades to nothing. The background stays ONE flat pure bright green #00FF00 the whole time. Static camera. Snappy cartoon timing, same hand-drawn ink style."
+  },
+  {
+   "id": "slam-vid",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/skillfx/slam-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-drawn game effect animation. The mallet slams down onto the ground point: a round shockwave of brown dust and cracked earth chunks bursts outward in a ring, pebbles fly, then the dust settles and fades to nothing, the mallet vanishes. The background stays ONE flat pure bright green #00FF00 the whole time. Static camera. Snappy cartoon timing, same hand-drawn ink style."
+  },
+  {
+   "id": "horn-vid",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/skillfx/horn-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-drawn game effect animation. The horn blasts: a jagged spiky cream-yellow shockwave star bursts outward from the horn in a few quick pulses (sharp spikes, never round concentric arcs), then everything fades to nothing. The background stays ONE flat pure bright green #00FF00 the whole time. Static camera. Snappy cartoon timing, same hand-drawn ink style."
+  }
+ ]
+}

@@ -77,7 +77,7 @@ export type Status = 'ready' | 'play' | 'dead' | 'won';
 
 export type GameEvent =
   | { t: 'hit'; x: number; y: number; dmg: number; crit: boolean; boss: boolean }
-  | { t: 'kill'; x: number; y: number; kind: EnemyKind }
+  | { t: 'kill'; x: number; y: number; kind: EnemyKind; by?: WeaponId }
   | { t: 'hurt'; dmg: number }
   | { t: 'gem'; value: number }
   | { t: 'coin'; x: number; y: number; n: number }
@@ -578,7 +578,7 @@ export class Model {
   }
 
   // ---------------------------------------------------------------- damage
-  hitEnemy(e: Enemy, base: number, kx: number, ky: number, knock: number, canCrit = true): void {
+  hitEnemy(e: Enemy, base: number, kx: number, ky: number, knock: number, canCrit = true, by?: WeaponId): void {
     if (e.dead) return;
     const crit = canCrit && this.rng() < this.T.critChance;
     const dmg = Math.max(1, Math.round(base * (crit ? this.T.critMult : 1)));
@@ -590,13 +590,13 @@ export class Model {
       e.ky += (ky * knock) / m;
     }
     this.events.push({ t: 'hit', x: e.x, y: e.y - e.r, dmg, crit, boss: e.def.kind === 'boss' });
-    if (e.hp <= 0) this.killEnemy(e);
+    if (e.hp <= 0) this.killEnemy(e, by);
   }
 
-  private killEnemy(e: Enemy): void {
+  private killEnemy(e: Enemy, by?: WeaponId): void {
     e.dead = true;
     this.kills++;
-    this.events.push({ t: 'kill', x: e.x, y: e.y, kind: e.def.kind });
+    this.events.push({ t: 'kill', x: e.x, y: e.y, kind: e.def.kind, by });
     this.dropGem(e.x, e.y, e.xp);
     const r = this.rng();
     if (e.def.kind === 'boss') {
@@ -764,7 +764,7 @@ export class Model {
         if (dx * dx + dy * dy < (e.r + 20) ** 2) {
           e.orbitCd = L.cooldown * this.cooldownMult;
           const d = Math.hypot(e.x - this.px, e.y - this.py) || 1;
-          this.hitEnemy(e, dmg, (e.x - this.px) / d, (e.y - this.py) / d, KNOCK.orbit);
+          this.hitEnemy(e, dmg, (e.x - this.px) / d, (e.y - this.py) / d, KNOCK.orbit, true, 'orbit');
         }
       });
     }

@@ -1,5 +1,5 @@
 """Hero videos (white bg) -> hero.json clips. Keeps eye whites (only gaps below the head are cleared).
-usage: python cut_hero.py <run.mp4> <attack.mp4> <attack_start> <attack_end> <out_dir>"""
+usage: python cut_hero.py <run.mp4> <attack.mp4> <attack_start> <attack_end> <out_dir> [idle.mp4]"""
 import sys, os, json
 import numpy as np, cv2
 from PIL import Image, ImageFilter
@@ -40,11 +40,15 @@ def best_loop(fr, lo=8, hi=14):
 
 run_v, atk_v, a0, a1, out = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4]), sys.argv[5]
 rf, af = frames(run_v), frames(atk_v)
-s, L = best_loop(rf)
-clips = {'idle': ([af[0]], 1), 'run': (rf[s:s + L], 14), 'attack': (af[a0:a1 + 1], 24)}
+s, L = best_loop(rf, 10, 20)
+idle_src = ([af[0]], 1)
+if len(sys.argv) > 6:
+    idf = frames(sys.argv[6]); i0, iL = best_loop(idf, 14, 30)
+    idle_src = (idf[i0:i0 + iL], 10)
+clips = {'idle': idle_src, 'run': (rf[s:s + L], 14), 'attack': (af[a0:a1 + 1], 24)}
 os.makedirs(out, exist_ok=True)
 for f in os.listdir(out): os.remove(os.path.join(out, f))
-idle = cut(af[0]); hb = idle.getchannel('A').point(lambda v: 255 if v > 60 else 0).getbbox(); href = hb[3] - hb[1]
+idle = cut(clips['idle'][0][0]); hb = idle.getchannel('A').point(lambda v: 255 if v > 60 else 0).getbbox(); href = hb[3] - hb[1]
 man = {'fps': {}, 'clips': {}}
 for name, (src, fps) in clips.items():
     ims = [cut(f) for f in src]

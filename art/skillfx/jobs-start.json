@@ -1,0 +1,46 @@
+{
+ "shots": [
+  {
+   "id": "flask-start",
+   "aspect": "9:16",
+   "model": "nano_banana_pro",
+   "prompt": "Game effect START FRAME, hand-drawn like the references (thick uneven dark ink outline, flat earthy colours). A small round clay flask with a burning wick flying in from the top-left toward the centre, still in the air. Everything else is ONE flat pure bright green #00FF00 background (chroma key), no ground, no shadow, no other objects, no text.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/meteor/meteor-start.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    }
+   ]
+  },
+  {
+   "id": "slam-start",
+   "aspect": "9:16",
+   "model": "nano_banana_pro",
+   "prompt": "Game effect START FRAME, hand-drawn like the references (thick uneven dark ink outline, flat earthy colours). A big wooden mallet raised high above the centre, about to slam down on the ground point at the centre-bottom. Everything else is ONE flat pure bright green #00FF00 background (chroma key), no ground, no shadow, no other objects, no text.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/meteor/meteor-start.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    }
+   ]
+  },
+  {
+   "id": "horn-start",
+   "aspect": "9:16",
+   "model": "nano_banana_pro",
+   "prompt": "Game effect START FRAME, hand-drawn like the references (thick uneven dark ink outline, flat earthy colours). A curved cream war horn floating at the centre, its mouth facing the viewer, about to blast. Everything else is ONE flat pure bright green #00FF00 background (chroma key), no ground, no shadow, no other objects, no text.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/meteor/meteor-start.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    }
+   ]
+  }
+ ]
+}

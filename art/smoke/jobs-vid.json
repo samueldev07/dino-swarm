@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "smoke-vid",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/smoke/smoke-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-drawn cartoon game effect animation, same ink style. Static camera. The ball of dark smoke POOFS outward into a round cloud of puffy black-grey smoke balls with a few orange sparks and tiny debris, then the puffs drift up slightly, shrink and fade to nothing. Quick snappy cartoon 'poof' like a monster vanishing. Background stays ONE flat pure bright green #00FF00 the whole time."
+  }
+ ]
+}

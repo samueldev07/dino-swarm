@@ -1,0 +1,24 @@
+{
+ "shots": [
+  {
+   "id": "hero-idle",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-hero.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the boy in the image: same pot helmet, ginger hair, freckles, serious frowning face, ragged grey-green tunic, boots, pitchfork, same thick hand-inked outline and muted colours. Camera completely static, no zoom, no pan; he stays centred at the same size. Plain flat pure white background, no ground, no shadow, no text. He stands still in his ready stance and BREATHES calmly in a smooth repeating loop: chest and shoulders rise and fall, the pot helmet bobs a tiny bit, he blinks once, the pitchfork sways very slightly. No walking."
+  },
+  {
+   "id": "hero-runjab",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-hero.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the boy in the image: same pot helmet, ginger hair, freckles, serious frowning face, ragged grey-green tunic, boots, pitchfork, same thick hand-inked outline and muted colours. Camera completely static, no zoom, no pan; he stays centred at the same size. Plain flat pure white background, no ground, no shadow, no text. He runs IN PLACE toward the right (like on a treadmill) and WHILE RUNNING repeatedly thrusts the pitchfork forward and pulls it back in rhythm with his steps, legs never stop running. Smooth repeating loop, determined face."
+  }
+ ]
+}

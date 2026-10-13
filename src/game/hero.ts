@@ -33,7 +33,7 @@ export class Hero {
       this.data = d;
       const frames = Object.values(d.clips).flat();
       this.total = frames.length;
-      const textures = await loadAtlas(frames.map(fr => this.base + fr.f));
+      const textures = await loadAtlas(frames.map(fr => this.base + fr.f), 300);
       frames.forEach((fr, i) => Object.assign(fr, textures[i]));
       this.loaded = textures.length;
     } catch { /* no hero art: keep the old player */ }
@@ -95,10 +95,10 @@ export class Hero {
     ctx.translate(x, y - bob);
     ctx.scale(flip * (1 - breathe * 0.5), 1 + breathe);
     const w = fr.width * s, h = fr.height * s;
-    ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.width, fr.height, -fr.cx * s, -fr.foot * s, w, h);
+    ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.sw!, fr.sh!, -fr.cx * s, -fr.foot * s, w, h);
     if (flash > 0) {
       ctx.globalAlpha = alpha * Math.min(1, flash);
-      ctx.drawImage(fr.white, fr.tx, fr.ty, fr.width, fr.height, -fr.cx * s, -fr.foot * s, w, h);
+      ctx.drawImage(fr.white, fr.tx, fr.ty, fr.sw!, fr.sh!, -fr.cx * s, -fr.foot * s, w, h);
     }
     ctx.restore();
   }

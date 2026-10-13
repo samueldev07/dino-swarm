@@ -1,0 +1,74 @@
+{
+ "shots": [
+  {
+   "id": "enemy-gnome",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-gnome.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It waddles forward IN PLACE toward the right on its stubby legs, mushroom cap bobbing, tiny fists swinging, grumpy face. Smooth seamless loop."
+  },
+  {
+   "id": "enemy-bat",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-bat.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It hovers in place flapping its ragged wings up and down in a smooth repeating loop, body bobbing slightly, ears twitching. Smooth seamless loop."
+  },
+  {
+   "id": "enemy-boarorc",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-boarorc.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It the boar gallops IN PLACE toward the right in a fast repeating gallop, the orc rider bouncing on its back holding the spear forward. Smooth seamless loop."
+  },
+  {
+   "id": "enemy-orc",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-orc.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It marches IN PLACE toward the right with heavy steps, shield in front, club swinging slightly, stern face. Smooth seamless loop."
+  },
+  {
+   "id": "enemy-goblin",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-goblin.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It sneaks forward IN PLACE toward the right with quick light steps, holding the burning torch up, flame flickering. Smooth seamless loop."
+  },
+  {
+   "id": "enemy-troll",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-troll.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It lumbers IN PLACE toward the right with slow heavy steps, dragging the log club, body swaying. Smooth seamless loop."
+  },
+  {
+   "id": "enemy-ogre",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/folk/anim/start-ogre.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It stomps IN PLACE toward the right with slow heavy steps, belly bouncing, spiked club resting on the shoulder, angry face. Smooth seamless loop."
+  }
+ ]
+}

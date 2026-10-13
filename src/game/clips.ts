@@ -14,7 +14,8 @@ export class Clip {
   private data: ClipData | null = null;
   private loaded = 0;
 
-  constructor(private base: string) { void this.load(); }
+  /** maxSide: longest frame side kept in memory (≈ largest on-screen size × DPR). */
+  constructor(private base: string, private maxSide = 220) { void this.load(); }
 
   private async load(): Promise<void> {
     try {
@@ -22,7 +23,7 @@ export class Clip {
       if (!res.ok) return;
       const d = (await res.json()) as ClipData;
       this.data = d;
-      const textures = await loadAtlas(d.frames.map(fr => this.base + fr.f));
+      const textures = await loadAtlas(d.frames.map(fr => this.base + fr.f), this.maxSide);
       d.frames.forEach((fr, i) => Object.assign(fr, textures[i]));
       this.loaded = textures.length;
     } catch { /* no clip: caller keeps its still sprite */ }
@@ -42,11 +43,11 @@ export class Clip {
     if (sx === 1 && sy === 1) {
       if (flip < 0) ctx.scale(-1, 1);
       const dx = (flip < 0 ? -x : x) - fr.cx * s, dy = y - fr.foot * s;
-      ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.width, fr.height, dx, dy, w, h);
+      ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.sw!, fr.sh!, dx, dy, w, h);
       if (flash > 0) {
         const alpha = ctx.globalAlpha;
         ctx.globalAlpha = alpha * Math.min(1, flash);
-        ctx.drawImage(fr.white, fr.tx, fr.ty, fr.width, fr.height, dx, dy, w, h);
+        ctx.drawImage(fr.white, fr.tx, fr.ty, fr.sw!, fr.sh!, dx, dy, w, h);
         ctx.globalAlpha = alpha;
       }
       if (flip < 0) ctx.scale(-1, 1);
@@ -55,10 +56,10 @@ export class Clip {
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(flip * sx, sy);
-    ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.width, fr.height, -fr.cx * s, -fr.foot * s, w, h);
+    ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.sw!, fr.sh!, -fr.cx * s, -fr.foot * s, w, h);
     if (flash > 0) {
       ctx.globalAlpha *= Math.min(1, flash);
-      ctx.drawImage(fr.white, fr.tx, fr.ty, fr.width, fr.height, -fr.cx * s, -fr.foot * s, w, h);
+      ctx.drawImage(fr.white, fr.tx, fr.ty, fr.sw!, fr.sh!, -fr.cx * s, -fr.foot * s, w, h);
     }
     ctx.restore();
   }

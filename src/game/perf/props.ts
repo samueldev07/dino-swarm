@@ -12,30 +12,15 @@ const LAYERS: {
   items: [string, number][];
 }[] = [
   {
-    cell: 620,
-    chance: 0.4,
-    salt: 11,
-    items: [
-      ["deco-dirt-patch", 300],
-      ["deco-dirt-path", 360],
-      ["deco-stones", 150],
-      ["deco-flowers", 110],
-      ["deco-leaves", 140],
-    ],
-  },
-  {
-    cell: 460,
-    chance: 0.4,
+    // Sparse: owner found the second decor batch ugly and too dense (13/10).
+    cell: 700,
+    chance: 0.3,
     salt: 97,
     items: [
-      ["deco-fern", 120],
-      ["deco-grass", 90],
-      ["deco-rock-small", 90],
-      ["deco-log", 150],
-      ["deco-roots", 130],
-      ["deco-bones", 110],
       ["prop-stump-large", 150],
       ["prop-mossy-rock", 100],
+      ["prop-roots-mound", 130],
+      ["prop-stump-twisted", 135],
     ],
   },
 ];
