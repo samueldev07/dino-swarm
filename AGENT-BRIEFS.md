@@ -1,14 +1,18 @@
 # Lệnh giao việc cho Codex và Antigravity (vòng gameplay 1, 13/10/2026)
 
-Mỗi agent chỉ sửa đúng các file được liệt kê. Claude đang sửa `src/game/model.ts`, `src/game/config.ts`
+Quyền hạn và cách dùng git của từng agent nằm trong `AGENTS.md`. Mỗi agent chỉ sửa đúng các file được liệt kê. Claude đang sửa `src/game/model.ts`, `src/game/config.ts`
 và `tools/` cùng lúc (cân bằng, tiến hóa vũ khí, trùm, quái tinh anh), nên **không ai khác đụng vào 3 chỗ đó.**
 
 ---
 
-## 1. Codex: trải nghiệm người chơi mới + màn kết quả + nhiệm vụ
-Mở thư mục `D:\REMOTION\games\dino-swarm`, dán nguyên đoạn dưới đây:
+## 1. Codex (chạy trên PC thứ hai): trải nghiệm người chơi mới + màn kết quả + nhiệm vụ
+Trên PC thứ hai, lấy code về và tạo nhánh riêng:
+`git clone https://github.com/samueldev07/dino-swarm.git` → `cd dino-swarm` → `npm install` → `git checkout -b codex/ux-round1`
+Sau đó mở thư mục đó trong Codex và dán nguyên đoạn dưới đây:
 
 ```
+FIRST read AGENTS.md (roles, permissions, git workflow) and obey it. You are on branch codex/ux-round1;
+never push to main. When done: commit, `git push -u origin codex/ux-round1`, and write handoff/codex-ux-round1.md.
 You are working on "Dino Swarm Survivors", a survivor-like HTML5 game (TypeScript + Canvas2D, Vite) built for Poki.
 Read first: DESIGN.md, TASKS.md, src/game/game.ts (the whole view), src/game/meta.ts, src/game/ui.ts,
 src/engine/poki.ts, and the public API of src/game/model.ts (read only). Also read

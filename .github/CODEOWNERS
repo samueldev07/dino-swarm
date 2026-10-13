@@ -1,0 +1,11 @@
+# Ownership map (documentation; merges to main are done by Claude only, see AGENTS.md)
+/src/game/model.ts    @claude
+/src/game/config.ts   @claude
+/src/engine/          @claude
+/tools/               @claude
+/src/game/game.ts     @claude @codex
+/src/game/meta.ts     @claude @codex
+/src/game/missions.ts @codex
+/playtest/            @antigravity
+/art/                 @antigravity
+/public/sprites/      @antigravity
