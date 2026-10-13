@@ -510,6 +510,7 @@ export class Game {
    * composite + full-screen gradients made the GPU re-shade every pixel twice a frame.
    */
   private heroPool: HTMLCanvasElement | null = null;
+  private softShadow: HTMLCanvasElement | null = null;
   private hurtLayer: { w: number; h: number; c: HTMLCanvasElement } | null = null;
   private lightLayer: { w: number; h: number; c: HTMLCanvasElement } | null = null;
   private drawLight(ctx: Ctx, _m: Model): void {
@@ -646,8 +647,14 @@ export class Game {
     }
     ctx.drawImage(this.heroPool!, m.px - 80, m.py - 290, 160, 320);
     // Hero: one clear ground shadow under the feet, sized to the art (not the hitbox).
-    ctx.fillStyle = 'rgba(25,18,10,.32)';
-    ctx.beginPath(); ctx.ellipse(m.px, m.py - 2, 30, 9, 0, 0, Math.PI * 2); ctx.fill();
+    // Soft contact shadow: baked radial falloff (dark core, feathered edge), no hard rim.
+    if (!this.softShadow) {
+      const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+      const x = c.getContext('2d')!; const gr = x.createRadialGradient(64, 64, 0, 64, 64, 64);
+      gr.addColorStop(0, 'rgba(20,14,8,0.42)'); gr.addColorStop(0.45, 'rgba(20,14,8,0.28)'); gr.addColorStop(1, 'rgba(20,14,8,0)');
+      x.fillStyle = gr; x.fillRect(0, 0, 128, 128); this.softShadow = c;
+    }
+    ctx.drawImage(this.softShadow, m.px - 42, m.py - 15, 84, 26);
 
     const egg = this.sprites.egg();
     // mallet slam dust ring lies on the ground, under the hero's feet
