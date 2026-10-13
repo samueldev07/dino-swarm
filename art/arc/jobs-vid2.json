@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "arc2-vid",
+   "aspect": "16:9",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/arc/arc2-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-painted cartoon game slash effect, keep exactly this rough ink and dry-brush style. Static camera. The crescent swoosh whips around clockwise very fast (a quick swing), then it breaks apart into dusty brush flecks and small chunks that scatter outward and fade away to nothing. Snappy timing. Background stays ONE flat pure bright green #00FF00 the whole time, no ground."
+  }
+ ]
+}

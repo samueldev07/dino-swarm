@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "arc-vid",
+   "aspect": "1:1",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/arc/arc-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-drawn cartoon game SLASH effect, same ink style, static camera. The crescent swoosh sweeps FAST clockwise from the top to the bottom of the right side, forming a thick curved crescent arc (half-moon shape, wide in the middle, pointed tips) around the centre, with a few small sparks, then it thins out and fades away to nothing. Very snappy. Background stays ONE flat pure bright green #00FF00 the whole time."
+  }
+ ]
+}

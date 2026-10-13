@@ -1,0 +1,21 @@
+{
+ "shots": [
+  {
+   "id": "arc2-start",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/meteor/f/030.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ],
+   "prompt": "A hand-painted cartoon SLASH swoosh effect in EXACTLY the art style of the reference images: rough, uneven hand-inked dark brown outline that wobbles, visible dry brush strokes inside, warm earthy colours (dusty cream, ochre, burnt orange), a little gritty texture, a few chunky dust flecks and sparks drawn with ink. Shape: a thick curved crescent swipe (half-moon, wide in the middle, tapered pointed ends) curving around the centre of the image on its RIGHT side, like a pitchfork swung in an arc. Not glossy, not clean vector, not glowing neon. Everything else is ONE flat pure bright green #00FF00 (chroma key). No weapon, no character, no text."
+  }
+ ]
+}

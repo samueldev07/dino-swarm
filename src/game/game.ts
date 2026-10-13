@@ -68,6 +68,9 @@ export class Game {
   private fxClips: Record<string, Clip> = { flask: new Clip('anim/flask/'), slam: new Clip('anim/slam/', 240) };
   /** Simple cartoon smoke puffs on kills: a few round inked balls that pop out and fade. */
   private puffs: { x: number; y: number; r: number; t: number; seed: number }[] = [];
+  private jabClip = new Clip('anim/arc/', 230);
+  private jabSeen = new WeakSet<object>();
+  private jabs: { x: number; y: number; a: number; w: number; t: number }[] = [];
   private shots: { clip: string; x: number; y: number; w: number; t: number; len: number }[] = [];
   private playFx(clip: string, x: number, y: number, w: number, frames: number): boolean {
     if (!this.fxClips[clip]?.ready) return false;
@@ -315,6 +318,10 @@ export class Game {
     for (let i = this.puffs.length - 1; i >= 0; i--) {
       this.puffs[i].t += fdt;
       if (this.puffs[i].t >= 0.38) this.puffs.splice(i, 1);
+    }
+    for (let i = this.jabs.length - 1; i >= 0; i--) {
+      this.jabs[i].t += fdt;
+      if (this.jabs[i].t >= 12 / 30) this.jabs.splice(i, 1);
     }
     for (let i = this.shots.length - 1; i >= 0; i--) {
       this.shots[i].t += fdt;
@@ -794,6 +801,22 @@ export class Game {
   }
 
   private drawSlashes(ctx: Ctx, m: Model): void {
+    if (this.jabClip.ready) {
+      // Sprite slash (video-cut, hand-painted): a crescent swipe around the hero, turned toward the target.
+      for (const s of m.slashes) {
+        if (this.jabSeen.has(s)) continue;
+        this.jabSeen.add(s);
+        this.jabs.push({ x: s.x, y: s.y, a: s.angle, w: s.r * 2.2, t: 0 });
+      }
+      for (const j of this.jabs) {
+        ctx.save();
+        ctx.translate(m.px, m.py - 30);
+        ctx.rotate(j.a);
+        this.jabClip.draw(ctx, 0, 0, j.w, j.t, 1, 0);
+        ctx.restore();
+      }
+      return;
+    }
     const jab = this.sprites.image('fx-jab');
     if (!jab) return;
     {
