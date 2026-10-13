@@ -461,9 +461,11 @@ export class Game {
   }
 
   private enemyScale(kind: EnemyKind, s: Sprite): number {
-    // Painted creatures: thin shapes (raptor, bat) need more size to read in a crowd.
-    const r = { grub: 19, bat: 21, beetle: 26, wolf: 30, shroom: 22, brute: 40, boss: 64 }[kind];
-    return (r * 2.9) / s.w;
+    // Size ladder by on-screen HEIGHT (world units) against the hero (~130): small fry clearly
+    // smaller than the hero, tanks about his size, troll and ogre loom over him. Painted art is
+    // tall or wide depending on the creature, so height (not width) keeps the ladder honest.
+    const H = { grub: 70, bat: 62, shroom: 92, beetle: 120, wolf: 118, brute: 215, boss: 320 }[kind];
+    return H / s.h;
   }
 
   private drawWorld(ctx: Ctx, m: Model): void {
@@ -649,7 +651,7 @@ export class Game {
     const blink = m.invuln > 0 && m.status === 'play' && Math.floor(this.time * 18) % 2 === 0;
     const evo = this.evolveT > 0 ? 1 + Math.sin((1.3 - this.evolveT) * 14) * 0.08 * this.evolveT : 1;
     if (this.hero.ready) {
-      this.hero.draw(ctx, m.px, m.py, pr * 5.4 * evo, flip, moving, this.evolveT > 0.9 ? 1 : 0, blink ? 0.55 : 1);
+      this.hero.draw(ctx, m.px, m.py, pr * 6.0 * evo, flip, moving, this.evolveT > 0.9 ? 1 : 0, blink ? 0.55 : 1);
     } else {
       ctx.globalAlpha = blink ? 0.55 : 1;
       this.blit(ctx, s, m.px, m.py - bob, sc * evo, 1 - sq, 1 + sq, moving ? m.mx * 0.08 * flip : 0, this.evolveT > 0.9 ? 1 : 0, flip);

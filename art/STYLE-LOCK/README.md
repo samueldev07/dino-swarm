@@ -30,3 +30,24 @@ Không tự đổi phong cách. Muốn đổi gì phải hỏi chủ game trư�
   `tools/anim-lab/cut_video.py` hoặc `cut_loop.py`, sau đó `outline.py`.
 - **Tên và hình phải là thiết kế riêng.** Không dùng sinh vật hay nhân vật có thật trong phim hoặc game khác
   (G-Labs đã chặn một con raptor vì nghi vi phạm bản quyền).
+
+## Bảng màu (khóa 13/10/2026)
+- `palette.json` + `palette.png`: 16 màu chủ đạo lấy từ bộ ảnh đã duyệt, cùng bảng màu theo vai trò
+  (mực viền, da, vải, gỉ sắt, màu nhận diện từng quái...).
+- **Da người phải nằm trong dải đã khóa** (HSV: độ bão hòa 0,34–0,48, độ sáng 0,60–0,72).
+  Kiểm tra: `python tools/anim-lab/palette.py check <ảnh>`. Sửa tự động: `palette.py fixskin <vào> <ra>`.
+- `hero-master-skinfix.png` là **bản dùng trong game** (da đã kéo về dải trầm). `hero-master.png` giữ làm gốc vẽ.
+- Không dùng trắng tinh hay đen tinh. Độ bão hòa tối đa 0,55, trừ lửa và hiệu ứng phép.
+
+## Thang kích thước trên màn hình (chiều cao, đơn vị thế giới game)
+| Nhân vật | Cao | So với nhân vật chính |
+|---|---|---|
+| Nhân vật chính | ~145 | 1 |
+| Dơi hang | 62 | nhỏ, bay |
+| Nấm lùn | 70 | ~½, quái đông |
+| Yêu tinh ném đuốc | 92 | ~⅔ |
+| Orc cưỡi heo | 118 | gần bằng |
+| Orc khiên gỗ | 120 | gần bằng |
+| Troll rừng | 215 | ~1,5 lần |
+| Ogre (trùm) | 320 | ~2,2 lần |
+Kích thước nằm trong `enemyScale` (`src/game/game.ts`), tính theo chiều cao, không theo chiều rộng.

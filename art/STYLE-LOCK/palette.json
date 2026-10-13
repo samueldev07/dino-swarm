@@ -1,0 +1,61 @@
+{
+ "from_masters": [
+  "#140803",
+  "#624f37",
+  "#887149",
+  "#675d48",
+  "#4e3d2d",
+  "#775d39",
+  "#786955",
+  "#887c6a",
+  "#9a8156",
+  "#7f8c5d",
+  "#2f2015",
+  "#c69f71",
+  "#994e34",
+  "#d9c6ad",
+  "#6f3825",
+  "#f6ca6e"
+ ],
+ "roles": {
+  "ink": "#2a1d16",
+  "skin_light": "#d9a98c",
+  "skin": "#c48f74",
+  "skin_shadow": "#9a6b58",
+  "blush": "#c97a72",
+  "cloth_olive": "#6f7357",
+  "cloth_brown": "#6b5240",
+  "leather": "#5a3f2c",
+  "rust": "#9a5a32",
+  "iron": "#6e6a64",
+  "hair_ginger": "#b8642e",
+  "orc_green": "#7f9a5a",
+  "goblin_green": "#8a8f55",
+  "mushroom_red": "#a8483a",
+  "troll_moss": "#6f7046",
+  "bat_grey": "#6a6460",
+  "eye_white": "#ece4d4",
+  "fire": "#e8a23a",
+  "blood_dark": "#4a2a22"
+ },
+ "skin_hsv_range": {
+  "h": [
+   0.03,
+   0.1
+  ],
+  "s": [
+   0.32,
+   0.48
+  ],
+  "v": [
+   0.62,
+   0.76
+  ]
+ },
+ "rules": [
+  "No pure white or pure black fills (eye whites use eye_white, lines use ink).",
+  "Max saturation 0.55 except fire / magic VFX.",
+  "Skin must stay inside skin_hsv_range (check with palette.py check).",
+  "Each enemy keeps ONE identity colour from roles, muted."
+ ]
+}
