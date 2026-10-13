@@ -40,7 +40,6 @@ const CAMP_ICON: Record<CampId, SkillId | 'gold'> = {
   might: 'might', vitality: 'vitality', speed: 'swift', magnet: 'magnet', greed: 'gold', armor: 'stomp',
 };
 
-const ENEMIES_R: Record<EnemyKind, number> = { grub: 19, bat: 16, beetle: 26, wolf: 26, shroom: 20, brute: 38, boss: 62 };
 
 const fmtTime = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 const ENEMY_HEIGHT: Record<EnemyKind, number> = { grub: 70, bat: 62, shroom: 92, beetle: 120, wolf: 160, brute: 215, boss: 320 };
@@ -361,8 +360,6 @@ export class Game {
         break;
       case 'kill': {
         // every kill vanishes in a puff of black smoke (no squash); bigger monsters, bigger puff
-        this.puffs.push({ x: e.x, y: e.y - ENEMIES_R[e.kind] * 0.6, r: ENEMIES_R[e.kind], t: 0, seed: (e.x * 7 + e.y * 13) | 0 });
-        if (this.puffs.length > 60) this.puffs.shift();
         if (this.firstRun && !this.taughtAmber) {
           this.taughtAmber = true; this.amberT = 3;
           this.showBanner('Collect amber to LEVEL UP!', '', '#ffd24a');
@@ -617,6 +614,8 @@ export class Game {
     ctx.beginPath(); ctx.ellipse(m.px + 4, m.py + 2, 34, 11, 0, 0, Math.PI * 2); ctx.fill();
 
     const egg = this.sprites.egg();
+    // mallet slam dust ring lies on the ground, under the hero's feet
+    for (const f of this.shots) if (f.clip === 'slam') this.fxClips.slam.draw(ctx, f.x, f.y, f.w, f.t, 1, 0);
     // spinning pot lids ride low, under every body (they never cover the hero's face)
     const goose = this.sprites.image('proj-lid');
     for (const o of m.orbitPositions()) {
@@ -903,7 +902,7 @@ export class Game {
   private drawImpacts(ctx: Ctx): void {
     this.drawPuffs(ctx);
     for (const b of this.blasts) this.meteorClip.draw(ctx, b.x, b.y + b.r * 0.25, b.r * 1.9, b.t, 1, 0);
-    for (const f of this.shots) this.fxClips[f.clip].draw(ctx, f.x, f.y, f.w, f.t, 1, 0);
+    for (const f of this.shots) if (f.clip !== 'slam') this.fxClips[f.clip].draw(ctx, f.x, f.y, f.w, f.t, 1, 0);
     for (const p of this.impacts) {
       const img = this.sprites.image(p.key);
       if (!img) continue;
