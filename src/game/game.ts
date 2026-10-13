@@ -400,6 +400,7 @@ export class Game {
     const m = this.m!;
     const v = this.v;
     this.drawWorld(ctx, m);
+    this.drawForeground(ctx);
     this.drawLight(ctx, m);
 
     // red vignette at low HP / on hits
@@ -595,31 +596,46 @@ export class Game {
   }
 
   /**
-   * Decorative props (stumps, rocks, root mounds) scattered on a fixed world grid:
-   * a hash of the cell picks whether a prop exists and which one, so the forest never
-   * repeats visibly and never changes when the player comes back. Purely visual.
+   * World decoration on fixed hashed grids (never repeats visibly, never changes on return):
+   * layer 1 = flat light ground decals (cream dirt, paths, stones, flowers, leaves) that break up
+   * the dark green; layer 2 = props (ferns, grass, mushrooms, rocks, logs, roots, stumps, bones).
+   * Purely visual, drawn under every creature.
    */
   private drawProps(ctx: Ctx, L: number, R: number, T: number, B: number): void {
-    const CELL = 620;
-    const keys = ['prop-stump-large', 'prop-mossy-rock', 'prop-roots-mound', 'prop-stump-twisted'];
-    const size = [150, 95, 130, 135];
-    for (let cx = Math.floor(L / CELL) - 1; cx <= Math.floor(R / CELL) + 1; cx++) {
-      for (let cy = Math.floor(T / CELL) - 1; cy <= Math.floor(B / CELL) + 1; cy++) {
-        let h = (cx * 73856093) ^ (cy * 19349663);
-        h = Math.imul(h ^ (h >>> 13), 0x5bd1e995); h ^= h >>> 15;
-        const r = (h >>> 0) / 4294967296;
-        if (r > 0.55 || (Math.abs(cx) <= 0 && Math.abs(cy) <= 0)) continue;
-        const i = Math.floor(r * 1000) % keys.length;
-        const img = this.sprites.image(keys[i]);
-        if (!img) continue;
-        const x = cx * CELL + ((h >>> 8) & 255) / 255 * CELL * 0.7, y = cy * CELL + ((h >>> 16) & 255) / 255 * CELL * 0.7;
-        const w = size[i], hh = (w * img.naturalHeight) / img.naturalWidth;
-        const flip = (h & 1) ? -1 : 1;
-        ctx.save(); ctx.translate(x, y); ctx.scale(flip, 1);
-        ctx.drawImage(img, -w / 2, -hh * 0.85, w, hh);
-        ctx.restore();
+    const layers: { cell: number; chance: number; salt: number; items: [string, number][] }[] = [
+      { cell: 520, chance: 0.6, salt: 11, items: [['deco-dirt-patch', 300], ['deco-dirt-path', 360], ['deco-stones', 150], ['deco-flowers', 110], ['deco-leaves', 140]] },
+      { cell: 340, chance: 0.55, salt: 97, items: [['deco-fern', 120], ['deco-grass', 90], ['deco-rock-small', 90],
+        ['deco-log', 150], ['deco-roots', 130], ['deco-bones', 110], ['prop-stump-large', 150], ['prop-mossy-rock', 100]] },
+    ];
+    for (const ly of layers) {
+      const C = ly.cell;
+      for (let cx = Math.floor(L / C) - 1; cx <= Math.floor(R / C) + 1; cx++) {
+        for (let cy = Math.floor(T / C) - 1; cy <= Math.floor(B / C) + 1; cy++) {
+          let h = (cx * 73856093) ^ (cy * 19349663) ^ (ly.salt * 83492791);
+          h = Math.imul(h ^ (h >>> 13), 0x5bd1e995); h ^= h >>> 15;
+          const r = (h >>> 0) / 4294967296;
+          if (r > ly.chance) continue;
+          const [key, w] = ly.items[Math.floor(r * 10007) % ly.items.length];
+          const img = this.sprites.image(key);
+          if (!img) continue;
+          const x = cx * C + (((h >>> 8) & 255) / 255) * C * 0.8, y = cy * C + (((h >>> 16) & 255) / 255) * C * 0.8;
+          const hh = (w * img.naturalHeight) / img.naturalWidth;
+          ctx.save(); ctx.translate(x, y); if (h & 1) ctx.scale(-1, 1);
+          ctx.drawImage(img, -w / 2, -hh * 0.8, w, hh);
+          ctx.restore();
+        }
       }
     }
+  }
+
+  /** Fixed foreground frame (ferns, rock, roots at the screen edges), drawn over the world, under the HUD. */
+  private drawForeground(ctx: Ctx): void {
+    const img = this.sprites.image('fg-frame');
+    if (!img) return;
+    const v = this.v;
+    const s = Math.max(v.w / img.naturalWidth, v.h / img.naturalHeight);
+    const w = img.naturalWidth * s, h = img.naturalHeight * s;
+    ctx.drawImage(img, (v.w - w) / 2, (v.h - h) / 2, w, h);
   }
 
   /** Draw a sprite with its ground anchor at (x, y). */

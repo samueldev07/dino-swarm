@@ -1,0 +1,208 @@
+{
+ "shots": [
+  {
+   "id": "fern",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a fern bunch with 5-6 fronds.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "grass",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a small tuft of tall wild grass with a few seed heads.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "mush-cluster",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a cluster of three small red-brown spotted mushrooms of different heights.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "rock-small",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a small mossy grey rock.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "log",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a short fallen mossy log lying horizontally.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "roots",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a gnarled exposed tree root curling out of the ground.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "flowers",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a patch of small cream-white wild flowers with a few leaves (bright, light cream colours).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "stones",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: three flat pale cream-grey stepping stones lying in the grass.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "dirt-patch",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a large flat irregular patch of bare light sandy-cream dirt with a few pebbles and soft edges, lying flat on the ground (a ground decal, very flat, no height).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "dirt-path",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a large flat winding patch of worn light cream-beige dirt path with tiny pebbles and footprints, lying flat on the ground (a ground decal, very flat).",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "leaves",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: a few fallen dry autumn leaves in light ochre and cream, scattered flat on the ground.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  },
+  {
+   "id": "bones",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "prompt": "ONE single game decoration element seen from a high three-quarter top-down view, centred, drawn EXACTLY in the style of the reference images (thick dark hand-inked outline, flat muted earthy colours with one soft shadow tone, slight grimy moss texture, simple shapes). The background must be ONE flat pure magenta colour #FF00FF everywhere around the element (chroma key) - no shadow, no ground, no texture on it. No text. Element: an old animal skull and two bones lying half-hidden in the grass, pale cream colour.",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/frame/frame-d.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/map-folk/prop-mossy-rock.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ]
+  }
+ ]
+}
