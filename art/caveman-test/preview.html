@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dino Swarm Survivors — Grok Caveman Animation & Gear Preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #181c22;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #202632;
+      padding: 16px 24px;
+      border-bottom: 2px solid #333d4e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #f6ad55;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    header .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    .badge {
+      background: #334155;
+      color: #38bdf8;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    .tab-btn {
+      background: #2d3748;
+      border: 1px solid #4a5568;
+      color: #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { background: #3b4758; }
+    .tab-btn.active {
+      background: #dd6b20;
+      border-color: #ed8936;
+      color: #fff;
+    }
+    main {
+      flex: 1;
+      padding: 24px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .control-bar {
+      background: #232a36;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border: 1px solid #333d4e;
+    }
+    .btn-group { display: flex; gap: 8px; align-items: center; }
+    .btn {
+      background: #334155;
+      color: #fff;
+      border: 1px solid #475569;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn:hover { background: #475569; }
+    .btn.active {
+      background: #3b82f6;
+      border-color: #60a5fa;
+    }
+    .btn-upgrade {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border: 1px solid #fbbf24;
+      color: #fff;
+      padding: 8px 20px;
+      font-size: 14px;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+    }
+    .btn-upgrade:hover {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      transform: translateY(-1px);
+    }
+
+    .stage-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .stage-container { grid-template-columns: 1fr; }
+    }
+    .stage-card {
+      background: #202632;
+      border: 1px solid #333d4e;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .stage-header {
+      padding: 12px 16px;
+      background: #272f3d;
+      border-bottom: 1px solid #333d4e;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .canvas-wrap {
+      background: #7da05a; /* Calm green ground specified */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 480px;
+    }
+    canvas {
+      display: block;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+    .info-card {
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+    .info-card h4 {
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .info-card ul {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+    .mini-compare {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mini-box {
+      background: #272f3d;
+      border: 1px solid #333d4e;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .mini-box .label {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .mini-canvas-wrap {
+      background: #7da05a;
+      border-radius: 6px;
+      overflow: hidden;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-note {
+      margin-top: 24px;
+      background: #202632;
+      border: 1px solid #333d4e;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    .footer-note b { color: #f6ad55; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h1>DINO SWARM SURVIVORS <span class="badge">Brief 03 Review</span></h1>
+      <div class="subtitle">Khảo sát chuyển động & Tiến hóa trang bị Người Tiền Sử "Grok" (3 Tiers)</div>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('full')">A. Full Poses</button>
+      <button class="tab-btn" onclick="switchTab('layered')">B. Layered Weapon</button>
+      <button class="tab-btn" onclick="switchTab('upgrade')">C. Upgrade Tier-Up</button>
+      <button class="tab-btn" onclick="switchTab('readability')">D. Game Size 90px</button>
+      <button class="tab-btn" onclick="switchTab('true-sprite')">⭐ True Sprite Animation</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- PANEL A: FULL POSES -->
+    <div id="panel-full" class="panel active">
+      <div class="control-bar">
+        <div class="btn-group">
+          <span style="font-size:13px; font-weight:600; color:#cbd5e1;">Chọn Gear Tier:</span>
+          <button class="btn active" id="btn-t1" onclick="setTier(1)">Tier 1: Wild (Chùy gỗ)</button>
+          <button class="btn" id="btn-t2" onclick="setTier(2)">Tier 2: Hunter (Kiếm xương)</button>
+          <button class="btn" id="btn-t3" onclick="setTier(3)">Tier 3: Warlord (Kiếm lửa + Khiên)</button>
+        </div>
+        <div class="btn-group">
+          <span style="font-size:13px; font-weight:600; color:#cbd5e1;">Hành động:</span>
+          <button class="btn active" id="btn-loop" onclick="setFullMode('loop')">Tự động (Idle ➔ Run ➔ Slash)</button>
+          <button class="btn" id="btn-lock-idle" onclick="setFullMode('idle')">Khóa Idle</button>
+          <button class="btn" id="btn-lock-run" onclick="setFullMode('run')">Khóa Run</button>
+          <button class="btn" onclick="triggerAttack()">Chém ngay (Attack)</button>
+        </div>
+      </div>
+
+      <div class="stage-container">
+        <div class="stage-card">
+          <div class="stage-header">
+            <span>Xem lớn (Full Canvas 768×768 scale ~420px) — Nền đất xanh <code>#7da05a</code></span>
+            <span id="full-state-badge" class="badge" style="background:#dd6b20; color:#fff;">Idle (Thở nhẹ)</span>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="cv-full" width="460" height="460"></canvas>
+          </div>
+        </div>
+
+        <div class="mini-compare">
+          <div class="mini-box">
+            <div class="label">Kích thước thật trong game (~90 px)</div>
+            <div class="mini-canvas-wrap">
+              <canvas id="cv-full-mini" width="130" height="130"></canvas>
+            </div>
+            <div style="font-size:11px; color:#cbd5e1; text-align:center;">Đánh giá khả năng đọc nhanh trên Poki điện thoại</div>
+          </div>
+          <div class="info-card">
+            <h4>Đặc điểm chuyển động Phương án A:</h4>
+            <ul>
+              <li><b>Idle:</b> Thở nhẹ (squash/stretch 2.0s), cơ bắp co giãn 2%.</li>
+              <li><b>Run:</b> Hoán đổi frame nhịp 7 Hz, nhún nhảy (bob 5px) và hơi chúi về phía trước.</li>
+              <li><b>Attack:</b> Frame vung đòn 0.15s kèm vệt chém cam rực rỡ (glowing slash arc).</li>
+              <li><b>Chân không nhảy:</b> Mọi frame khóa chung baseline y=640, bàn chân đứng vững trên mặt cỏ.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL B: LAYERED WEAPON -->
+    <div id="panel-layered" class="panel">
+      <div class="control-bar">
+        <div class="btn-group">
+          <span style="font-size:13px; font-weight:600; color:#cbd5e1;">Chọn Bộ trang bị lắp ghép:</span>
+          <button class="btn active" id="btn-layer-t1" onclick="setLayerTier(1)">Tier 1: Thân trần + Chùy gỗ</button>
+          <button class="btn" id="btn-layer-t3" onclick="setLayerTier(3)">Tier 3: Full giáp + Kiếm lửa + Khiên</button>
+        </div>
+        <div class="btn-group">
+          <button class="btn" onclick="triggerLayerSwing()">Vung chém (-60° ➔ +100°)</button>
+          <button class="btn" id="btn-layer-auto" onclick="toggleLayerAuto()">Tự động chém: BẬT</button>
+        </div>
+      </div>
+
+      <div class="stage-container">
+        <div class="stage-card">
+          <div class="stage-header">
+            <span>Ghép tầng động: Thân mình + Vũ khí xoay quanh Hand Anchor theo thời gian thực</span>
+            <span class="badge" style="background:#0284c7; color:#fff;">Modular Rotated Sprite</span>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="cv-layered" width="460" height="460"></canvas>
+          </div>
+        </div>
+
+        <div class="mini-compare">
+          <div class="mini-box">
+            <div class="label">Cỡ thật game (~90 px)</div>
+            <div class="mini-canvas-wrap">
+              <canvas id="cv-layered-mini" width="130" height="130"></canvas>
+            </div>
+            <div style="font-size:11px; color:#cbd5e1; text-align:center;">Vũ khí xoay theo góc quái vật</div>
+          </div>
+          <div class="info-card">
+            <h4>Đặc điểm Phương án B (Layered):</h4>
+            <ul>
+              <li>Thân mình giữ nguyên, vũ khí là file PNG riêng (512×512) xoay quanh điểm chốt cổ tay (Hand Anchor).</li>
+              <li>Góc vung chém: Lấy đà -60°, chém chớp nhoáng tới +100°, rồi thả chậm về thế thủ +25°.</li>
+              <li><b>Ưu điểm:</b> Dễ dàng đổi bất kỳ vũ khí nào mà không cần vẽ lại thân mình.</li>
+              <li><b>Nhược điểm:</b> Cổ tay và chuôi kiếm thiếu tính uốn lượn hữu cơ so với vẽ tay nguyên frame.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL C: UPGRADE TIER-UP -->
+    <div id="panel-upgrade" class="panel">
+      <div class="control-bar">
+        <div class="btn-group">
+          <span style="font-size:14px; font-weight:600; color:#f6ad55;">Khoảnh khắc Tiến hóa (1.3 giây):</span>
+          <button class="btn btn-upgrade" onclick="triggerUpgrade()">⭐ TIẾN HÓA TRANG BỊ (UPGRADE)</button>
+        </div>
+        <div style="font-size:13px; color:#94a3b8;">
+          Bậc hiện tại: <b id="upgrade-tier-label" style="color:#38bdf8; font-size:14px;">Tier 1: Wild</b>
+        </div>
+      </div>
+
+      <div class="stage-container">
+        <div class="stage-card">
+          <div class="stage-header">
+            <span>Hiệu ứng Tiến hóa: Chớp sáng ➔ Scale Pop (1.0 ➔ 1.18 ➔ 1.0) ➔ Đổi Gear ➔ Bụi sao lấp lánh</span>
+            <span id="upgrade-status" class="badge">Sẵn sàng</span>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="cv-upgrade" width="460" height="460"></canvas>
+          </div>
+        </div>
+
+        <div class="mini-compare">
+          <div class="info-card" style="background:#272f3d; border-radius:8px;">
+            <h4 style="color:#f59e0b;">Quy trình Diễn hoạt Tiến hóa 1.3s:</h4>
+            <ol style="padding-left:18px; margin-bottom:12px;">
+              <li><b>0.0s – 0.2s:</b> Tích tụ năng lượng, chớp sáng trắng quanh thân.</li>
+              <li><b>0.2s – 0.5s:</b> Phóng to giật nảy (Scale 1.0 ➔ 1.18), hoán đổi tức thì sang Gear bậc cao hơn.</li>
+              <li><b>0.5s – 1.0s:</b> Tung tóe hạt tia lửa & bụi vàng (golden sparkles), cơ thể nảy nhẹ về 1.0.</li>
+              <li><b>1.0s – 1.3s:</b> Vung kiếm uy phong ăn mừng rồi quay về trạng thái sẵn sàng chiến đấu.</li>
+            </ol>
+            <p>Trải nghiệm cực kỳ thỏa mãn (satisfying), tạo động lực cày cuốc sinh tồn mạnh mẽ trên Poki.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL D: READABILITY GRID -->
+    <div id="panel-readability" class="panel">
+      <div class="control-bar">
+        <div style="font-size:14px; font-weight:600; color:#f6ad55;">
+          Bảng kiểm tra Độ rõ nét trên màn hình Điện thoại (Cỡ thật ~90px tall cạnh nhau):
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+        
+        <div class="stage-card">
+          <div class="stage-header">Tier 1: Wild (Chùy gỗ)</div>
+          <div class="canvas-wrap" style="min-height:220px;">
+            <canvas id="cv-read-t1" width="200" height="200"></canvas>
+          </div>
+          <div class="info-card">Ngực trần, khố da báo, chùy thô sơ. Silhouette gọn gàng, mắt to biểu cảm rất rõ.</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-header">Tier 2: Hunter (Kiếm xương)</div>
+          <div class="canvas-wrap" style="min-height:220px;">
+            <canvas id="cv-read-t2" width="200" height="200"></canvas>
+          </div>
+          <div class="info-card">Giáp sườn trắng tương phản với da rám nắng, kiếm xương răng cưa vươn dài nhận diện tức thì.</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-header">Tier 3: Warlord (Kiếm lửa + Mũ T-Rex)</div>
+          <div class="canvas-wrap" style="min-height:220px;">
+            <canvas id="cv-read-t3" width="200" height="200"></canvas>
+          </div>
+          <div class="info-card">Mũ sọ trắng sáng trên đầu, kiếm lửa vàng cam bừng sáng, khiên mai rùa gai bọc sườn rất đầm.</div>
+        </div>
+
+      </div>
+    </div>
+
+    
+    <!-- PANEL E: TRUE SPRITE ANIMATION (FRAME-BY-FRAME) -->
+    <div id="panel-true-sprite" class="panel">
+      <div class="control-bar">
+        <div class="btn-group">
+          <span style="font-size:13px; font-weight:600; color:#cbd5e1;">Hành động:</span>
+          <button class="btn active" id="btn-ts-run" onclick="setTsMode('run')">Chạy Run Cycle (6 Frame Vẽ Tay)</button>
+          <button class="btn" id="btn-ts-attack" onclick="setTsMode('attack')">Chém Melee Combo (4 Frame Vẽ Tay)</button>
+          <button class="btn" id="btn-ts-combo" onclick="setTsMode('combo')">Chu Trình Game (Idle ➔ Run ➔ Attack)</button>
+        </div>
+        <div class="btn-group">
+          <button class="btn" id="btn-ts-play" onclick="toggleTsPlay()">Tạm dừng ⏸</button>
+          <button class="btn" onclick="stepTsFrame(-1)">◀ Frame trước</button>
+          <button class="btn" onclick="stepTsFrame(1)">Frame kế ▶</button>
+          <span style="font-size:12px; color:#94a3b8; margin-left:8px;">Tốc độ:</span>
+          <input type="range" id="ts-fps-slider" min="4" max="20" value="10" oninput="setTsFps(this.value)" style="width:70px; vertical-align:middle;">
+          <span id="ts-fps-val" style="font-size:12px; color:#f6ad55; font-weight:bold;">10 FPS</span>
+        </div>
+      </div>
+
+      <div class="stage-container">
+        <div class="stage-card">
+          <div class="stage-header">
+            <span id="ts-stage-title">Sprite Animation Frame-by-Frame (Chân gập gối, tiếp đất, vung đòn thực thụ)</span>
+            <span id="ts-frame-badge" class="badge" style="background:#16a34a; color:#fff;">Frame 1 / 6</span>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="cv-true-sprite" width="460" height="460"></canvas>
+          </div>
+        </div>
+
+        <div class="mini-compare">
+          <div class="mini-box">
+            <div class="label">Filmstrip Từng Frame Vẽ Tay</div>
+            <div id="ts-filmstrip" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; padding:4px;">
+              <!-- Generated by JS -->
+            </div>
+            <div id="ts-frame-desc" style="font-size:11px; color:#cbd5e1; text-align:center; min-height:30px; margin-top:4px;">
+              Đang tải frame...
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Đặc điểm Sprite Animation Thực Thụ:</h4>
+            <ul>
+              <li><b>Không phải Tween/Cắt xoay:</b> Mỗi frame là một bức tranh vẽ riêng biệt, thể hiện rõ khớp gối co gập, bàn chân nhấc khỏi mặt đất, sải chân thể thao và hai tay vung chùy đổi nhịp.</li>
+              <li><b>Baseline khóa cố định:</b> Bàn chân tiếp đất luôn chạm đúng <code>baseline y=638</code>, chuyển động nhịp nhàng không trượt chỗ.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <b>Báo cáo Đánh giá của Art Producer:</b> Cả 9 frame nhân vật đã được căn chuẩn tuyệt đối theo đường chân tiếp đất <code>baseline y=640</code> (không bị nhảy chân khi hoán đổi dáng). Giữa <b>Phương án A (Full Poses)</b> và <b>Phương án B (Layered Weapon)</b>: Phương án A cho nét cọ và dáng chém hữu cơ, gân guốc hơn hẳn; trong khi Phương án B cực kỳ tối ưu nếu muốn có hàng chục loại vũ khí thay đổi linh hoạt trong gameplay.
+    </div>
+
+  </main>
+
+  <script>
+    // Asset Manifest
+    const ASSETS = {
+      t1: {
+        idle: './grok-t1-idle.png',
+        run: './grok-t1-run.png',
+        attack: './grok-t1-attack.png',
+        bodyIdle: './grok-t1-body-idle.png',
+        bodyRun: './grok-t1-body-run.png'
+      },
+      t2: {
+        idle: './grok-t2-idle.png',
+        run: './grok-t2-run.png',
+        attack: './grok-t2-attack.png'
+      },
+      t3: {
+        idle: './grok-t3-idle.png',
+        run: './grok-t3-run.png',
+        attack: './grok-t3-attack.png',
+        bodyIdle: './grok-t3-body-idle.png',
+        bodyRun: './grok-t3-body-run.png'
+      },
+      weapons: {
+        club: './weapon-club.png',
+        boneSword: './weapon-bone-sword.png',
+        fireSword: './weapon-fire-sword.png',
+        turtleShield: './shield-turtle.png'
+      }
+    };
+
+    const ANCHORS = {
+      t1: {
+        idle: { x: 485, y: 424 },
+        run: { x: 482, y: 412 }
+      },
+      t3: {
+        idle: { x: 485, y: 429, shieldX: 334, shieldY: 388 },
+        run: { x: 491, y: 413, shieldX: 329, shieldY: 386 }
+      },
+      weapons: {
+        club: { gripX: 256, gripY: 440 },
+        boneSword: { gripX: 256, gripY: 440 },
+        fireSword: { gripX: 256, gripY: 440 },
+        shield: { gripX: 256, gripY: 256 }
+      }
+    };
+
+    const imgs = {};
+    let loadedCount = 0;
+
+    function loadAllImages(callback) {
+      const urls = [
+        ['t1_idle', ASSETS.t1.idle],
+        ['t1_run', ASSETS.t1.run],
+        ['t1_attack', ASSETS.t1.attack],
+        ['t1_bodyIdle', ASSETS.t1.bodyIdle],
+        ['t1_bodyRun', ASSETS.t1.bodyRun],
+        ['t2_idle', ASSETS.t2.idle],
+        ['t2_run', ASSETS.t2.run],
+        ['t2_attack', ASSETS.t2.attack],
+        ['t3_idle', ASSETS.t3.idle],
+        ['t3_run', ASSETS.t3.run],
+        ['t3_attack', ASSETS.t3.attack],
+        ['t3_bodyIdle', ASSETS.t3.bodyIdle],
+        ['t3_bodyRun', ASSETS.t3.bodyRun],
+        ['w_club', ASSETS.weapons.club],
+        ['w_bone', ASSETS.weapons.boneSword],
+        ['w_fire', ASSETS.weapons.fireSword],
+        ['w_shield', ASSETS.weapons.turtleShield]
+      ];
+      urls.forEach(([key, url]) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+          imgs[key] = img;
+          loadedCount++;
+          if (loadedCount === urls.length) callback();
+        };
+      });
+    }
+
+    
+    // True Sprite Animation Assets
+    const TS_RUN_URLS = [
+      './sprites_t1/grok_t1_run_01.png',
+      './sprites_t1/grok_t1_run_02.png',
+      './sprites_t1/grok_t1_run_03.png',
+      './sprites_t1/grok_t1_run_04.png',
+      './sprites_t1/grok_t1_run_05.png',
+      './sprites_t1/grok_t1_run_06.png'
+    ];
+    const TS_ATTACK_URLS = [
+      './sprites_t1/grok_t1_attack_01.png',
+      './sprites_t1/grok_t1_attack_02.png',
+      './sprites_t1/grok_t1_attack_03.png',
+      './sprites_t1/grok_t1_attack_04.png'
+    ];
+
+    const tsRunImgs = [];
+    const tsAttackImgs = [];
+
+    TS_RUN_URLS.forEach(u => { const m = new Image(); m.src = u; tsRunImgs.push(m); });
+    TS_ATTACK_URLS.forEach(u => { const m = new Image(); m.src = u; tsAttackImgs.push(m); });
+
+    let tsMode = 'run'; // 'run', 'attack', 'combo'
+    let tsPlaying = true;
+    let tsFps = 10;
+    let tsTimer = 0;
+    let tsCurIndex = 0;
+
+    const TS_DESCS = {
+      run: [
+        "F1: Chân phải bước tới chạm đất, chân trái đạp sau",
+        "F2: Chân phải trụ đất, chân trái co gập gối nhấc lên",
+        "F3: Sải bước bay giữa không trung, chùy gỗ bơm cao",
+        "F4: Chân trái bước tới chạm đất, chân phải đạp sau",
+        "F5: Chân trái trụ đất, chân phải co gập gối nhấc lên",
+        "F6: Chân phải sải tới, chuẩn bị chu kỳ lặp lại"
+      ],
+      attack: [
+        "F1 (Wind-up): Ngả người ra sau, giơ hai tay nhấc bổng chùy lên đầu",
+        "F2 (Strike): Lao mạnh tới trước, bổ chùy xé gió kèm vệt chém lửa cam",
+        "F3 (Smash): Thân mình dồn hết đà cúi rạp, chùy đập sát mặt đất",
+        "F4 (Recovery): Kéo chùy về trước ngực, trở lại thế thủ"
+      ]
+    };
+
+    function setTsMode(m) {
+      tsMode = m;
+      document.getElementById('btn-ts-run').classList.toggle('active', m === 'run');
+      document.getElementById('btn-ts-attack').classList.toggle('active', m === 'attack');
+      document.getElementById('btn-ts-combo').classList.toggle('active', m === 'combo');
+      tsCurIndex = 0;
+      tsTimer = 0;
+      renderTsFilmstrip();
+    }
+
+    function toggleTsPlay() {
+      tsPlaying = !tsPlaying;
+      document.getElementById('btn-ts-play').innerText = tsPlaying ? 'Tạm dừng ⏸' : 'Tiếp tục ▶';
+    }
+
+    function stepTsFrame(dir) {
+      tsPlaying = false;
+      document.getElementById('btn-ts-play').innerText = 'Tiếp tục ▶';
+      const maxFrames = (tsMode === 'run') ? 6 : (tsMode === 'attack' ? 4 : 11);
+      tsCurIndex = (tsCurIndex + dir + maxFrames) % maxFrames;
+      renderTsFilmstrip();
+    }
+
+    function setTsFps(v) {
+      tsFps = parseInt(v);
+      document.getElementById('ts-fps-val').innerText = tsFps + ' FPS';
+    }
+
+    function renderTsFilmstrip() {
+      const container = document.getElementById('ts-filmstrip');
+      if (!container) return;
+      const list = (tsMode === 'run') ? tsRunImgs : (tsMode === 'attack' ? tsAttackImgs : tsRunImgs);
+      const total = list.length;
+      let html = '';
+      for (let i = 0; i < total; i++) {
+        const isActive = (i === (tsCurIndex % total));
+        const border = isActive ? '2px solid #f59e0b' : '1px solid #475569';
+        const bg = isActive ? '#451a03' : '#1e293b';
+        html += `<div onclick="tsCurIndex=${i}; renderTsFilmstrip();" style="cursor:pointer; width:34px; height:34px; border-radius:4px; border:${border}; background:${bg}; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold; color:#fff;">F${i+1}</div>`;
+      }
+      container.innerHTML = html;
+      
+      const badge = document.getElementById('ts-frame-badge');
+      if (badge) badge.innerText = `Frame ${(tsCurIndex % total) + 1} / ${total}`;
+      
+      const descBox = document.getElementById('ts-frame-desc');
+      if (descBox) {
+        const dList = (tsMode === 'run') ? TS_DESCS.run : (tsMode === 'attack' ? TS_DESCS.attack : TS_DESCS.run);
+        descBox.innerText = dList[tsCurIndex % dList.length] || '';
+      }
+    }
+
+    // UI Tab Navigation
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      const panel = document.getElementById('panel-' + tabId);
+      if (panel) panel.classList.add('active');
+    }
+
+    // App State
+    let curTier = 1;
+    let fullMode = 'loop'; // 'loop', 'idle', 'run'
+    let fullState = 'idle'; // 'idle', 'run', 'attack'
+    let fullTimer = 0;
+    let attackTimer = 0;
+
+    let layerTier = 1;
+    let layerSwingT = 0;
+    let layerIsSwinging = false;
+    let layerAuto = true;
+    let layerAutoTimer = 0;
+
+    let upgradeTier = 1;
+    let upgradeT = -1; // -1 = idle
+    const sparkles = [];
+
+    function setTier(t) {
+      curTier = t;
+      [1, 2, 3].forEach(i => {
+        const b = document.getElementById('btn-t' + i);
+        if (b) b.classList.toggle('active', i === t);
+      });
+    }
+
+    function setFullMode(m) {
+      fullMode = m;
+      document.getElementById('btn-loop').classList.toggle('active', m === 'loop');
+      document.getElementById('btn-lock-idle').classList.toggle('active', m === 'idle');
+      document.getElementById('btn-lock-run').classList.toggle('active', m === 'run');
+      if (m === 'idle') fullState = 'idle';
+      if (m === 'run') fullState = 'run';
+    }
+
+    function triggerAttack() {
+      fullState = 'attack';
+      attackTimer = 0.22; // 0.22s attack pose with slash arc
+    }
+
+    function setLayerTier(t) {
+      layerTier = t;
+      document.getElementById('btn-layer-t1').classList.toggle('active', t === 1);
+      document.getElementById('btn-layer-t3').classList.toggle('active', t === 3);
+    }
+
+    function triggerLayerSwing() {
+      layerIsSwinging = true;
+      layerSwingT = 0;
+    }
+
+    function toggleLayerAuto() {
+      layerAuto = !layerAuto;
+      document.getElementById('btn-layer-auto').innerText = 'Tự động chém: ' + (layerAuto ? 'BẬT' : 'TẮT');
+    }
+
+    function triggerUpgrade() {
+      upgradeT = 0;
+      sparkles.length = 0;
+      for (let i = 0; i < 35; i++) {
+        sparkles.push({
+          x: 230 + (Math.random() - 0.5) * 160,
+          y: 260 + (Math.random() - 0.5) * 200,
+          vx: (Math.random() - 0.5) * 180,
+          vy: -80 - Math.random() * 160,
+          life: 0.4 + Math.random() * 0.9,
+          age: 0,
+          size: 3 + Math.random() * 5,
+          color: Math.random() > 0.4 ? '#f59e0b' : '#fef08a'
+        });
+      }
+      document.getElementById('upgrade-status').innerText = 'Đang nâng cấp...';
+      document.getElementById('upgrade-status').style.background = '#eab308';
+    }
+
+    // Helper: Draw curved orange slash arc
+    function drawSlashArc(ctx, cx, cy, radius, startAngle, endAngle, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = '#ff7a18';
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = '#ffaa22';
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, startAngle, endAngle);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#fff2a8';
+      ctx.lineWidth = 6;
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, startAngle, endAngle);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Main Animation Loop
+    let lastTime = performance.now();
+
+    function renderLoop(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      // ------------------------------------------------ PANEL A: Full Poses Logic
+      if (fullMode === 'loop') {
+        if (attackTimer > 0) {
+          attackTimer -= dt;
+          fullState = 'attack';
+          if (attackTimer <= 0) fullState = 'run';
+        } else {
+          fullTimer += dt;
+          if (fullTimer < 2.0) {
+            fullState = 'idle';
+          } else if (fullTimer < 4.5) {
+            fullState = 'run';
+          } else if (fullTimer < 4.75) {
+            fullState = 'attack';
+          } else {
+            fullTimer = 0;
+            fullState = 'idle';
+          }
+        }
+      } else if (attackTimer > 0) {
+        attackTimer -= dt;
+        fullState = 'attack';
+        if (attackTimer <= 0) fullState = fullMode;
+      }
+
+      const badge = document.getElementById('full-state-badge');
+      if (badge) {
+        if (fullState === 'idle') { badge.innerText = 'Idle (Thở nhẹ)'; badge.style.background = '#0284c7'; }
+        else if (fullState === 'run') { badge.innerText = 'Run (Chạy 7Hz + Bob)'; badge.style.background = '#16a34a'; }
+        else { badge.innerText = 'Attack (Chém vung đòn)'; badge.style.background = '#dc2626'; }
+      }
+
+      // Render Panel A
+      renderFullCanvas('cv-full', 460, 460, curTier, fullState, now / 1000, 0.58);
+      renderFullCanvas('cv-full-mini', 130, 130, curTier, fullState, now / 1000, 0.16);
+
+      // ------------------------------------------------ PANEL B: Layered Logic
+      if (layerAuto) {
+        layerAutoTimer += dt;
+        if (layerAutoTimer > 1.8) {
+          layerAutoTimer = 0;
+          triggerLayerSwing();
+        }
+      }
+      if (layerIsSwinging) {
+        layerSwingT += dt * 4.5;
+        if (layerSwingT > 1.0) {
+          layerIsSwinging = false;
+          layerSwingT = 0;
+        }
+      }
+      renderLayeredCanvas('cv-layered', 460, 460, layerTier, layerSwingT, layerIsSwinging, now / 1000, 0.58);
+      renderLayeredCanvas('cv-layered-mini', 130, 130, layerTier, layerSwingT, layerIsSwinging, now / 1000, 0.16);
+
+      // ------------------------------------------------ PANEL C: Upgrade Logic
+      if (upgradeT >= 0) {
+        upgradeT += dt;
+        if (upgradeT > 0.4 && upgradeTier === 1 && upgradeT < 0.45) {
+          upgradeTier = 2;
+        } else if (upgradeT > 0.4 && upgradeTier === 2 && upgradeT < 0.45) {
+          upgradeTier = 3;
+        } else if (upgradeT > 0.4 && upgradeTier === 3 && upgradeT < 0.45) {
+          upgradeTier = 1;
+        }
+        if (upgradeT >= 1.3) {
+          upgradeT = -1;
+          document.getElementById('upgrade-status').innerText = 'Hoàn thành';
+          document.getElementById('upgrade-status').style.background = '#16a34a';
+          document.getElementById('upgrade-tier-label').innerText = 'Tier ' + upgradeTier + ': ' + (upgradeTier === 1 ? 'Wild' : upgradeTier === 2 ? 'Hunter' : 'Warlord');
+        }
+      }
+      renderUpgradeCanvas('cv-upgrade', 460, 460, upgradeTier, upgradeT, dt, now / 1000);
+
+      // ------------------------------------------------ PANEL D: Readability Static/Loop
+      renderReadabilityCanvas('cv-read-t1', 1, now / 1000);
+      renderReadabilityCanvas('cv-read-t2', 2, now / 1000);
+      renderReadabilityCanvas('cv-read-t3', 3, now / 1000);
+
+      
+      // True Sprite Canvas Render
+      renderTrueSpriteCanvas('cv-true-sprite', 460, 460, dt);
+
+      requestAnimationFrame(renderLoop);
+    }
+
+    function renderFullCanvas(cvId, w, h, tier, state, time, scale) {
+      const cv = document.getElementById(cvId);
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+
+      let imgKey = 't' + tier + '_idle';
+      if (state === 'run') {
+        const runFrame = Math.floor(time * 7) % 2 === 0;
+        imgKey = runFrame ? ('t' + tier + '_run') : ('t' + tier + '_idle');
+      } else if (state === 'attack') {
+        imgKey = 't' + tier + '_attack';
+      }
+
+      const img = imgs[imgKey];
+      if (!img) return;
+
+      ctx.save();
+      ctx.translate(w / 2, h * 0.88); // Anchor at baseline foot position
+
+      let bob = 0;
+      let sx = 1, sy = 1;
+      let tilt = 0;
+
+      if (state === 'idle') {
+        const breath = Math.sin(time * 3.14);
+        sx = 1 + breath * 0.02;
+        sy = 1 - breath * 0.02;
+      } else if (state === 'run') {
+        bob = Math.abs(Math.sin(time * 7 * Math.PI)) * 5;
+        tilt = 0.06;
+        sx = 1.02; sy = 0.98;
+      } else if (state === 'attack') {
+        tilt = 0.08;
+      }
+
+      ctx.translate(0, -bob);
+      ctx.rotate(tilt);
+      ctx.scale(scale * sx, scale * sy);
+
+      // Draw anchored at 384, 640
+      ctx.drawImage(img, -384, -640);
+      ctx.restore();
+
+      if (state === 'attack') {
+        drawSlashArc(ctx, w * 0.58, h * 0.56, 90 * (scale / 0.58), -0.6 * Math.PI, 0.45 * Math.PI, 0.88);
+      }
+    }
+
+    function renderLayeredCanvas(cvId, w, h, tier, swingT, isSwinging, time, scale) {
+      const cv = document.getElementById(cvId);
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+
+      const bodyKey = (tier === 1) ? 't1_bodyIdle' : 't3_bodyIdle';
+      const bodyImg = imgs[bodyKey];
+      if (!bodyImg) return;
+
+      const anchorData = (tier === 1) ? ANCHORS.t1.idle : ANCHORS.t3.idle;
+      const weaponImg = (tier === 1) ? imgs.w_club : imgs.w_fire;
+      const gripData = (tier === 1) ? ANCHORS.weapons.club : ANCHORS.weapons.fireSword;
+
+      ctx.save();
+      ctx.translate(w / 2, h * 0.88);
+
+      const breath = Math.sin(time * 3);
+      ctx.scale(scale * (1 + breath * 0.015), scale * (1 - breath * 0.015));
+
+      // Draw Body
+      ctx.drawImage(bodyImg, -384, -640);
+
+      // Tier 3 Shield on left arm
+      if (tier === 3 && imgs.w_shield) {
+        ctx.save();
+        ctx.translate(-384 + anchorData.shieldX, -640 + anchorData.shieldY);
+        ctx.scale(0.85, 0.85);
+        ctx.drawImage(imgs.w_shield, -ANCHORS.weapons.shield.gripX, -ANCHORS.weapons.shield.gripY);
+        ctx.restore();
+      }
+
+      // Calculate Weapon Angle
+      let weaponAngleDeg = 25;
+      if (isSwinging) {
+        if (swingT < 0.25) {
+          const t = swingT / 0.25;
+          weaponAngleDeg = 25 - t * 85;
+        } else if (swingT < 0.65) {
+          const t = (swingT - 0.25) / 0.4;
+          weaponAngleDeg = -60 + t * 160;
+        } else {
+          const t = (swingT - 0.65) / 0.35;
+          weaponAngleDeg = 100 - t * 75;
+        }
+      }
+
+      // Draw Weapon attached to hand anchor
+      if (weaponImg) {
+        ctx.save();
+        ctx.translate(-384 + anchorData.x, -640 + anchorData.y);
+        ctx.rotate((weaponAngleDeg * Math.PI) / 180);
+        ctx.scale(0.95, 0.95);
+        ctx.drawImage(weaponImg, -gripData.gripX, -gripData.gripY);
+        ctx.restore();
+      }
+
+      ctx.restore();
+
+      if (isSwinging && swingT > 0.35 && swingT < 0.75) {
+        drawSlashArc(ctx, w * 0.62, h * 0.54, 95 * (scale / 0.58), -0.5 * Math.PI, 0.5 * Math.PI, 0.9);
+      }
+    }
+
+    function renderUpgradeCanvas(cvId, w, h, tier, upT, dt, time) {
+      const cv = document.getElementById(cvId);
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.save();
+      ctx.translate(w / 2, h * 0.88);
+
+      let popScale = 1.0;
+      let flash = 0;
+
+      if (upT >= 0) {
+        if (upT < 0.3) {
+          popScale = 1.0 + (upT / 0.3) * 0.18;
+          flash = (upT / 0.3) * 0.7;
+        } else if (upT < 0.65) {
+          const p = (upT - 0.3) / 0.35;
+          popScale = 1.18 - p * 0.2;
+          flash = (1 - p) * 0.7;
+        } else if (upT < 1.0) {
+          const p = (upT - 0.65) / 0.35;
+          popScale = 0.98 + p * 0.02;
+        }
+      }
+
+      ctx.scale(0.58 * popScale, 0.58 * popScale);
+      const imgKey = 't' + tier + '_idle';
+      const img = imgs[imgKey];
+      if (img) ctx.drawImage(img, -384, -640);
+
+      if (flash > 0) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = `rgba(255, 230, 150, ${flash})`;
+        ctx.beginPath();
+        ctx.arc(0, -320, 220, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.restore();
+
+      if (upT >= 0 && sparkles.length > 0) {
+        sparkles.forEach(s => {
+          s.age += dt;
+          s.x += s.vx * dt;
+          s.y += s.vy * dt;
+          s.vy += 220 * dt;
+          const alpha = Math.max(0, 1 - s.age / s.life);
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = s.color;
+          ctx.shadowColor = s.color;
+          ctx.shadowBlur = 6;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size * (1 - s.age / s.life), 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+    }
+
+    function renderReadabilityCanvas(cvId, tier, time) {
+      const cv = document.getElementById(cvId);
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      ctx.clearRect(0, 0, 200, 200);
+
+      const runFrame = Math.floor(time * 6) % 2 === 0;
+      const imgKey = runFrame ? ('t' + tier + '_run') : ('t' + tier + '_idle');
+      const img = imgs[imgKey];
+      if (!img) return;
+
+      const bob = Math.abs(Math.sin(time * 6 * Math.PI)) * 3;
+
+      ctx.save();
+      ctx.translate(100, 160 - bob);
+      ctx.scale(0.24, 0.24);
+      ctx.drawImage(img, -384, -640);
+      ctx.restore();
+    }
+
+    loadAllImages(() => {
+      console.log('All Grok animation assets loaded!');
+      
+      // True Sprite Canvas Render
+      renderTrueSpriteCanvas('cv-true-sprite', 460, 460, dt);
+
+      requestAnimationFrame(renderLoop);
+    });
+
+  </script>
+</body>
+</html>
+
+
+    function renderTrueSpriteCanvas(cvId, w, h, dt) {
+      const cv = document.getElementById(cvId);
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+
+      if (tsPlaying) {
+        tsTimer += dt;
+        const interval = 1.0 / tsFps;
+        if (tsTimer >= interval) {
+          tsTimer -= interval;
+          const maxF = (tsMode === 'run') ? 6 : (tsMode === 'attack' ? 4 : 11);
+          tsCurIndex = (tsCurIndex + 1) % maxF;
+          renderTsFilmstrip();
+        }
+      }
+
+      let curImg = null;
+      if (tsMode === 'run') {
+        curImg = tsRunImgs[tsCurIndex % tsRunImgs.length];
+      } else if (tsMode === 'attack') {
+        curImg = tsAttackImgs[tsCurIndex % tsAttackImgs.length];
+      } else {
+        // Combo: 0..5 = run, 6 = idle, 7..10 = attack
+        if (tsCurIndex < 6) curImg = tsRunImgs[tsCurIndex];
+        else if (tsCurIndex === 6) curImg = imgs.t1_idle;
+        else curImg = tsAttackImgs[tsCurIndex - 7];
+      }
+
+      if (!curImg || !curImg.complete) return;
+
+      ctx.save();
+      ctx.translate(w / 2, h * 0.88); // baseline anchor
+      ctx.scale(0.55, 0.55);
+      ctx.drawImage(curImg, -384, -638);
+      ctx.restore();
+    }

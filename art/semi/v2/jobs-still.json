@@ -1,0 +1,32 @@
+{
+ "shots": [
+  {
+   "id": "grub-top",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/raw/enemy-grub.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ],
+   "prompt": "Re-draw this exact creature (same design, colours, details, painterly semi-realistic style) for a TOP-DOWN survivor game: camera high above looking down at about 55 degrees (we see the creature's back and top much more than its side, like the creatures in the second reference image), creature facing RIGHT, full body visible, compact readable silhouette. LIGHTING: soft light from directly above and slightly top-left, as if under an open jungle canopy at dusk; gentle painted shading, no strong rim light, no studio highlights, colours slightly muted to sit on a dark mossy forest floor. Plain flat pure white background, no ground, no cast shadow, no text."
+  },
+  {
+   "id": "wolf-top",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/raw/enemy-wolf.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ],
+   "prompt": "Re-draw this exact creature (same design, colours, details, painterly semi-realistic style) for a TOP-DOWN survivor game: camera high above looking down at about 55 degrees (we see the creature's back and top much more than its side, like the creatures in the second reference image), creature facing RIGHT, full body visible, compact readable silhouette. LIGHTING: soft light from directly above and slightly top-left, as if under an open jungle canopy at dusk; gentle painted shading, no strong rim light, no studio highlights, colours slightly muted to sit on a dark mossy forest floor. Plain flat pure white background, no ground, no cast shadow, no text. It is a lean velociraptor in a low running crouch."
+  }
+ ]
+}

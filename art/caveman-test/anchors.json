@@ -1,0 +1,82 @@
+{
+  "bodies": {
+    "grok-t1-body-idle": {
+      "weaponHand": {
+        "x": 485,
+        "y": 424
+      }
+    },
+    "grok-t1-body-run": {
+      "weaponHand": {
+        "x": 482,
+        "y": 412
+      }
+    },
+    "grok-t3-body-idle": {
+      "weaponHand": {
+        "x": 485,
+        "y": 429
+      },
+      "shieldHand": {
+        "x": 334,
+        "y": 388
+      }
+    },
+    "grok-t3-body-run": {
+      "weaponHand": {
+        "x": 491,
+        "y": 413
+      },
+      "shieldHand": {
+        "x": 329,
+        "y": 386
+      }
+    }
+  },
+  "weapons": {
+    "weapon-club": {
+      "grip": {
+        "x": 256,
+        "y": 440
+      },
+      "defaultAngleDeg": 25,
+      "canvas": [
+        512,
+        512
+      ]
+    },
+    "weapon-bone-sword": {
+      "grip": {
+        "x": 256,
+        "y": 440
+      },
+      "defaultAngleDeg": 25,
+      "canvas": [
+        512,
+        512
+      ]
+    },
+    "weapon-fire-sword": {
+      "grip": {
+        "x": 256,
+        "y": 440
+      },
+      "defaultAngleDeg": 25,
+      "canvas": [
+        512,
+        512
+      ]
+    },
+    "shield-turtle": {
+      "grip": {
+        "x": 256,
+        "y": 256
+      },
+      "defaultAngleDeg": 0,
+      "canvas": [
+        512,
+        512
+      ]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "spike",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/icons2/skill-thorns.jpg"
+    }
+   ],
+   "prompt": "ONE simple game effect sprite in the hand-drawn style of the references (thick uneven dark ink outline, flat colours): three sharp dark-green thorny spikes bursting UP out of a small mound of cracked brown earth, seen from a slight top-down angle. Very simple, bold, few details, readable at small size. Background ONE flat pure magenta #FF00FF everywhere. No text."
+  }
+ ]
+}

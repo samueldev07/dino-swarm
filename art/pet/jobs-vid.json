@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "dog-run",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/pet/start-dog.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the dog in the image (same design, colours, thick ink outline). Camera completely static, no zoom, no pan; it stays centred at the same size. Plain flat pure white background, no ground, no shadow, no text. The dog runs IN PLACE toward the right (like on a treadmill) in a fast happy repeating gallop, ears flapping, tail up. Smooth seamless loop."
+  }
+ ]
+}

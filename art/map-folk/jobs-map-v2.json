@@ -1,0 +1,46 @@
+{
+  "shots": [
+    {
+      "id": "ground-v2-sand-moss",
+      "prompt": "Match the dark folk fairy-tale art style of the reference images: 2D hand-drawn ink outlines (#221a14), flat earthy colours with soft painted shading. Top-down overhead 90-degree seamless tileable game ground texture: A harmonious balanced terrain combining muted dark olive-green mossy turf, warm sandy soil and light bare dirt clearings to balance the map nicely. Only one tiny subtle clear water puddle with dark ink ripple ring. A few crisp dry fallen leaves scattered naturally (crisp and sharp, never blurry, never double-exposed). Completely flat top-down view, uniform illumination across all edges, low contrast, calm playfield, no heavy dark vignettes, no tree trunks, no characters. Seamlessly repeatable game tile.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/ground.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ground-v2-dirt-path",
+      "prompt": "Match the dark folk fairy-tale art style of the reference images: 2D hand-drawn ink outlines (#221a14), flat earthy colours with soft painted shading. Top-down overhead 90-degree seamless tileable game ground texture: Calm forest clearing with organic patches of dark olive mossy grass and warm sandy dirt / dry earth ground providing great contrast and color balance. Just a couple of tiny pebbles and crisp autumn leaves. NO large puddles, NO tree trunks, NO characters, completely flat overhead view, uniform lighting across edges for seamless tiling.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/ground.jpg"
+        }
+      ]
+    },
+    {
+      "id": "bg-forest-arena-v2",
+      "prompt": "Match the dark folk fairy-tale art style of the reference images: 2D hand-drawn dark folk cartoon, thick uneven dark-brown ink outlines (#221a14), muted earthy palette. Large expansive top-down game background / arena of an ancient woodland clearing: The wide central battlefield has a beautifully balanced mix of dark-olive mossy turf, warm sandy dirt patches, and one small subtle water puddle reflecting soft ambient light. Outer borders and corners are framed by ancient mossy oak trees and tree stumps. Calm low-contrast central gameplay area, dim woodland atmosphere. ABSOLUTELY NO characters, NO monsters, NO UI, NO text, fills the 16:9 frame.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/raw/ground.jpg"
+        }
+      ]
+    }
+  ]
+}

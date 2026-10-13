@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "jab-start",
+   "aspect": "16:9",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/meteor/meteor-start.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/icons2/fx-jab.jpg"
+    }
+   ],
+   "prompt": "Game effect start frame in the same hand-drawn ink style as the references (thick uneven dark outline, flat colours): on the LEFT third of the image, three short parallel cream-white speed streaks pointing to the RIGHT, just starting, like the three prongs of a pitchfork thrusting forward. Everything else is ONE flat pure bright green #00FF00 (chroma key). No pitchfork, no character, no text."
+  }
+ ]
+}

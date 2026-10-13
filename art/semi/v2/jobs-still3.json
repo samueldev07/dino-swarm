@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "wolf-top3",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/raw/enemy-wolf.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/public/hero/grok-1/run-00.webp"
+    }
+   ],
+   "prompt": "Game sprite for a top-down survivor game. A lean grey-blue striped velociraptor running toward the viewer's right. CAMERA: elevated three-quarter view from ABOVE and slightly in front, about 40 degrees down, so we see the top of its back and head and its body is foreshortened toward the camera (not a flat side profile); the same camera angle as the caveman in the second reference image. Use the first reference only for the raptor's design and painterly semi-realistic style. Soft overhead light from top-left, muted colours for a dark jungle floor, no rim light. Compact pose: tail curving behind, legs mid-stride under the body. Plain flat pure white background, no ground, no shadow, no text."
+  }
+ ]
+}

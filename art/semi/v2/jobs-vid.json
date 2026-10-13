@@ -1,0 +1,24 @@
+{
+ "shots": [
+  {
+   "id": "vid-grub",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/start-grub-top2.jpg"
+    }
+   ],
+   "prompt": "2D hand-painted game animation of EXACTLY the creature in the image (same design, colours, painterly style, same camera angle from above). Camera completely static, no zoom, no pan; the creature stays in the centre at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It crawls IN PLACE in a smooth repeating loop: its body segments squash and stretch in a wave from tail to head, tiny legs paddle, mandibles snap, head bobs slightly. Continuous seamless crawl cycle."
+  },
+  {
+   "id": "vid-wolf",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/start-wolf-top3.jpg"
+    }
+   ],
+   "prompt": "2D hand-painted game animation of EXACTLY the creature in the image (same design, colours, painterly style, same camera angle from above). Camera completely static, no zoom, no pan; the creature stays in the centre at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. It runs IN PLACE toward the right (like on a treadmill) in a smooth, fast, repeating run cycle: legs striding, tail swaying for balance, head steady and fierce, body bobbing slightly."
+  }
+ ]
+}

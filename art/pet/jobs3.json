@@ -1,0 +1,24 @@
+{
+ "shots": [
+  {
+   "id": "dog3",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/pet/dog2.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/ref-crop-10.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/ref-crop-9.png"
+    }
+   ],
+   "prompt": "Edit the FIRST reference image: keep EXACTLY the same scruffy dog (design, pose, size, position, face, dirt). Re-render it HAND-PAINTED exactly like the boy in the second image and the painted crops in the third and fourth images: visible dry gouache brush strokes in the fur, uneven blotchy colour, soft painted shading that is not flat, fine grainy paper texture over everything, grime painted with smudgy strokes, a slightly wobbly hand-inked dark outline that varies in thickness. Not clean digital vector. Plain flat pure white background, no ground, no shadow, no text."
+  }
+ ]
+}

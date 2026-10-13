@@ -69,6 +69,7 @@ export class Game {
   /** Simple cartoon smoke puffs on kills: a few round inked balls that pop out and fade. */
   private puffs: { x: number; y: number; r: number; t: number; seed: number }[] = [];
   private jabClip = new Clip('anim/arc/', 230);
+  private dogClip = new Clip('anim/dog/', 160);
   private jabSeen = new WeakSet<object>();
   private jabs: { x: number; y: number; a: number; w: number; t: number }[] = [];
   private shots: { clip: string; x: number; y: number; w: number; t: number; len: number }[] = [];
@@ -663,6 +664,28 @@ export class Game {
       else this.blit(ctx, egg, o.x, o.y + 10, 1.1, 1, 1, this.time * 6, 0);
     }
 
+    // Loyal Mutt dogs: run loop when moving, a tiny hop when biting, a ground shadow
+    for (const p of m.pets) {
+      ctx.fillStyle = 'rgba(25,18,10,.25)';
+      ctx.beginPath(); ctx.ellipse(p.x, p.y, 22, 7, 0, 0, Math.PI * 2); ctx.fill();
+      if (!this.dogClip.ready) continue;
+      // bite: crouch back, then lunge nose-down at the target and snap the jaws shut
+      const k = p.bite > 0 ? 1 - p.bite / 0.24 : -1;
+      const lunge = k < 0 ? 0 : k < 0.3 ? -k / 0.3 * 6 : Math.sin((k - 0.3) / 0.7 * Math.PI) * 18;
+      const tilt = k < 0 ? 0 : k < 0.3 ? -0.08 : Math.sin((k - 0.3) / 0.7 * Math.PI) * 0.22;
+      const hop = k < 0.3 ? 0 : Math.sin((k - 0.3) / 0.7 * Math.PI) * 6;
+      ctx.save(); ctx.translate(p.x + lunge * p.facing, p.y); ctx.rotate(tilt * p.facing);
+      this.dogClip.draw(ctx, 0, -hop, 84, p.moving || k >= 0 ? this.time * (k >= 0 ? 1.6 : 1) : 0, p.facing, 0, k >= 0.3 && k < 0.7 ? 1.08 : 1, k >= 0 && k < 0.3 ? 0.94 : 1);
+      ctx.restore();
+      if (k >= 0.45 && k < 0.85) {
+        // two inked jaw arcs closing in front of the muzzle
+        const close = (k - 0.45) / 0.4, mx = p.x + p.facing * (40 + lunge), my = p.y - 30, o = 10 * (1 - close) + 2;
+        ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.globalAlpha = 1 - close * 0.6;
+        ctx.beginPath(); ctx.arc(mx, my - o, 9, Math.PI * 0.15, Math.PI * 0.85); ctx.stroke();
+        ctx.beginPath(); ctx.arc(mx, my + o, 9, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+    }
     // y-sorted bodies
     const list = this.visibleEnemies;
     list.length = 0;
@@ -1457,18 +1480,6 @@ export class Game {
     this.ui.swallow();
   }
 
-  /** Quiet controls retain a full touch target even when only text is visible. */
-  private quietButton(ctx: Ctx, id: string, r: Rect, label: string, disabled = false, color = '#7a5a3a'): boolean {
-    this.ui.claimIfOver(id, r, disabled);
-    const p = this.input.p;
-    const pressed = !disabled && p.down && inside(r, p.x, p.y) && inside(r, p.downX, p.downY);
-    ctx.save();
-    if (pressed) { ctx.translate(r.x + r.w / 2, r.y + r.h / 2); ctx.scale(0.94, 0.94); ctx.translate(-r.x - r.w / 2, -r.y - r.h / 2); ctx.globalAlpha = 0.75; }
-    text(ctx, label, r.x + r.w / 2, r.y + r.h / 2, fitSize(ctx, label, 25, r.w - 20), disabled ? '#a09888' : color, 'center', 700);
-    ctx.restore();
-    return !disabled && !this.busy && !this.poki.adRunning && p.justUp && inside(r, p.x, p.y) && inside(r, p.downX, p.downY);
-  }
-
   private drawEdgeArrows(ctx: Ctx, m: Model): void {
     const v = this.v;
     const inset = 30, top = v.safe.t + 280, bottom = v.h - v.safe.b - 80;
@@ -1507,52 +1518,104 @@ export class Game {
 
   private drawResult(ctx: Ctx, m: Model): void {
     const v = this.v, won = m.status === 'won', cx = v.w / 2;
-    const w = Math.min(690, v.w - 50), h = 830;
-    const r: Rect = { x: cx - w / 2, y: Math.max(v.safe.t + 55, (v.h - h) / 2 + 20), w, h };
+    const w = Math.min(660, v.w - 50);
+    const missions = this.missionResults.slice(-3);
+    const h = 760 + (missions.length ? 34 * missions.length + 20 : 0);
+    const r: Rect = { x: cx - w / 2, y: Math.max(v.safe.t + 60, (v.h - h) / 2 + 24), w, h };
     this.ui.scrim(ctx, v.w, v.h); fancyPanel(ctx, r);
-    ribbon(ctx, cx, r.y - 34, Math.min(490, w - 60), won ? 'ZONE CLEAR!' : 'KNOCKED OUT', won ? 'green' : 'red');
+    ribbon(ctx, cx, r.y - 36, Math.min(470, w - 60), won ? 'ZONE CLEAR!' : 'KNOCKED OUT', won ? 'green' : 'red');
+    const INKS = '#3a2a1e', SOFT = '#7a5f45', OCHRE = '#9a6a2a', RUST = '#9a3a22';
+    const rule = (y: number, x0 = r.x + 56, x1 = r.x + w - 56) => {
+      ctx.strokeStyle = 'rgba(90,70,54,.35)'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(x0, y); ctx.quadraticCurveTo((x0 + x1) / 2, y + 2, x1, y - 1); ctx.stroke();
+    };
+    let y = r.y + 70;
+
+    // cause + one tip, as type (no boxes)
     const names: Record<EnemyKind | 'spore', string> = { grub: 'a Mushroom Gnome', bat: 'a Cave Bat', beetle: 'an Orc Shieldbearer', wolf: 'a Boar Rider', shroom: 'a Torch Goblin', brute: 'a Forest Troll', boss: 'the Ogre Chief', spore: 'a burning torch' };
     const cause = m.lastHitBy;
     const heading = won ? 'You survived the swarm!' : cause ? 'Knocked out by ' + names[cause] : 'Run ended';
-    text(ctx, heading, cx, r.y + 55, fitSize(ctx, heading, 28, w - 50), INK, 'center', 700);
-    const tip = cause === 'spore' ? 'Spores fly straight — sidestep them' : cause === 'boss' ? 'Bosses charge in a line — move sideways' : this.movedFor < 2 ? 'Keep moving!' : cause === 'wolf' ? 'Wolves dash — keep some space' : cause === 'brute' || cause === 'beetle' ? 'Circle tough enemies and collect amber' : 'Collect amber and choose stronger skills';
-    if (!won) text(ctx, tip, cx, r.y + 92, fitSize(ctx, tip, 23, w - 50), '#7a5a3a', 'center');
-    [{ label: 'SURVIVED', value: fmtTime(m.time) }, { label: 'LEVEL', value: String(m.level) }, { label: 'DEFEATED', value: String(m.kills) }].forEach((col, i) => {
+    text(ctx, heading, cx, y, fitSize(ctx, heading, 30, w - 70), INKS, 'center', 700);
+    if (!won) {
+      const tip = cause === 'spore' ? 'Torches fly straight. Sidestep them.' : cause === 'boss' ? 'The Ogre charges in a line. Step aside.' : this.movedFor < 2 ? 'Keep moving!' : cause === 'wolf' ? 'Boar riders dash. Keep some space.' : cause === 'brute' || cause === 'beetle' ? 'Circle big enemies and keep collecting amber.' : 'Collect amber and pick stronger skills.';
+      ctx.font = `italic 600 ${fitSize(ctx, tip, 22, w - 70)}px "Alegreya", Georgia, serif`;
+      ctx.fillStyle = SOFT; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(tip, cx, y + 36);
+    }
+    y += 82;
+    rule(y);
+
+    // stats: ink numbers on the paper, hairline separators
+    y += 52;
+    const stats = [{ label: 'SURVIVED', value: fmtTime(m.time) }, { label: 'LEVEL', value: String(m.level) }, { label: 'DEFEATED', value: String(m.kills) }];
+    stats.forEach((st, i) => {
       const x = r.x + w * (i + 0.5) / 3;
-      text(ctx, col.label, x, r.y + 143, 20, '#a8702a', 'center', 700);
-      outlinedText(ctx, col.value, x, r.y + 183, 43, '#f6ead0', INK, 'center');
+      text(ctx, st.label, x, y - 24, 16, OCHRE, 'center', 700);
+      ctx.font = `800 44px "Alegreya SC", "Alegreya", Georgia, serif`; ctx.fillStyle = INKS; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(st.value, x, y + 16);
+      if (i) { ctx.strokeStyle = 'rgba(90,70,54,.3)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(r.x + w * i / 3, y - 34); ctx.lineTo(r.x + w * i / 3, y + 40); ctx.stroke(); }
     });
-    if (this.newBest && !won) outlinedText(ctx, 'NEW BEST TIME!', cx, r.y + 230, 25, '#f0c060', INK, 'center');
-    else if (won && m.zone + 1 < ZONES.length) text(ctx, ZONES[m.zone + 1].name + ' unlocked!', cx, r.y + 230, 24, '#3f8e2e', 'center');
-    const pr: Rect = { x: r.x + 40, y: r.y + 262, w: (w - 100) * 0.55, h: 64 };
-    goldPill(ctx, pr);
-    this.blit(ctx, this.sprites.pickup('coin'), pr.x + 34, pr.y + 44, 1.2, 1, 1, 0, 0);
+    y += 62;
+    if (this.newBest && !won) text(ctx, 'NEW BEST TIME', cx, y, 18, RUST, 'center', 700);
+    else if (won && m.zone + 1 < ZONES.length) text(ctx, ZONES[m.zone + 1].name.toUpperCase() + ' UNLOCKED', cx, y, 18, '#4a7a2e', 'center', 700);
+    y += 26;
+    rule(y);
+
+    // coins earned: painted coin + big ink number, the optional x2 ad as a small plank beside it
+    y += 56;
+    const coinImg = this.sprites.image('hud-coin');
     const amount = '+' + this.banked * (this.doubled ? 2 : 1);
-    outlinedText(ctx, amount, pr.x + 65, pr.y + 33, fitSize(ctx, amount, 35, pr.w - 85), '#f6ead0', '#a8661a', 'left');
-    const dr: Rect = { x: pr.x + pr.w + 20, y: pr.y - 10, w: w - 80 - pr.w - 20, h: Math.max(84, 44 / v.scale) };
-    if (!this.doubled) {
-      this.clapper(ctx, dr.x + 18, dr.y + dr.h / 2, 23);
-      if (this.quietButton(ctx, 'double', { ...dr, x: dr.x + 30, w: dr.w - 30 }, 'x2 COINS', this.busy, '#245aa0')) this.rewarded(() => {
+    ctx.font = `800 46px "Alegreya SC", "Alegreya", Georgia, serif`;
+    const aw = ctx.measureText(amount).width;
+    const hasAd = !this.doubled;
+    const groupW = 52 + 14 + aw + (hasAd ? 28 + 200 : 0);
+    let gx = cx - groupW / 2;
+    if (coinImg) ctx.drawImage(coinImg, gx, y - 26, 52, 52);
+    gx += 66;
+    ctx.fillStyle = '#7a4e12'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(amount, gx, y + 2);
+    gx += aw + 28;
+    if (hasAd) {
+      const dr: Rect = { x: gx, y: y - 32, w: 200, h: 64 };
+      if (this.ui.button('double', dr, { label: 'x2 COINS', sub: 'watch ad', tone: 'blue', size: 24, disabled: this.busy, subIcon: (c, x, yy, sz) => this.clapper(c, x, yy, sz) }, ctx)) this.rewarded(() => {
         if (!this.doubled) { this.doubled = true; this.meta.coins += this.banked; saveMeta(this.meta); this.audio.play('chest'); }
       });
     }
+    y += 58;
+
+    // camp progress: one quiet line + a thin framed bar
     const cost = this.cheapestUpgrade();
-    const upgrade = Number.isFinite(cost) ? this.meta.coins >= cost ? 'Your next upgrade is ready!' : (cost - this.meta.coins) + ' more coins for your next upgrade' : 'All camp upgrades complete!';
-    text(ctx, upgrade, cx, r.y + 365, fitSize(ctx, upgrade, 23, w - 80), '#7a5a3a', 'center');
-    ctx.fillStyle = '#d8c8a0'; ctx.fillRect(r.x + 40, r.y + 390, w - 80, 4);
-    ctx.fillStyle = '#eaa82a'; ctx.fillRect(r.x + 40, r.y + 390, (w - 80) * (Number.isFinite(cost) ? Math.min(1, this.meta.coins / cost) : 1), 4);
-    this.missionResults.slice(-3).forEach((mission, i) => text(ctx, 'MISSION COMPLETE +' + mission.reward, cx, r.y + 426 + i * 29, 22, '#3f8e2e', 'center', 700));
-    const retry: Rect = { x: r.x + 40, y: r.y + 545, w: w - 80, h: Math.max(104, 44 / v.scale) };
+    const upgrade = Number.isFinite(cost) ? this.meta.coins >= cost ? 'An upgrade is ready at the camp' : (cost - this.meta.coins) + ' more coins to the next upgrade' : 'All camp upgrades complete';
+    text(ctx, upgrade, cx, y, fitSize(ctx, upgrade, 20, w - 80), SOFT, 'center', 600);
+    y += 26;
+    bar(ctx, { x: r.x + 90, y, w: w - 180, h: 10 }, Number.isFinite(cost) ? Math.min(1, this.meta.coins / cost) : 1, '#d89a3a');
+    y += 34;
+
+    // missions: one line each, check mark + label + reward, no shouting
+    if (missions.length) {
+      rule(y); y += 30;
+      for (const mi of missions) {
+        const label = missionLabel(mi);
+        ctx.strokeStyle = '#4a7a2e'; ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.beginPath(); ctx.moveTo(r.x + 70, y); ctx.lineTo(r.x + 77, y + 7); ctx.lineTo(r.x + 91, y - 8); ctx.stroke();
+        text(ctx, label, r.x + 104, y, fitSize(ctx, label, 20, w - 260), INKS, 'left', 600);
+        text(ctx, '+' + mi.reward, r.x + w - 70, y, 20, '#7a4e12', 'right', 700);
+        y += 34;
+      }
+      y += 6;
+    }
+
+    // actions: one primary (gold RETRY), then camp + revive
+    y += 6;
+    const retry: Rect = { x: r.x + 56, y, w: w - 112, h: Math.max(96, 44 / v.scale) };
     ctx.save(); const pulse = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 1 + Math.sin(this.time * 3) * 0.008;
     ctx.translate(cx, retry.y + retry.h / 2); ctx.scale(pulse, pulse); ctx.translate(-cx, -retry.y - retry.h / 2);
-    const again = this.ui.button('retry', retry, { label: won ? 'NEXT' : 'RETRY', tone: 'gold', disabled: this.busy }, ctx); ctx.restore();
-    const bw = (w - 100) / 2, bh = Math.max(86, 44 / v.scale);
-    const camp: Rect = { x: r.x + 40, y: r.y + 685, w: bw, h: bh };
+    const again = this.ui.button('retry', retry, { label: won ? 'NEXT ZONE' : 'RETRY', tone: 'gold', disabled: this.busy }, ctx); ctx.restore();
+    const bw = (w - 112 - 20) / 2, bh = Math.max(80, 44 / v.scale);
+    const camp: Rect = { x: r.x + 56, y: retry.y + retry.h + 26, w: bw, h: bh };
     const rev: Rect = { x: camp.x + bw + 20, y: camp.y, w: bw, h: bh };
-    const toCamp = this.meta.coins >= cost
-      ? this.ui.button('camp', camp, { label: 'CAMP', tone: 'stone', disabled: this.busy }, ctx)
-      : this.quietButton(ctx, 'camp', camp, 'Camp', this.busy);
-    if (!won && !m.revived && this.ui.button('revive', rev, { label: 'REVIVE', tone: 'blue', sub: 'watch ad', disabled: this.busy, subIcon: (c, x, y, s) => this.clapper(c, x, y, s) }, ctx)) this.rewarded(() => {
+    const showRevive = !won && !m.revived;
+    const campRect = showRevive ? camp : { ...camp, x: cx - bw / 2 };
+    const toCamp = this.ui.button('camp', campRect, { label: 'CAMP', tone: 'stone', disabled: this.busy }, ctx);
+    if (showRevive && this.ui.button('revive', rev, { label: 'REVIVE', tone: 'blue', sub: 'watch ad', disabled: this.busy, subIcon: (c, x, yy, sz) => this.clapper(c, x, yy, sz) }, ctx)) this.rewarded(() => {
       if (m.revive()) { this.result = null; this.poki.gameplayStart(); this.audio.play('super'); this.fx.shake(0.8, 0.4); }
     });
     if (toCamp) { this.screen = 'camp'; this.m = null; }
@@ -1568,7 +1631,7 @@ export class Game {
     const w = s * 1.1, h = s * 0.8;
     c.save();
     c.translate(x, y);
-    c.fillStyle = '#fff'; c.strokeStyle = INK; c.lineWidth = 2;
+    c.fillStyle = '#f3e6cc'; c.strokeStyle = INK; c.lineWidth = 2;
     rrect(c, -w / 2, -h / 2 + h * 0.25, w, h * 0.75, 3); c.fill(); c.stroke();
     c.beginPath(); c.moveTo(-w / 2, -h / 2 + h * 0.2); c.lineTo(w / 2, -h / 2 - h * 0.05); c.lineTo(w / 2, -h / 2 + h * 0.12); c.lineTo(-w / 2, -h / 2 + h * 0.37); c.closePath(); c.fill(); c.stroke();
     c.restore();

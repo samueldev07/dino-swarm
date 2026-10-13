@@ -1,0 +1,18 @@
+{
+  "shots": [
+    {
+      "id": "test-medallion",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile game bevel. Draw a single round game UI badge / medallion: a weathered dark wood circular disc with a hand-forged dark iron rim studded with small iron rivets. The center is blank weathered wood with no text and no numbers. Top-left key lighting. Centered, isolated on a plain flat pure white background, no floor shadow, no text, no frame around the canvas.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    }
+  ]
+}

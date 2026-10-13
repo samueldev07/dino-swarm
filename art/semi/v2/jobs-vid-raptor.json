@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "vid-raptor",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/start-raptor-own.jpg"
+    }
+   ],
+   "prompt": "Hand-painted 2D game animation of the feathered raptor in the image, same look and same camera angle from above. Static camera, the creature stays centred at the same size. It runs in place toward the right in a smooth, fast, repeating run cycle: legs striding, tail swaying for balance, head steady. Plain white background, no ground, no shadow, no text."
+  }
+ ]
+}

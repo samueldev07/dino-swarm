@@ -100,5 +100,12 @@ const fresh = (seed = 1) => { const m = new Model({ species: 'raptor', zone: 0, 
   for (const f of [f1, f2]) { f.x = b.px; f.y = b.py; } b.enemies = [f1, f2]; b.step(1 / 60);
   ok(100 - b.hp > 100 - a.hp, 'being swarmed hurts more than one touch');
 }
+{ // Loyal Mutt: a dog appears and bites for 1/10 of the hero's jab
+  const m = fresh(5);
+  m.weapons.set('thorns', 1);
+  const e = m.spawn('beetle', 0, 120); e.speed = 0; e.hp = e.maxHp = 9999; m.enemies = [e];
+  for (let i = 0; i < 240; i++) { m.invuln = 9; m.step(1 / 60); }
+  ok(m.pets.length === 1 && e.hp < 9999, 'a dog spawns and bites the nearest enemy');
+}
 console.log(fails ? `\n${fails} FAILED` : '\nall passed');
 process.exit(fails ? 1 : 0);

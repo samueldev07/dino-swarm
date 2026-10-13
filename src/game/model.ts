@@ -11,7 +11,7 @@ import {
   STEP, TUNING, type Tuning, ENEMIES, type EnemyKind, type EnemyDef, SPAWN_MIX, EVENTS,
   WEAPONS, type WeaponId, type PassiveId, type SkillId, PASSIVE_STEP, WEAPON_IDS, PASSIVE_IDS,
   isWeapon, MAX_LEVEL, MAX_WEAPONS, THORN_LIFE, THORN_TICK, ROAR_STUN, METEOR_DELAY,
-  xpToNext, SPECIES, EVOLUTIONS, EVOLVED, type SpeciesId, ZONES, CAMP, type CampId,
+  xpToNext, SPECIES, PET_SHARE, PET_SPEED, EVOLUTIONS, EVOLVED, type SpeciesId, ZONES, CAMP, type CampId,
 } from './config.ts';
 
 // ------------------------------------------------------------------ types
@@ -173,6 +173,8 @@ export class Model {
   waves: Wave[] = [];
   meteors: Meteor[] = [];
   thorns: Thorn[] = [];
+  /** Loyal Mutt companions (view reads x, y, facing, biting). */
+  pets: { x: number; y: number; cd: number; facing: 1 | -1; bite: number; moving: boolean }[] = [];
   boss: Enemy | null = null;
   bossKills = 0;
   evolved = new Set<WeaponId>();
@@ -655,7 +657,7 @@ export class Model {
   private fireWeapons(dt: number): void {
     for (const [id] of this.weapons) {
       if (id === 'orbit') { this.orbit(dt); continue; }
-      if (id === 'thorns') { this.thornTrail(dt); continue; }
+      if (id === 'thorns') { this.petsStep(dt); continue; }
       const cd = (this.cds.get(id) ?? 0) - dt;
       if (cd > 0) { this.cds.set(id, cd); continue; }
       const L = this.wl(id);
@@ -784,7 +786,37 @@ export class Model {
     return out;
   }
 
-  private thornTrail(dt: number): void {
+  private petsStep(dt: number): void {
+    const L = this.wl('thorns');
+    while (this.pets.length < L.count) {
+      const a = this.pets.length * 2.1 + 0.6;
+      this.pets.push({ x: this.px + Math.cos(a) * 60, y: this.py + Math.sin(a) * 40, cd: 0.3, facing: 1, bite: 0, moving: false });
+    }
+    const dmg = WEAPONS.bite[(this.weapons.get('bite') ?? 1) - 1].damage * this.might * PET_SHARE;
+    const sp = this.speed * PET_SPEED;
+    this.pets.forEach((p, i) => {
+      p.cd -= dt; if (p.bite > 0) p.bite -= dt;
+      // target: nearest enemy to the dog within chase range of the hero, else a heel spot by the hero
+      const t = this.nearest(p.x, p.y, L.area);
+      const near = t && Math.hypot(t.x - this.px, t.y - this.py) < L.area * 1.3 ? t : null;
+      const a = i * 2.1 + 0.6;
+      const gx = near ? near.x : this.px + Math.cos(a) * 60, gy = near ? near.y : this.py + Math.sin(a) * 40;
+      const dx = gx - p.x, dy = gy - p.y, d = Math.hypot(dx, dy);
+      const reach = near ? near.r + 14 : 6;
+      p.moving = d > reach;
+      if (p.moving) { const st = Math.min(d - reach, sp * dt); p.x += (dx / d) * st; p.y += (dy / d) * st; }
+      if (Math.abs(dx) > 2) p.facing = dx > 0 ? 1 : -1;
+      if (near && d <= reach + 4 && p.cd <= 0) {
+        p.cd = L.cooldown * this.cooldownMult; p.bite = 0.24;
+        this.hitEnemy(near, Math.max(1, dmg), dx / (d || 1), dy / (d || 1), 40, true, 'thorns');
+      }
+      // too far behind (hero dashed off): catch up instantly near him
+      if (Math.hypot(p.x - this.px, p.y - this.py) > 900) { p.x = this.px - 40; p.y = this.py + 20; }
+    });
+  }
+
+  // Old Bramble Trail kept for saved/tuned data paths; no longer offered.
+  thornTrail(dt: number): void {
     const L = this.wl('thorns');
     const cd = (this.cds.get('thorns') ?? 0) - dt;
     const moved = Math.hypot(this.px - this.lastThornX, this.py - this.lastThornY);

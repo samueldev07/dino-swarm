@@ -1,0 +1,141 @@
+{
+  "shots": [
+    {
+      "id": "ui-panel",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single rectangular game UI panel frame: a weathered dark timber wood plank frame surrounding an aged parchment paper sheet in the center. Hand-forged dark iron corner brackets with small round rivets strictly at the four corners. Symmetrical rectangular shape with straight, plain outer wood edges that can stretch for 9-slice. Center is a clean, blank aged cream parchment area with NO drawings and NO text. Top-left light source. Centered, isolated on a pure flat white background, no floor shadow, no canvas border.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-card",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single vertical rectangular level-up choice card (3:4 proportion): aged cream parchment sheet bordered by subtle weathered wood and tiny hand-forged dark iron corner braces with rivets at the four corners. Plain straight edges suitable for 9-slice stretching. The top portion has a subtle circular or arched empty frame area reserved for a skill icon; the lower portion is completely blank parchment. Top-left light. ABSOLUTELY NO TEXT, NO NUMBERS, NO ICONS inside. Centered, isolated on a pure flat white background, no floor shadow.",
+      "aspect": "3:4",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-btn-primary",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single primary action button: a sturdy horizontal wooden plank painted in warm amber / golden ochre tone (#c87520), capped at the far left and right ends with hand-forged dark iron bands with small rivets. Plain straight horizontal top and bottom edges suitable for 9-slice stretching. Top-left key light, soft bottom shadow. Face of the wooden plank is completely blank, NO text, NO icons. Centered, isolated on a pure flat white background, no floor shadow.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-btn-ad",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single 'watch ad' action button: a sturdy horizontal wooden plank painted in muted dusty blue-grey / slate blue (#5a6e82), capped at the far left and right ends with hand-forged dark iron bands with small rivets. Poki rule: ABSOLUTELY NO GREEN COLOR anywhere. Plain straight horizontal top and bottom edges suitable for 9-slice stretching. Top-left light, soft bottom shadow. Face of the plank is completely blank, NO text, NO icons. Centered, isolated on a pure flat white background, no floor shadow.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-btn-quiet",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single secondary quiet button: a sturdy horizontal dark weathered timber wood plank (#3b2e22), capped at the left and right ends with hand-forged dark iron bands with small rivets. Plain straight horizontal top and bottom edges suitable for 9-slice stretching. Top-left light, soft bottom shadow. Face of the dark wood plank is completely blank, NO text, NO icons. Centered, isolated on a pure flat white background, no floor shadow.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-ribbon-win",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single heraldic banner ribbon for victory: a horizontal medieval cloth scroll / ribbon painted in muted dark moss green (#4a6e38), with folded swallow-tail banner ends on both sides. Thick uneven dark ink outlines, soft fabric fold shading, top-left light. The central wide rectangular band of the banner is flat, horizontal and completely blank for text. ABSOLUTELY NO TEXT, NO LETTERS, NO CRESTS. Centered, isolated on a pure flat white background, no floor shadow.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-ribbon-lose",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single heraldic banner ribbon for defeat: a horizontal medieval cloth scroll / ribbon painted in dark muted crimson red (#7d2a2a), with folded swallow-tail banner ends on both sides. Thick uneven dark ink outlines, soft fabric fold shading, top-left light. The central wide rectangular band of the banner is flat, horizontal and completely blank for text. ABSOLUTELY NO TEXT, NO LETTERS, NO CRESTS. Centered, isolated on a pure flat white background, no floor shadow.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-bar-frame",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a single thin horizontal bar frame for an XP progress bar: a slender horizontal rectangular frame forged from dark hand-hammered iron with small square corner brackets and tiny rivets at the four corners. Plain straight narrow iron rails on top and bottom suitable for 9-slice stretching. The entire interior center is completely empty and hollow (flat pure white inside and outside). NO bar fill, NO text, NO numbers, NO decorations along the middle rails. Centered, isolated on a pure flat white background.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "ui-iconbtn",
+      "prompt": "Match the art style of the reference images EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven black-brown ink outline (#221a14), flat colours with one soft painted shadow tone, muted earthy palette, charming and slightly grim, NOT glossy, NOT 3D CGI, NOT generic mobile-game bevel. Draw a small utility button: a rounded-square or circular dark weathered wooden plate encased in a hand-forged dark iron rim with 4 small corner rivets. Thick uneven dark ink outlines, top-left lighting, flat earthy colors. The central wooden surface is flat and completely blank, NO text, NO icons. Centered, isolated on a pure flat white background, no floor shadow.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-char.png"
+        },
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    },
+    {
+      "id": "bg-forest-clearing",
+      "prompt": "Match the art style of the reference images EXACTLY (hand-drawn ink cartoon, flat colours, dark folk fairytale). A top-down atmospheric game background of a deep mossy forest clearing: muted dark olive-green mossy grass ground, ancient twisted roots and mossy tree stumps along the edges, fallen leaves, soft low-contrast ground so characters and UI stand out clearly. Dim fairy-tale woodland mood with soft top-left ambient light. NO characters, NO monsters, NO UI, NO text, fills the entire 16:9 frame.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/folk/ref-scene.png"
+        }
+      ]
+    }
+  ]
+}

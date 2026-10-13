@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "dog2",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/pet/dog.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    }
+   ],
+   "prompt": "Edit the FIRST reference image: keep EXACTLY the same dog (design, pose, size, position, face, ink outline). Make it look poor, scruffy and dirty like the farm boy in the second reference: matted, tangled fur with a few tufts sticking out, mud stains on the legs and belly, grime smudges and dusty streaks on the body, a torn notch in the floppy ear, a patched old rag tied as the collar instead of the neat rope, slightly duller faded colours. Same flat colours + soft shadow, gritty texture like the boy's clothes. Plain flat pure white background, no ground, no shadow, no text."
+  }
+ ]
+}

@@ -1,0 +1,48 @@
+{
+ "shots": [
+  {
+   "id": "grub-c1",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/grub-top2.jpg"
+    }
+   ],
+   "prompt": "Edit the reference image: keep EXACTLY the same larva creature (design, colours, painterly style, camera angle, position and size). Only change its body pose for frame 1 of a 4-frame crawl cycle: the body fully STRETCHED long, segments spread apart, head pushed forward, mandibles open. Plain flat pure white background, no shadow, no text."
+  },
+  {
+   "id": "grub-c2",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/grub-top2.jpg"
+    }
+   ],
+   "prompt": "Edit the reference image: keep EXACTLY the same larva creature (design, colours, painterly style, camera angle, position and size). Only change its body pose for frame 2 of a 4-frame crawl cycle: half-way: the rear segments start bunching up toward the middle, head steady. Plain flat pure white background, no shadow, no text."
+  },
+  {
+   "id": "grub-c3",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/grub-top2.jpg"
+    }
+   ],
+   "prompt": "Edit the reference image: keep EXACTLY the same larva creature (design, colours, painterly style, camera angle, position and size). Only change its body pose for frame 3 of a 4-frame crawl cycle: the body CONTRACTED short and tall, segments squeezed together and arched up in the middle, mandibles closed. Plain flat pure white background, no shadow, no text."
+  },
+  {
+   "id": "grub-c4",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/grub-top2.jpg"
+    }
+   ],
+   "prompt": "Edit the reference image: keep EXACTLY the same larva creature (design, colours, painterly style, camera angle, position and size). Only change its body pose for frame 4 of a 4-frame crawl cycle: half-way back: the front segments reaching forward again, body lengthening. Plain flat pure white background, no shadow, no text."
+  }
+ ]
+}

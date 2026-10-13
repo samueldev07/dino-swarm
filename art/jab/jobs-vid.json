@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "jab-vid",
+   "aspect": "16:9",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/jab/jab-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-drawn cartoon game slash effect, same ink style, static camera. The three cream-white prong streaks shoot quickly from the left to the right side like a fast pitchfork thrust, ending in a sharp bright impact star burst with a few small sparks at the right tip, then the streaks thin out and fade to nothing. Very fast and snappy. Background stays ONE flat pure bright green #00FF00 the whole time."
+  }
+ ]
+}

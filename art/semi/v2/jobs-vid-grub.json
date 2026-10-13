@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "vid-grub",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/start-grub-top2.jpg"
+    }
+   ],
+   "prompt": "Hand-painted 2D game animation of the larva creature in the image, same look and same camera angle. Static camera, the creature stays centred. It crawls in place in a smooth repeating loop: segments ripple from tail to head, tiny legs paddle, mandibles open and close. Plain white background, no ground, no shadow, no text."
+  }
+ ]
+}

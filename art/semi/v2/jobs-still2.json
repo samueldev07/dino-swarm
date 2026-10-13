@@ -1,0 +1,32 @@
+{
+ "shots": [
+  {
+   "id": "grub-top2",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/raw/enemy-grub.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ],
+   "prompt": "Game sprite for a TOP-DOWN survivor game. CAMERA: high bird's-eye three-quarter view, looking DOWN at the creature from about 60 degrees above, so we mostly see its BACK and the top of its head; the body is foreshortened, the legs are short and partly hidden under the body, exactly like the small creatures seen from above in the second reference image. The creature faces RIGHT. Use the FIRST reference image only for the creature's design, colours and painterly semi-realistic style - NOT for its camera angle. LIGHTING: soft overhead light from top-left, muted colours that sit on a dark mossy forest floor, no rim light, no studio highlights. Plain flat pure white background, no ground, no cast shadow, no text. Creature: a fat teal segmented cave larva, seen from above: a row of rounded teal back segments, its head at the right end with one big angry orange eye looking up-right, small mandibles, tiny legs peeking out at the sides."
+  },
+  {
+   "id": "wolf-top2",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/raw/enemy-wolf.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-map.jpg"
+    }
+   ],
+   "prompt": "Game sprite for a TOP-DOWN survivor game. CAMERA: high bird's-eye three-quarter view, looking DOWN at the creature from about 60 degrees above, so we mostly see its BACK and the top of its head; the body is foreshortened, the legs are short and partly hidden under the body, exactly like the small creatures seen from above in the second reference image. The creature faces RIGHT. Use the FIRST reference image only for the creature's design, colours and painterly semi-realistic style - NOT for its camera angle. LIGHTING: soft overhead light from top-left, muted colours that sit on a dark mossy forest floor, no rim light, no studio highlights. Plain flat pure white background, no ground, no cast shadow, no text. Creature: a lean grey-blue striped velociraptor running to the right, seen from above: we see its striped back and spine, long tail stretched behind to the left, head and jaws to the right, legs foreshortened under the body, claws forward."
+  }
+ ]
+}

@@ -28,7 +28,7 @@ export const TUNING = {
   magnetDrop: 0.0025,
   meatHeal: 30,
   /** Global multipliers the director applies over time (see `director`). */
-  hpGrowth: 0.014,           // enemy HP x (1 + t * hpGrowth)
+  hpGrowth: 0.011,           // enemy HP x (1 + t * hpGrowth)
   rateBase: 2.4,             // spawns per second at t = 0
   rateGrowth: 0.019,         // + per second of run time
   rateMax: 8,
@@ -162,11 +162,13 @@ export const WEAPONS: Record<WeaponId, WeaponLevel[]> = {
               { damage: 42, cooldown: 1.8, count: 3, area: 88 },
               { damage: 50, cooldown: 1.7, count: 3, area: 92 },
               { damage: 60, cooldown: 1.6, count: 4, area: 100 }],
-  thorns:    [{ damage: 7, cooldown: 0.34, count: 1, area: 34 },
-              { damage: 9, cooldown: 0.32, count: 1, area: 37 },
-              { damage: 11, cooldown: 0.3, count: 1, area: 40 },
-              { damage: 14, cooldown: 0.28, count: 1, area: 44 },
-              { damage: 18, cooldown: 0.25, count: 1, area: 50 }],
+  // Loyal Mutt (id kept as 'thorns'): count = dogs, cooldown = bite interval, area = chase range.
+  // A dog bites for PET_SHARE of the hero's own jab damage (owner 13/10: 1/10).
+  thorns:    [{ damage: 0, cooldown: 0.45, count: 1, area: 260 },
+              { damage: 0, cooldown: 0.4,  count: 1, area: 300 },
+              { damage: 0, cooldown: 0.4,  count: 2, area: 320 },
+              { damage: 0, cooldown: 0.35, count: 2, area: 340 },
+              { damage: 0, cooldown: 0.3,  count: 3, area: 380 }],
   roar:      [{ damage: 12, cooldown: 3.8, count: 1, area: 200 },
               { damage: 15, cooldown: 3.6, count: 1, area: 220 },
               { damage: 19, cooldown: 3.3, count: 1, area: 240 },
@@ -178,6 +180,8 @@ export const WEAPONS: Record<WeaponId, WeaponLevel[]> = {
 export const THORN_LIFE = 2.6;
 export const THORN_TICK = 0.4;
 export const ROAR_STUN = 0.4;
+export const PET_SHARE = 0.1;
+export const PET_SPEED = 1.35;   // x hero speed
 export const METEOR_DELAY = 0.65;
 
 export const PASSIVE_STEP: Record<PassiveId, number> = {
@@ -202,8 +206,8 @@ export const SKILLS: Record<SkillId, SkillDef> = {
                text: ['Slam the ground around you.', 'Bigger shockwave.', 'Stronger, more often.', 'Bigger shockwave.', 'Huge, rapid slams.'] },
   meteor:    { id: 'meteor', name: 'Rockfall', color: '#8a8478',
                text: ['A rock crashes down on a nearby enemy.', '+1 rock.', 'Bigger impacts.', '+1 rock.', '+1 rock, more damage.'] },
-  thorns:    { id: 'thorns', name: 'Bramble Trail', color: '#7a8a4a',
-               text: ['Leave brambles where you walk.', 'Thicker brambles.', 'Sharper thorns.', 'Thicker brambles.', 'A deadly bramble carpet.'] },
+  thorns:    { id: 'thorns', name: 'Loyal Mutt', color: '#9a7a52',
+               text: ['A scruffy dog fights at your side.', 'Bites faster, chases further.', '+1 dog.', 'Bites faster.', '+1 dog, fiercest pack.'] },
   roar:      { id: 'roar', name: 'War Horn', color: '#d8b26a',
                text: ['Blow the horn to push enemies back and stun them.', 'Wider blast.', 'Louder, more often.', 'Wider blast.', 'Earth-shaking blast.'] },
   vitality:  { id: 'vitality', name: 'Hearty Stew', color: '#e8504a', text: ['+20 max health.', '+20 max health.', '+20 max health.', '+20 max health.', '+20 max health.'] },
@@ -225,7 +229,7 @@ export const EVOLUTIONS: Record<WeaponId, { passive: PassiveId; name: string }> 
   orbit:     { passive: 'vitality', name: 'Iron Wall' },
   stomp:     { passive: 'regen',    name: 'Earthbreaker' },
   meteor:    { passive: 'magnet',   name: 'Landslide' },
-  thorns:    { passive: 'regen',    name: 'Thornwood' },
+  thorns:    { passive: 'regen',    name: 'Pack Leader' },
   roar:      { passive: 'might',    name: 'Thunder Horn' },
 };
 export const EVOLVED = { damage: 1.6, count: 1, area: 1.2, cooldown: 0.85 };

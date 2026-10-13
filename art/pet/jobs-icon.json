@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "skill-thorns",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/icons2/skill-bite.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/pet/dog3.jpg"
+    }
+   ],
+   "prompt": "A round game SKILL ICON exactly in the style of the first reference (thin dark iron-riveted wooden rim, light cream parchment disc, bold simple hand-inked symbol). Symbol: the head of the scruffy dog from the second reference, barking, filling about 70% of the disc. Readable at 40 pixels. Background around the icon: ONE flat pure magenta #FF00FF. No text."
+  }
+ ]
+}

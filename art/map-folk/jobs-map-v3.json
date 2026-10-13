@@ -1,0 +1,26 @@
+{
+  "shots": [
+    {
+      "id": "bg-forest-arena-v3",
+      "prompt": "Match the art style of the reference image EXACTLY: 2D hand-drawn dark folk fairy-tale cartoon, thick uneven dark-brown ink outlines (#221a14), muted earthy dark mossy palette. Large top-down game battlefield of an ancient deep mossy forest clearing: Dominant ground is lush, velvety dark olive-green mossy turf (80 percent of the ground). Just a few small, subtle worn dirt / earthy soil patches naturally integrated into the moss to balance the ground (NO huge bright sand roads, just soft gentle earth peeking through). ABSOLUTELY NO WATER PUDDLES, NO WATER, NO LAKES. Scattered crisp dry fallen oak leaves with sharp dark ink outlines. Outer borders and corners framed by ancient gnarled mossy oak trees and tree stumps. Wide open, calm, low-contrast central battle arena. Fills the 16:9 canvas. No characters, no text.",
+      "aspect": "16:9",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ground-v4-subtle-dirt",
+      "prompt": "Match the art style and ground texture of the reference image EXACTLY: 2D hand-drawn dark folk fairy-tale, thick dark-brown ink accents (#221a14). Top-down overhead 90-degree seamless tileable game ground texture: Mostly deep dark olive-green mossy grass and velvety turf (80 percent moss). Only a couple of small subtle patches of natural worn earth / soil softly integrated (NOT bright yellow sand, very subtle and balanced). ABSOLUTELY NO WATER PUDDLES, NO WATER. Scattered crisp fallen autumn leaves with sharp dark ink outlines. Completely flat overhead view, uniform lighting across all four edges for seamless game tiling, low contrast, calm.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/ui-folk/raw/bg-forest-clearing.jpg"
+        }
+      ]
+    }
+  ]
+}

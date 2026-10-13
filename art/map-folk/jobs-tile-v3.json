@@ -1,0 +1,26 @@
+{
+  "shots": [
+    {
+      "id": "ground-v3-organic-sand-moss",
+      "prompt": "Match the ground textures and art style of the reference image: 2D hand-drawn dark folk fairy-tale cartoon, dark ink outlines (#221a14), muted dark olive moss, warm sandy dirt patches, dry earth clearings, scattered crisp autumn leaves. Top-down overhead 90-degree view of flat ground: Natural organic non-directional distribution of moss and sandy earth patches (NO diagonal stripes, NO straight paths, NO tree trunks, NO characters). Low contrast, completely uniform flat lighting across all four edges, seamless repeating game tile texture.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/map-folk/raw/bg-forest-arena-v2.jpg"
+        }
+      ]
+    },
+    {
+      "id": "ground-v3-with-puddle",
+      "prompt": "Match the ground textures of the reference image: 2D hand-drawn dark folk cartoon, dark ink outlines (#221a14). Top-down flat overhead view of balanced forest terrain: Muted dark olive mossy turf, warm sandy soil patches, a few crisp dry leaves, and exactly one small subtle clear puddle reflecting soft ambient light. Low contrast, calm playing field, uniform flat lighting across edges, seamless repeatable game tile.",
+      "aspect": "1:1",
+      "model": "nano_banana_pro",
+      "refs": [
+        {
+          "path": "D:/REMOTION/games/dino-swarm/art/map-folk/raw/bg-forest-arena-v2.jpg"
+        }
+      ]
+    }
+  ]
+}

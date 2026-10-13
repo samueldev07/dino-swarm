@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "raptor-own",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/v2/wolf-top3.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/semi/ref-grub.png"
+    }
+   ],
+   "prompt": "Original creature design for our own game (not from any film): a small feathered jungle raptor with a moss-green and ochre body, a short crest of rust-orange feathers on the head and arms, a pale cream belly, dark speckles (no stripes), a stubby snout and big yellow eyes. Same elevated three-quarter camera from above and the same running pose as the first reference image; painterly semi-realistic style like the second reference. Soft overhead light from top-left, muted colours for a dark jungle floor. Plain flat pure white background, no ground, no shadow, no text."
+  }
+ ]
+}

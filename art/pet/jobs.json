@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "dog",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/hero-master.png"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-gnome.jpg"
+    }
+   ],
+   "prompt": "The farm boy's loyal little dog for the same game, drawn EXACTLY in the art style of the references (thick uneven hand-inked dark outline, flat muted earthy colours, one soft shadow, slightly grimy texture, big head and big round eyes with small dark pupils). A scrappy small brown-and-cream mutt with one floppy ear, a short stubby tail, a frayed rope collar, a brave determined little face. Simple design, few details. Full body, three-quarter side view facing RIGHT, standing. Plain flat pure white background, no ground, no shadow, no text."
+  }
+ ]
+}
