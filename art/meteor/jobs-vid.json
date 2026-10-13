@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "meteor-vid",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/meteor/meteor-start.jpg"
+    }
+   ],
+   "prompt": "2D hand-drawn cartoon game effect animation, same ink style as the image. Static camera. The burning rock falls fast from the top-left and SMASHES into the centre-bottom area: a big round fiery explosion burst with orange-yellow flames, chunky rock debris flying out and dark smoke puffs, then the fire and smoke fade away to nothing. The background stays ONE flat pure bright green #00FF00 the whole time (no ground, no shadow). Snappy cartoon timing."
+  }
+ ]
+}

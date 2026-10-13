@@ -59,6 +59,8 @@ export class Game {
 
   private dying: Dying[] = [];
   /** Painted one-shot impacts: pop in, overshoot, fade; never a static stamp. */
+  private meteorClip = new Clip('anim/meteor/');
+  private blasts: { x: number; y: number; r: number; t: number }[] = [];
   private impacts: { key: string; x: number; y: number; size: number; t: number; life: number; rot: number; spin: number }[] = [];
   private addImpact(key: string, x: number, y: number, size: number, life = 0.35): void {
     if (this.impacts.length > 40) this.impacts.shift();
@@ -285,6 +287,10 @@ export class Game {
     const fdt = m.hold > 0 ? dt * 0.35 : dt;
     this.fx.update(fdt);
     this.hero.update(fdt, Math.hypot(m.mx, m.my) > 0.1 && m.status === 'play');
+    for (let i = this.blasts.length - 1; i >= 0; i--) {
+      this.blasts[i].t += fdt;
+      if (this.blasts[i].t >= 25 / 24) this.blasts.splice(i, 1);
+    }
     for (let i = this.impacts.length - 1; i >= 0; i--) {
       this.impacts[i].t += fdt;
       if (this.impacts[i].t >= this.impacts[i].life) this.impacts.splice(i, 1);
@@ -378,7 +384,8 @@ export class Game {
         this.fx.burst(e.x, e.y - 20, '#ffb04a', 5, 160);
         break;
       case 'meteor':
-        this.addImpact('fx-slam', e.x, e.y, e.r * 1.3, 0.3);
+        if (this.meteorClip.ready) this.blasts.push({ x: e.x, y: e.y, r: e.r, t: 0 });
+        else this.addImpact('fx-slam', e.x, e.y, e.r * 1.3, 0.3);
         a.play('thud');
         this.fx.shake(0.35, 0.18);
         this.fx.burst(e.x, e.y, '#ff9a3c', 14, 300);
@@ -615,15 +622,15 @@ export class Game {
     this.drawImpacts(ctx);
 
     // falling meteors
-    const rock = this.sprites.image('proj-rock');
+    const rock = this.sprites.image('proj-meteor') ?? this.sprites.image('proj-rock');
     for (const mt of m.meteors) {
       const k = 1 - mt.t / METEOR_DELAY;
       const x = mt.x - 260 * (1 - k), y = mt.y - 620 * (1 - k);
       if (rock) {
         ctx.fillStyle = `rgba(20,15,10,${0.15 + 0.3 * k})`;
         ctx.beginPath(); ctx.ellipse(mt.x, mt.y, mt.r * (0.3 + 0.5 * k), mt.r * (0.15 + 0.25 * k), 0, 0, Math.PI * 2); ctx.fill();
-        const d = 64 + mt.r * 0.3;
-        ctx.save(); ctx.translate(x, y - d * 0.3); ctx.rotate(k * 3);
+        const d = (this.sprites.image('proj-meteor') ? 110 : 64) + mt.r * 0.3;
+        ctx.save(); ctx.translate(x, y - d * 0.3); ctx.rotate(this.sprites.image('proj-meteor') ? 0 : k * 3);
         ctx.drawImage(rock, -d / 2, -d / 2, d, d * (rock.naturalHeight / rock.naturalWidth));
         ctx.restore();
         continue;
@@ -821,6 +828,7 @@ export class Game {
   }
 
   private drawImpacts(ctx: Ctx): void {
+    for (const b of this.blasts) this.meteorClip.draw(ctx, b.x, b.y + b.r * 0.25, b.r * 1.9, b.t, 1, 0);
     for (const p of this.impacts) {
       const img = this.sprites.image(p.key);
       if (!img) continue;

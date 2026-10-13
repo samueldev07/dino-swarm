@@ -1,0 +1,18 @@
+{
+ "shots": [
+  {
+   "id": "meteor-start",
+   "aspect": "9:16",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/icons2/proj-rock.jpg"
+    },
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/STYLE-LOCK/enemy-troll.jpg"
+    }
+   ],
+   "prompt": "Game effect start frame, hand-drawn style like the references (thick uneven dark ink outline, flat earthy colours). A chunky burning grey rock with an orange fire trail is falling from the top-left toward the centre of the image, still high in the air. The rest of the image is ONE flat pure bright green #00FF00 background (chroma key), no ground, no shadow, no other objects, no text."
+  }
+ ]
+}
