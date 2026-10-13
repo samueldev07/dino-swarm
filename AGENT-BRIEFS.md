@@ -57,6 +57,11 @@ Implement, in this order:
    Also on the result card: "N more coins for your next upgrade" with a thin progress line (cheapest camp upgrade).
 6. Small fixes: Space also pauses/resumes during a run; window blur while level-up cards are open must not set
    paused (the cards already freeze the game); skip commercialBreak on RETRY when the previous run lasted < 20 s.
+7. Wire new model features into the view: (a) handle the new GameEvent {t:'weaponEvolve', w, name}: big banner
+   "EVOLVED! <name>", sound 'super', burst + shake; (b) every frame set m.viewHalf = {w, h} to half the visible world
+   size (v.w/2/cam.z, v.h/2/cam.z) so meteors target on-screen enemies on phones; (c) on a level-up card for a weapon,
+   show a quiet line "Evolves with <passive name>" (EVOLUTIONS in config.ts) and, on a passive card, "Evolves <weapon>"
+   when the player owns that weapon; (d) elite enemies (e.elite) draw 30% bigger with a thin gold outline glow.
 
 Verify: `npm run build` must pass (tsc strict) and
 `node --experimental-strip-types --no-warnings tools/test-model.ts` must still pass.
