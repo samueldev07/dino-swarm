@@ -1229,9 +1229,11 @@ export class Game {
     const ty = top + 78;
     const remain = Math.max(0, m.T.runLength - m.time);
     const late = remain < 60;
-    outlinedText(ctx, fmtTime(m.time), v.w / 2, ty, 46, late ? '#f0c060' : '#fff', INK, 'center');
+    // a modal (pause / result) already states the time: keep the clock off so nothing peeks over its ribbon
+    const modal = this.paused || this.result !== null;
+    if (!modal) outlinedText(ctx, fmtTime(m.time), v.w / 2, ty, 46, late ? '#f0c060' : '#fff', INK, 'center');
     // what the clock is counting toward: the next boss, then the zone clear (the boss bar takes this spot in a fight)
-    if (!m.boss && m.status === 'play') {
+    if (!modal && !m.boss && m.status === 'play') {
       const next = m.T.bossAt[m.bossesSpawned];
       const goal = next !== undefined ? 'NEXT BOSS IN ' + fmtTime(next - m.time) : 'ZONE CLEAR IN ' + fmtTime(remain);
       outlinedText(ctx, goal, v.w / 2, ty + 40, 20, next !== undefined ? '#f3d79a' : '#bfe39a', INK, 'center');

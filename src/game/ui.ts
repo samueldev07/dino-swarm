@@ -307,7 +307,9 @@ export function ribbon(ctx: Ctx, cx: number, y: number, w: number, text: string,
     const h = 96, ww = w + 120;
     nine(ctx, key, { x: cx - ww / 2, y: y - 6, w: ww, h }, 0.5);
     const size = fitSize(ctx, text, 40, w - 40);
-    outlinedText(ctx, text, cx, y + h * 0.4, size, '#f6ead0', '#2a1d16', 'center');
+    // the cloth band sits at a different height in each painted ribbon (measured: green 62 %, red 38 % of the image)
+    const band = tone === 'green' ? 0.6 : 0.38;
+    outlinedText(ctx, text, cx, y - 6 + h * band, size, '#f6ead0', '#2a1d16', 'center');
     return;
   }
   const [top, bottom, dark, outline] = tone === 'green'
