@@ -91,8 +91,14 @@
   "file": "atlas.webp",
   "width": 924,
   "height": 960,
-  "hash": "aeaa2019030466fd7bb9d5d34c9fef560693591002073bf1915187ed431522c4",
-  "sourceHash": "5d49a42cd44fb69f215ef5dc95dae60bb5dfb96ea103327a4d918044b4f1096b",
+  "hash": "c3d06487f8f06e06a4a6a9b235cad2d139edd965a88812f357447284b34f7b2f",
+  "sourceHash": "050700df17915d60fd3f5474d51fd2db5cf3471fa97ab6850972925942ffd1b4",
+  "encoding": {
+   "quality": 88,
+   "alphaQuality": 100,
+   "effort": 6,
+   "smartSubsample": true
+  },
   "frames": {
    "00.webp": {
     "x": 2,
