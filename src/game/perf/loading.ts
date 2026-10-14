@@ -12,6 +12,8 @@ export const ZONE_CLIPS = [
   [
     ["z2-froglet", 150],
     ["z2-moth", 140],
+    // zone-1 boar riders visit Ember Marsh from 0:25 (config ZONE_GUESTS): load their loop early, or they draw as a still
+    ["boarorc", 220],
     ["z2-toadrider", 220],
     ["z2-frogman", 180],
     ["troll", 300],
