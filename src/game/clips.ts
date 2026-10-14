@@ -4,45 +4,118 @@
  * shared ground anchor in frame pixels and k = 1 / reference width in pixels, so
  * `width * k` is the draw scale. Missing clips simply report not-ready.
  */
-import { loadAtlas, type Texture } from './perf/frames';
+import {
+  animationJSON,
+  loadAtlas,
+  type Texture,
+  type PackedAtlas,
+} from "./perf/frames";
+import { scheduleLoad } from "./perf/loading";
 type Ctx = CanvasRenderingContext2D;
 
-interface ClipFrame extends Partial<Texture> { f: string; cx: number; foot: number; k: number }
-interface ClipData { fps: number; frames: ClipFrame[] }
+interface ClipFrame extends Partial<Texture> {
+  f: string;
+  cx: number;
+  foot: number;
+  k: number;
+}
+interface ClipData {
+  fps: number;
+  frames: ClipFrame[];
+  atlas?: PackedAtlas;
+}
+const pending = new Map<string, Promise<ClipData>>();
+const prepared = new Map<string, ClipData>();
+const clipKey = (base: string, maxSide: number) => base + "#" + maxSide;
+export function isClipReady(base: string, maxSide = 220): boolean {
+  return !!prepared.get(clipKey(base, maxSide))?.frames.length;
+}
+
+/** Share prepared textures with zone clips created after boot, so the first draw never falls back. */
+export function primeClip(base: string, maxSide = 220): Promise<ClipData> {
+  const key = clipKey(base, maxSide);
+  let result = pending.get(key);
+  if (!result) {
+    result = scheduleLoad(key, async () => {
+      const d = await animationJSON<ClipData>(base + "clip.json");
+      const textures = await loadAtlas(
+        d.frames.map((fr) => base + fr.f),
+        maxSide,
+        { base, atlas: d.atlas },
+      );
+      d.frames.forEach((fr, i) => Object.assign(fr, textures[i]));
+      prepared.set(key, d);
+      return d;
+    });
+    pending.set(key, result);
+  }
+  return result;
+}
 
 export class Clip {
   private data: ClipData | null = null;
   private loaded = 0;
 
   /** maxSide: longest frame side kept in memory (≈ largest on-screen size × DPR). */
-  constructor(private base: string, private maxSide = 220) { void this.load(); }
+  constructor(
+    private base: string,
+    private maxSide = 220,
+  ) {
+    const data = prepared.get(clipKey(base, maxSide));
+    if (data) {
+      this.data = data;
+      this.loaded = data.frames.length;
+    } else void this.load();
+  }
 
   private async load(): Promise<void> {
     try {
-      const res = await fetch(this.base + 'clip.json', { cache: import.meta.env.DEV ? 'no-cache' : 'default' });
-      if (!res.ok) return;
-      const d = (await res.json()) as ClipData;
+      const d = await primeClip(this.base, this.maxSide);
       this.data = d;
-      const textures = await loadAtlas(d.frames.map(fr => this.base + fr.f), this.maxSide);
-      d.frames.forEach((fr, i) => Object.assign(fr, textures[i]));
-      this.loaded = textures.length;
-    } catch { /* no clip: caller keeps its still sprite */ }
+      this.loaded = d.frames.length;
+    } catch {
+      /* no clip: caller keeps its still sprite */
+    }
   }
 
-  get ready(): boolean { return !!this.data && this.loaded > 0 && this.loaded === this.data.frames.length; }
+  get ready(): boolean {
+    return (
+      !!this.data && this.loaded > 0 && this.loaded === this.data.frames.length
+    );
+  }
 
   /** Feet at (x, y), `width` in world units, `t` = this creature's own clock (s). */
-  draw(ctx: Ctx, x: number, y: number, width: number, t: number, flip: number, flash: number, sx = 1, sy = 1): void {
+  draw(
+    ctx: Ctx,
+    x: number,
+    y: number,
+    width: number,
+    t: number,
+    flip: number,
+    flash: number,
+    sx = 1,
+    sy = 1,
+  ): void {
     const d = this.data;
     if (!d?.frames.length) return;
     const fr = d.frames[Math.floor(t * d.fps) % d.frames.length];
-    if (!fr.width || !fr.height || fr.tx === undefined || fr.ty === undefined || !fr.raster || !fr.white) return;
+    if (
+      !fr.width ||
+      !fr.height ||
+      fr.tx === undefined ||
+      fr.ty === undefined ||
+      !fr.raster ||
+      !fr.white
+    )
+      return;
     const s = width * fr.k;
-    const w = fr.width * s, h = fr.height * s;
+    const w = fr.width * s,
+      h = fr.height * s;
     // Ordinary walking needs no saved canvas state for every creature. Only wind-ups squash.
     if (sx === 1 && sy === 1) {
       if (flip < 0) ctx.scale(-1, 1);
-      const dx = (flip < 0 ? -x : x) - fr.cx * s, dy = y - fr.foot * s;
+      const dx = (flip < 0 ? -x : x) - fr.cx * s,
+        dy = y - fr.foot * s;
       ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.sw!, fr.sh!, dx, dy, w, h);
       if (flash > 0) {
         const alpha = ctx.globalAlpha;
@@ -56,10 +129,30 @@ export class Clip {
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(flip * sx, sy);
-    ctx.drawImage(fr.raster, fr.tx, fr.ty, fr.sw!, fr.sh!, -fr.cx * s, -fr.foot * s, w, h);
+    ctx.drawImage(
+      fr.raster,
+      fr.tx,
+      fr.ty,
+      fr.sw!,
+      fr.sh!,
+      -fr.cx * s,
+      -fr.foot * s,
+      w,
+      h,
+    );
     if (flash > 0) {
       ctx.globalAlpha *= Math.min(1, flash);
-      ctx.drawImage(fr.white, fr.tx, fr.ty, fr.sw!, fr.sh!, -fr.cx * s, -fr.foot * s, w, h);
+      ctx.drawImage(
+        fr.white,
+        fr.tx,
+        fr.ty,
+        fr.sw!,
+        fr.sh!,
+        -fr.cx * s,
+        -fr.foot * s,
+        w,
+        h,
+      );
     }
     ctx.restore();
   }
