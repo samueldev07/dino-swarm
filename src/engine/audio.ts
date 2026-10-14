@@ -57,39 +57,59 @@ const midi = (n: number) => 440 * Math.pow(2, (n - 69) / 12);
 const rnd = (amount: number) => 1 + (Math.random() - 0.5) * amount;
 
 // ------------------------------------------------------------- the songs
-// Chords as midi triads; bass roots in a register laptop speakers can carry.
-const CALM_CHORDS: Record<string, number[]> = {
-  C: [60, 64, 67], G: [59, 62, 67], Am: [57, 60, 64], F: [57, 60, 65],
+// Dark Folk Fairy-Tale / Prehistoric Survival soundtrack in D Dorian & D Harmonic Minor.
+// Built on an 8-bar / 16-bar structure with plucked folk lute, wooden flute, frame drum (bodhrán),
+// bowed cello drone, and war-horn stabs — zero external audio file size.
+const FOLK_CHORDS: Record<string, number[]> = {
+  Dm: [62, 65, 69],   // D4 F4 A4
+  C:  [60, 64, 67],   // C4 E4 G4
+  Gm: [58, 62, 67],   // Bb3 D4 G4
+  Bb: [58, 62, 65],   // Bb3 D4 F4
+  Am: [57, 60, 64],   // A3 C4 E4
+  A7: [57, 61, 64],   // A3 C#4 E4 (harmonic minor dominant tension)
+  F:  [60, 65, 69],   // C4 F4 A4
 };
-const CALM_BASS: Record<string, number> = { C: 48, G: 43, Am: 45, F: 41 };
-const CALM_BARS = ['C', 'G', 'Am', 'F', 'C', 'G', 'F', 'G', 'Am', 'F', 'C', 'G', 'Am', 'F', 'G', 'G'];
-/** Marimba melody: per bar, [step, midi] pairs on a 16-step grid. */
-const CALM_MELODY: [number, number][][] = [
-  [[0, 76], [3, 79], [6, 81], [8, 79], [12, 76]],
-  [[0, 74], [3, 76], [6, 79], [10, 74]],
-  [[0, 72], [3, 76], [6, 81], [8, 79], [11, 76]],
-  [[0, 77], [4, 76], [8, 72], [12, 74]],
-  [[0, 79], [2, 81], [4, 84], [8, 81], [10, 79], [12, 76]],
-  [[0, 74], [4, 79], [6, 81], [8, 79]],
-  [[0, 77], [4, 81], [8, 84], [12, 81]],
-  [[0, 79], [6, 74], [8, 79], [14, 83]],
-  [[0, 76], [4, 72], [8, 76], [10, 79], [12, 81]],
-  [[0, 77], [4, 81], [8, 79], [12, 77]],
-  [[0, 79], [3, 76], [6, 72], [8, 76], [12, 79]],
-  [[0, 83], [4, 81], [8, 79], [12, 74]],
-  [[0, 81], [2, 84], [4, 81], [8, 79], [12, 76]],
-  [[0, 77], [4, 76], [8, 74], [12, 72]],
-  [[0, 74], [4, 79], [8, 81], [12, 83]],
-  [[0, 84], [8, 79]],
+const FOLK_BASS: Record<string, number> = {
+  Dm: 50, C: 48, Gm: 43, Bb: 46, Am: 45, A7: 45, F: 41,
+};
+// 16-bar journey: Section A (Mystic Woods march) -> Section B (Swarm Rising chorus)
+const CALM_BARS = [
+  'Dm', 'Gm', 'C', 'Dm', 'Bb', 'Gm', 'A7', 'Dm',
+  'Dm', 'F',  'C', 'Gm', 'Bb', 'C',  'A7', 'Dm',
+];
+/** Wooden flute & plucked lute melody: per bar, [step, midi, durSteps] on a 16-step grid. */
+const CALM_MELODY: [number, number, number][][] = [
+  // Section A: Haunting Dorian folk theme
+  [[0, 74, 3], [3, 77, 2], [6, 76, 2], [8, 74, 4], [12, 69, 4]],
+  [[0, 70, 3], [3, 74, 2], [6, 79, 4], [12, 77, 4]],
+  [[0, 76, 3], [3, 74, 2], [6, 72, 2], [8, 74, 3], [12, 76, 4]],
+  [[0, 74, 6], [8, 69, 4], [12, 72, 4]],
+  [[0, 70, 3], [3, 74, 2], [6, 77, 3], [10, 76, 2], [12, 74, 4]],
+  [[0, 79, 3], [3, 77, 2], [6, 74, 2], [8, 70, 4], [12, 74, 4]],
+  [[0, 73, 4], [4, 76, 4], [8, 79, 4], [12, 76, 3], [15, 73, 1]],
+  [[0, 74, 8], [10, 69, 3], [14, 72, 2]],
+  // Section B: Soaring survival call
+  [[0, 81, 3], [3, 79, 2], [6, 77, 2], [8, 74, 4], [12, 77, 4]],
+  [[0, 81, 4], [4, 84, 4], [8, 81, 4], [12, 79, 4]],
+  [[0, 76, 3], [3, 79, 2], [6, 81, 3], [10, 79, 2], [12, 76, 4]],
+  [[0, 79, 4], [4, 74, 4], [8, 70, 4], [12, 74, 4]],
+  [[0, 77, 3], [3, 74, 2], [6, 70, 2], [8, 74, 4], [12, 77, 4]],
+  [[0, 76, 3], [3, 79, 2], [6, 81, 3], [10, 84, 2], [12, 79, 4]],
+  [[0, 81, 3], [3, 79, 2], [6, 76, 2], [8, 73, 4], [12, 76, 4]],
+  [[0, 74, 10]],
 ];
 
-const BOSS_CHORDS = [[57, 60, 64], [53, 57, 60], [55, 59, 62], [52, 56, 59]];
-const BOSS_BASS = [45, 41, 43, 40];
+// Boss & Final: D Phrygian Dominant / Harmonic Minor war chant (Dm - Eb - Gm - A7 / Dm - Bb - Gm - A7)
+const BOSS_CHORDS = [
+  [62, 65, 69], [63, 67, 70], [58, 62, 67], [57, 61, 64],
+  [62, 65, 69], [58, 62, 65], [58, 62, 67], [57, 61, 67],
+];
+const BOSS_BASS = [50, 51, 43, 45, 50, 46, 43, 45];
 const BOSS_RIFF: [number, number][][] = [
-  [[0, 69], [2, 72], [4, 76], [6, 74], [8, 72], [10, 69], [12, 67], [14, 69]],
-  [[0, 65], [2, 69], [4, 72], [6, 69], [8, 77], [10, 76], [12, 72], [14, 69]],
-  [[0, 67], [2, 71], [4, 74], [6, 71], [8, 79], [10, 77], [12, 74], [14, 71]],
-  [[0, 68], [2, 71], [4, 76], [6, 71], [8, 80], [10, 76], [12, 74], [14, 71]],
+  [[0, 74], [2, 74], [3, 77], [4, 74], [6, 73], [8, 74], [10, 79], [12, 77], [14, 74]],
+  [[0, 75], [2, 75], [3, 79], [4, 75], [6, 74], [8, 75], [10, 82], [12, 79], [14, 75]],
+  [[0, 70], [2, 74], [4, 79], [6, 77], [8, 74], [10, 70], [12, 67], [14, 70]],
+  [[0, 69], [2, 73], [4, 76], [6, 79], [8, 81], [10, 79], [12, 76], [14, 73]],
 ];
 
 export class Audio {
@@ -520,7 +540,7 @@ export class Audio {
         this.mood = this.nextMood;
         this.bar = 0;
       }
-      const bpm = this.mood === 'calm' ? 100 : this.mood === 'boss' ? 140 : 156;
+      const bpm = this.mood === 'calm' ? 108 : this.mood === 'boss' ? 146 : 132;
       const sixteenth = 60 / bpm / 4;
       if (this.mood === 'calm') this.calmStep(this.nextStep, sixteenth);
       else this.bossStep(this.nextStep, sixteenth);
@@ -533,78 +553,121 @@ export class Audio {
     }
   }
 
-  // drum kit, shared by both songs
-  private kick(t: number, g: number): void {
-    this.tone({ f: 150, f2: 45, t, dur: 0.18, gain: g, bus: 'mus' });
+  // Folk & tribal percussion + acoustic instrument voices
+  private bodhran(t: number, g: number, low = true): void {
+    const f0 = low ? 115 : 165, f1 = low ? 48 : 78;
+    this.tone({ type: 'sine', f: f0, f2: f1, t, dur: low ? 0.22 : 0.14, gain: g, bus: 'mus' });
+    this.tone({ type: 'triangle', f: f0 * 1.5, f2: f1 * 1.2, t, dur: 0.07, gain: g * 0.35, filter: { type: 'lowpass', f: 420 }, bus: 'mus' });
   }
-  private snare(t: number, g: number): void {
-    this.noise({ t, dur: 0.14, gain: g, filter: { type: 'bandpass', f: 1900, q: 0.7 }, bus: 'mus' });
-    this.tone({ type: 'triangle', f: 190, f2: 140, t, dur: 0.08, gain: g * 0.6, bus: 'mus' });
+  private rimClick(t: number, g: number): void {
+    this.noise({ t, dur: 0.035, gain: g, filter: { type: 'bandpass', f: 2200, q: 3.2 }, bus: 'mus' });
+    this.tone({ type: 'triangle', f: 680, f2: 320, t, dur: 0.025, gain: g * 0.45, bus: 'mus' });
   }
-  private hat(t: number, g: number, open = false): void {
-    this.noise({ t, dur: open ? 0.12 : 0.03, gain: g, filter: { type: 'highpass', f: 7500 }, bus: 'mus' });
+  private shaker(t: number, g: number, open = false): void {
+    this.noise({ t, dur: open ? 0.09 : 0.028, gain: g, filter: { type: 'bandpass', f: 6200, q: 1.4 }, bus: 'mus' });
+  }
+  private lute(n: number, t: number, dur: number, g: number): void {
+    const f = midi(n);
+    this.tone({ type: 'triangle', f, t, dur, gain: g, attack: 0.004, bus: 'mus' });
+    this.tone({ type: 'sawtooth', f, t, dur: dur * 0.55, gain: g * 0.38, attack: 0.003, detune: 5, filter: { type: 'lowpass', f: f * 3.2 }, bus: 'mus' });
+  }
+  private flute(n: number, t: number, dur: number, g: number): void {
+    const f = midi(n);
+    this.tone({ type: 'sine', f, f2: f * 1.003, t, dur, gain: g, attack: 0.035, bus: 'mus' });
+    this.tone({ type: 'triangle', f: f * 2, t, dur: dur * 0.75, gain: g * 0.18, attack: 0.04, filter: { type: 'lowpass', f: 2400 }, bus: 'mus' });
+    this.noise({ t, dur: Math.min(0.06, dur * 0.3), gain: g * 0.12, filter: { type: 'bandpass', f: f * 2, q: 2.5 }, bus: 'mus' });
   }
 
   private calmStep(t: number, s16: number): void {
     const name = CALM_BARS[this.bar];
-    const chord = CALM_CHORDS[name];
-    const root = CALM_BASS[name];
+    const chord = FOLK_CHORDS[name];
+    const root = FOLK_BASS[name];
     const st = this.step;
+    const isB = this.bar >= 8;
 
-    if (st === 0 || st === 8) this.kick(t, 0.28);
-    if (st === 4 || st === 12) this.noise({ t, dur: 0.03, gain: 0.07, filter: { type: 'bandpass', f: 2600, q: 4 }, bus: 'mus' });
-    if (st % 2 === 1) this.hat(t, st % 4 === 3 ? 0.05 : 0.025);
+    // Driving dark-folk bodhrán & wood-rim groove (compound folk feel on 16-step grid)
+    if (st === 0 || st === 6 || st === 8) this.bodhran(t, st === 0 ? 0.30 : 0.22, true);
+    if (st === 3 || st === 14) this.bodhran(t, 0.15, false);
+    if (st === 4 || st === 12) this.rimClick(t, 0.09);
+    if (st % 2 === 1) this.shaker(t, st % 4 === 3 ? 0.045 : 0.022, isB && st === 15);
 
-    const bassAt: Record<number, [number, number]> = { 0: [root, 3], 6: [root, 1], 8: [root + 7, 3], 14: [root + 12, 1] };
+    // Earthy bowed cello / bass pulse on root & fifth
+    const bassAt: Record<number, [number, number]> = {
+      0: [root, 4], 6: [root + 7, 2], 8: [root, 4], 12: [root + (name === 'A7' ? 4 : 7), 2], 14: [root + 12, 2],
+    };
     const b = bassAt[st];
-    if (b) this.tone({ type: 'triangle', f: midi(b[0]), t, dur: b[1] * s16 * 1.4, gain: 0.32, filter: { type: 'lowpass', f: 700 }, bus: 'mus' });
+    if (b) {
+      this.tone({ type: 'triangle', f: midi(b[0]), t, dur: b[1] * s16 * 1.35, gain: 0.28, attack: 0.012, filter: { type: 'lowpass', f: 620 }, bus: 'mus' });
+      this.tone({ type: 'sawtooth', f: midi(b[0]), t, dur: b[1] * s16 * 1.1, gain: 0.055, attack: 0.02, filter: { type: 'lowpass', f: 380 }, bus: 'mus' });
+    }
 
+    // Warm dark-folk drone pad (fifth + octave)
     if (st === 0) {
-      for (const n of chord) {
-        for (const det of [-7, 7]) {
-          this.tone({ type: 'sawtooth', f: midi(n), t, dur: 16 * s16, gain: 0.018, attack: 0.35, detune: det, filter: { type: 'lowpass', f: 1100 }, bus: 'mus' });
+      for (const n of [chord[0], chord[2]]) {
+        for (const det of [-6, 6]) {
+          this.tone({ type: 'sawtooth', f: midi(n), t, dur: 16 * s16, gain: 0.016, attack: 0.3, detune: det, filter: { type: 'lowpass', f: 880 }, bus: 'mus' });
         }
       }
     }
 
-    // The A section rests the melody every other loop, so the song breathes.
-    const rest = this.bar < 8 && this.loops % 2 === 1;
+    // Plucked folk lute arpeggio weaving through every bar
+    const arpIdx = [0, 1, 2, 1, 0, 2, 1, 2];
+    if (st % 2 === 0) {
+      const note = chord[arpIdx[(st >> 1) % 8]] + (st === 10 || st === 14 ? 12 : 0);
+      this.lute(note, t, s16 * 2.4, isB ? 0.075 : 0.06);
+    }
+
+    // Wooden flute & lute lead melody: rests on odd loops in first 4 bars so the forest atmosphere breathes
+    const rest = this.bar < 4 && this.loops % 2 === 1;
     if (!rest) {
-      for (const [at, n] of CALM_MELODY[this.bar]) {
+      for (const [at, n, durSteps] of CALM_MELODY[this.bar]) {
         if (at !== st) continue;
-        this.tone({ f: midi(n), t, dur: 0.42, gain: 0.13, bus: 'mus' });
-        this.tone({ type: 'triangle', f: midi(n) * 2, t, dur: 0.12, gain: 0.035, bus: 'mus' });
+        this.flute(n, t, durSteps * s16 * 1.05, isB ? 0.13 : 0.11);
+        this.lute(n - 12, t, durSteps * s16 * 0.8, 0.045);
       }
-    } else if (st % 4 === 2) {
-      this.tone({ type: 'triangle', f: midi(chord[(st / 2) % 3] + 24), t, dur: 0.25, gain: 0.03, bus: 'mus' });
+    } else if (st === 2 || st === 6 || st === 10 || st === 14) {
+      this.lute(chord[(st >> 2) % 3] + 12, t, s16 * 2.2, 0.05);
     }
   }
 
   private bossStep(t: number, s16: number): void {
-    const i = this.bar % 4;
+    const i = this.bar % 8;
     const chord = BOSS_CHORDS[i];
     const root = BOSS_BASS[i];
     const st = this.step;
     const final = this.mood === 'final';
 
-    if (st % 4 === 0 || (i === 3 && st === 10)) this.kick(t, 0.42);
-    if (st === 4 || st === 12) this.snare(t, 0.22);
-    if (final && i === 3 && st >= 12) this.snare(t, 0.12 + (st - 12) * 0.04);
-    this.hat(t, st % 4 === 2 ? 0.07 : final ? 0.04 : 0.025, st % 8 === 6);
+    // Heavy tribal war-drums
+    if (st % 4 === 0 || st === 6 || (i % 4 === 3 && st === 14)) this.bodhran(t, 0.42, true);
+    if (st === 2 || st === 10) this.bodhran(t, 0.24, false);
+    if (st === 4 || st === 12) {
+      this.rimClick(t, 0.16);
+      this.noise({ t, dur: 0.11, gain: 0.16, filter: { type: 'bandpass', f: 1650, q: 0.9 }, bus: 'mus' });
+    }
+    if (final && i % 4 === 3 && st >= 12) this.bodhran(t, 0.22 + (st - 12) * 0.04, false);
+    this.shaker(t, st % 2 === 0 ? 0.055 : 0.03, st % 8 === 6);
 
-    if (st % 2 === 0) {
-      const n = st === 6 || st === 14 ? root + 12 : root;
-      this.tone({ type: 'sawtooth', f: midi(n), t, dur: s16 * 1.6, gain: 0.16, filter: { type: 'lowpass', f: final ? 900 : 650 }, bus: 'mus' });
+    // Relentless galloping bass ostinato
+    if (st % 2 === 0 || st === 3 || st === 11) {
+      const n = st === 6 || st === 14 ? root + 12 : st === 10 ? root + 7 : root;
+      this.tone({ type: 'sawtooth', f: midi(n), t, dur: s16 * 1.5, gain: 0.17, filter: { type: 'lowpass', f: final ? 920 : 680 }, bus: 'mus' });
+      this.tone({ type: 'triangle', f: midi(n), t, dur: s16 * 1.5, gain: 0.20, filter: { type: 'lowpass', f: 480 }, bus: 'mus' });
     }
-    if (st === 3 || st === 11) {
-      for (const n of chord) this.tone({ type: 'square', f: midi(n + 12), t, dur: s16 * 1.5, gain: 0.03, filter: { type: 'lowpass', f: 2200 }, bus: 'mus' });
-    }
-    if (final || this.bar >= 4) {
-      for (const [at, n] of BOSS_RIFF[i]) {
-        if (at !== st) continue;
-        this.tone({ type: 'square', f: midi(n), t, dur: s16 * 1.8, gain: 0.05, filter: { type: 'lowpass', f: 2600 }, bus: 'mus' });
-        this.tone({ type: 'sawtooth', f: midi(n), t, dur: s16 * 1.8, gain: 0.025, detune: 9, filter: { type: 'lowpass', f: 2200 }, bus: 'mus' });
+
+    // Brass / war-horn stabs on chord hits
+    if (st === 0 || st === 6 || st === 12) {
+      for (const n of chord) {
+        this.tone({ type: 'sawtooth', f: midi(n), t, dur: s16 * 2.2, gain: 0.04, attack: 0.015, detune: 6, filter: { type: 'lowpass', f: 1600 }, bus: 'mus' });
       }
+    }
+
+    // Aggressive Phrygian folk lute + horn battle riff
+    const riff = BOSS_RIFF[i % 4];
+    for (const [at, n] of riff) {
+      if (at !== st) continue;
+      const pitch = i >= 4 ? n + 12 : n;
+      this.lute(pitch, t, s16 * 1.9, 0.085);
+      this.tone({ type: 'sawtooth', f: midi(n), t, dur: s16 * 1.8, gain: 0.045, detune: -7, filter: { type: 'lowpass', f: 2100 }, bus: 'mus' });
     }
   }
 }

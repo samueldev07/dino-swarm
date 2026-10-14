@@ -276,6 +276,15 @@ export const ZONES = [
   { name: 'Frostfang Hills',   enemyHp: 2.0, enemyDmg: 1.45, coinMult: 2 },
 ];
 
+/**
+ * Familiar enemies from an earlier zone, mixed in sparingly and EARLY in a later zone's run (owner 14/10: reuse the
+ * boar rider in Ember Marsh, not too many, early rather than late). `share` = chance that a spawn in [from, until) is
+ * this guest; it keeps its own zone's art (`art`) and the behaviour of `kind`.
+ */
+export const ZONE_GUESTS: { zone: number; kind: EnemyKind; art: number; from: number; until: number; share: number }[] = [
+  { zone: 1, kind: 'wolf', art: 0, from: 25, until: 150, share: 0.08 },
+];
+
 /** What each enemy role is called in each zone (rules stay the same; art and names change). */
 export const ENEMY_NAMES: Record<EnemyKind | 'spore', string>[] = [
   { grub: 'a Mushroom Gnome', bat: 'a Cave Bat', beetle: 'an Orc Shieldbearer', wolf: 'a Boar Rider', shroom: 'a Torch Goblin', brute: 'a Forest Troll', boss: 'the Ogre Chief', spore: 'a burning torch' },

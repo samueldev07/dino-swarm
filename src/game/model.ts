@@ -8,7 +8,7 @@
  * frame rate.
  */
 import {
-  STEP, TUNING, type Tuning, ENEMIES, type EnemyKind, type EnemyDef, SPAWN_MIX, EVENTS,
+  STEP, TUNING, type Tuning, ENEMIES, type EnemyKind, type EnemyDef, SPAWN_MIX, EVENTS, ZONE_GUESTS,
   WEAPONS, type WeaponId, type PassiveId, type SkillId, PASSIVE_STEP, WEAPON_IDS, PASSIVE_IDS,
   isWeapon, MAX_LEVEL, MAX_WEAPONS, THORN_LIFE, THORN_TICK, ROAR_STUN, METEOR_DELAY,
   xpToNext, SPECIES, PET_SHARE, PET_SPEED, EVOLUTIONS, EVOLVED, type SpeciesId, ZONES, CAMP, type CampId,
@@ -41,6 +41,8 @@ export interface Enemy {
   xp: number;
   /** Boss number (1..3); 0 for everything else. */
   tier: number;
+  /** Zone whose art this enemy wears (-1 = the run's zone); guests from earlier zones keep theirs. View only. */
+  art: number;
   spin: number;
 }
 
@@ -348,7 +350,10 @@ export class Model {
     while (this.spawnAcc >= 1) {
       this.spawnAcc -= 1;
       if (this.enemies.length >= T.maxEnemies) continue;
-      const e = this.spawn(this.pickKind(), this.spawnAngle(), dist);
+      const guest = ZONE_GUESTS.find(g => g.zone === this.zone && this.time >= g.from && this.time < g.until);
+      const isGuest = !!guest && this.rng() < guest.share;
+      const e = this.spawn(isGuest ? guest!.kind : this.pickKind(), this.spawnAngle(), dist);
+      if (isGuest) e.art = guest!.art;
       const eliteP = crowded ? T.eliteCrowd : this.time >= T.eliteFrom ? T.eliteChance : 0;
       if (eliteP > 0 && this.rng() < eliteP) this.makeElite(e);
     }
@@ -416,7 +421,7 @@ export class Model {
       speed: def.speed * (0.92 + this.rng() * 0.16),
       damage: def.damage * z.enemyDmg,
       flash: 0, stun: 0, age: this.rng() * 10, act: 1 + this.rng() * 2, mode: 0, dx: 0, dy: 0,
-      orbitCd: 0, facing: 1, dead: false, elite: false, xp: def.xp, tier: 0, spin: 0,
+      orbitCd: 0, facing: 1, dead: false, elite: false, xp: def.xp, tier: 0, spin: 0, art: -1,
     };
     this.enemies.push(e);
     return e;

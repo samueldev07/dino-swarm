@@ -805,7 +805,7 @@ export class Game {
     let sx = 1 + Math.sin(walk * 2) * 0.04, sy = 1 - Math.sin(walk * 2) * 0.04;
     if (e.mode === 1) { x += Math.sin(this.time * 70) * 3; sx = 1.12; sy = 0.88; }
     if (e.stun > 0) y += 0;
-    const clip = this.clipsFor(this.m!.zone)[e.def.kind] ?? this.clips[e.def.kind];
+    const clip = this.clipsFor(e.art >= 0 ? e.art : this.m!.zone)[e.def.kind] ?? this.clips[e.def.kind];
     const flash = e.flash > 0 ? e.flash * 8 : e.mode === 1 ? 0.35 : 0;
     if (clip?.ready) {
       // The loop already carries the motion: no code bob, only the wind-up shake/squash.
