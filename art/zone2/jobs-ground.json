@@ -1,0 +1,15 @@
+{
+ "shots": [
+  {
+   "id": "ground-1-gen",
+   "aspect": "1:1",
+   "model": "nano_banana_pro",
+   "refs": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/ref-ground-0.png"
+    }
+   ],
+   "prompt": "Seamless repeating game ground tile in EXACTLY the same art style, scale, softness and calm low contrast as the reference tile (hand-painted 2D folk fairy-tale cartoon ground seen straight from above). Change ONLY the terrain into a dry ember marsh: warm medium-brown peat soil with soft large patches of muted olive moss and a few soft slightly darker damp patches, gentle painterly brush texture. Keep it fairly LIGHT and calm so characters stand out. NO leaves, NO twigs, NO pebbles, NO small loose bits, NO water, NO paths, NO lines, NO strong highlights, NO objects. Uniform flat lighting across all four edges, top-down 90 degree view, seamless tile."
+  }
+ ]
+}

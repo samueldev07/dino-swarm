@@ -61,6 +61,8 @@
   "hud-coin": "hud-coin.webp",
   "hud-pause": "hud-pause.webp",
   "hud-sound": "hud-sound.webp",
-  "hud-amber": "hud-amber.webp"
+  "hud-amber": "hud-amber.webp",
+  "hud-full": "hud-full.webp",
+  "ground-1": "ground-1.webp"
  }
 }

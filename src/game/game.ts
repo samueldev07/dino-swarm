@@ -28,7 +28,7 @@ import { progressMissions, claimMissions, missionLabel, type Mission } from './m
 type Ctx = CanvasRenderingContext2D;
 type Screen = 'menu' | 'run' | 'camp';
 
-interface Dying { s: Sprite; x: number; y: number; scale: number; t: number; flip: number }
+interface Dying { s: Sprite; x: number; y: number; scale: number; t: number; flip: number; clip?: Clip; at: number }
 interface Banner { text: string; sub: string; t: number; color: string; len: number }
 
 const GROUND: [string, string, string, string][] = [
@@ -393,8 +393,10 @@ export class Game {
           this.taughtAmber = true; this.amberT = 3;
           this.showBanner('Collect amber to LEVEL UP!', '', '#f0c060');
         }
-        const s = this.sprites.enemy(e.kind, m.zone);
-        this.dying.push({ s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s), t: 0, flip: 1 });
+        // fade out the frame the enemy was really showing (its zone's art, facing, pose), not a zone-1 still
+        const s = this.enemySprites[e.kind] ?? this.sprites.enemy(e.kind, m.zone);
+        const clip = this.clipsFor(e.art >= 0 ? e.art : m.zone)[e.kind] ?? this.clips[e.kind];
+        this.dying.push({ s, x: e.x, y: e.y, scale: this.enemyScale(e.kind, s) * (e.elite ? 1.3 : 1), t: 0, flip: e.facing, clip: clip?.ready ? clip : undefined, at: e.age });
         this.fx.burst(e.x, e.y - 14, e.kind === 'boss' ? '#f0c060' : '#e8dcc0', e.kind === 'boss' ? 40 : 6, e.kind === 'boss' ? 420 : 170);
         if (this.time - this.lastKillSound > 0.06) { a.play('kill'); this.lastKillSound = this.time; }
         if (e.kind === 'brute') this.fx.shake(0.5, 0.25);
@@ -731,7 +733,8 @@ export class Game {
     for (const d of this.dying) {
       const k = d.t / 0.22;
       ctx.globalAlpha = 1 - k;
-      this.blit(ctx, d.s, d.x, d.y - k * 10, d.scale * (1 - k * 0.15), 1, 1, 0, 0.8 * (1 - k));
+      if (d.clip) d.clip.draw(ctx, d.x, d.y - k * 10, d.s.w * d.scale * (1 - k * 0.15), d.at, d.flip, 0.8 * (1 - k));
+      else this.blit(ctx, d.s, d.x, d.y - k * 10, d.scale * (1 - k * 0.15), 1, 1, 0, 0.8 * (1 - k), d.flip);
     }
     ctx.globalAlpha = 1;
 
@@ -1119,9 +1122,14 @@ export class Game {
     if (this.painted[zone]) return this.painted[zone]!;
     const img = this.sprites.image(`ground-${zone}`);
     if (img) {
-      const p = this.ctx.createPattern(img, 'repeat');
+      // Pre-scale the tile once: a transformed pattern made every full-screen ground fill resample the image.
+      const n = Math.round(img.naturalWidth * 0.8), c = document.createElement('canvas');
+      c.width = c.height = n;
+      const g = c.getContext('2d')!;
+      g.imageSmoothingQuality = 'high';
+      g.drawImage(img, 0, 0, n, n);
+      const p = this.ctx.createPattern(c, 'repeat');
       if (p) {
-        p.setTransform(new DOMMatrix().scale(0.8));
         this.painted[zone] = p;
         return p;
       }

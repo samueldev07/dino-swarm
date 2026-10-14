@@ -79,7 +79,7 @@ export type Status = 'ready' | 'play' | 'dead' | 'won';
 
 export type GameEvent =
   | { t: 'hit'; x: number; y: number; dmg: number; crit: boolean; boss: boolean }
-  | { t: 'kill'; x: number; y: number; kind: EnemyKind; by?: WeaponId }
+  | { t: 'kill'; x: number; y: number; kind: EnemyKind; by?: WeaponId; art: number; facing: 1 | -1; age: number; elite: boolean }
   | { t: 'hurt'; dmg: number }
   | { t: 'gem'; value: number }
   | { t: 'coin'; x: number; y: number; n: number }
@@ -603,7 +603,7 @@ export class Model {
   private killEnemy(e: Enemy, by?: WeaponId): void {
     e.dead = true;
     this.kills++;
-    this.events.push({ t: 'kill', x: e.x, y: e.y, kind: e.def.kind, by });
+    this.events.push({ t: 'kill', x: e.x, y: e.y, kind: e.def.kind, by, art: e.art, facing: e.facing, age: e.age, elite: e.elite });
     this.dropGem(e.x, e.y, e.xp);
     const r = this.rng();
     if (e.def.kind === 'boss') {

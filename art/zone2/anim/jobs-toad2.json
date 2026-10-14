@@ -1,0 +1,14 @@
+{
+ "shots": [
+  {
+   "id": "z2-toadrider-v2",
+   "aspect": "9:16",
+   "reference_images": [
+    {
+     "path": "D:/REMOTION/games/dino-swarm/art/zone2/anim/start-toadrider.jpg"
+    }
+   ],
+   "prompt": "Hand-drawn 2D cartoon game animation of EXACTLY the creature in the image (same design, colours, thick hand-inked outline). Camera completely static, no zoom, no pan; it stays centred at the same size for the whole clip. Plain flat pure white background, no ground, no shadow, no other objects, no text. The big toad HOPS forward IN PLACE toward the right in a strong bouncy repeating rhythm: it crouches low squashing its body, then springs up stretching its legs out, then lands and squashes again; the goblin rider bobs up and down with each hop, gripping the reins and pointing the spear forward. Clear big motion, smooth seamless loop."
+  }
+ ]
+}
